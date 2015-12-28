@@ -60,7 +60,7 @@ int		place_it(t_map *map, int i)
 		}
 		map->y++;
 	}
-	return (0);;
+	return (0);
 }
 
 int		clear_it(t_map *map, int i)
@@ -74,7 +74,7 @@ int		clear_it(t_map *map, int i)
         k = 0;
         while (k < map->w)
         {
-            if (map->map[j][k] == (char)('A' + i))
+            if (map->map[j][k] == 'A' + i)
                 map->map[j][k] = '.';
             k++;
         }
@@ -84,29 +84,41 @@ int		clear_it(t_map *map, int i)
 
 }
 
+int		move_it(t_map *map, int i)
+{
+	clear_it(map, i);
+	map->x = map->tab[i]->plcx + 1;
+	map->y = map->tab[i]->plcy;
+	while (map->y < map->w)
+	{
+		while (map->x < map->w)
+		{
+			if (is_putable(map, map->tab[i]) > 0)
+			{
+				put_tetris(map, map->tab[i]);
+				map->tab[i]->plcx = map->x;
+				map->tab[i]->plcy = map->y;
+				return (1);
+			}
+			map->x++;
+		}
+		map->x = 0;
+		map->y++;
+	}
+	return (0);
+}
+
 int		resolve(t_map *map, int i)
 {
-	if (i == 0)
-	{
-		place_it(map, i);
-		while (!resolve(map, ++i))
-		{
-			map->y = map->x == map->w ? map->y++ : map->y;
-			map->x = map->x == map->w ? map->x = 0 : map->x++;
-			if (map->x >= map->w || map->y >= map->w)
-				return (0);
-			clear_it(map, i);
-			place_it(map, i);
-		}
+	if (i == map->nb)
 		return (1);
-	}
-	else
+	if (!place_it(map, i))
+		return (0);
+	while (!resolve(map, i + 1))
 	{
-		if (!place_it(map, i))
-			return (0);
-		if (!resolve(map, ++i))
-			return (clear_it(map, i));
-		else
-			return (1);
+		if (move_it(map, i))
+			continue ;
+		return (0);
 	}
+	return (1);
 }

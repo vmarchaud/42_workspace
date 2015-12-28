@@ -42,10 +42,10 @@ int		main(int size, char **args)
 		ft_putstr_fd("error\n", 1);
 		return (0);
 	}
-	
+	map->color = 0;
 	while (!resolve(map, 0))
 		map->w++;
-	map->color = 0;
+	map->color = 1;
 	if (args[2] && ft_strfind(args[2], "-color"))
 		map->color = 1;
 	show_map(map);
