@@ -1,0 +1,112 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resolve.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/11/30 11:12:49 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/12/28 13:02:23 by vmarchau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fillit.h"
+#include <stdio.h>
+
+int			is_putable(t_map *map, t_tris *tris)
+{
+	int i;
+
+	i = 0;
+	if (map->x + tris->w >= map->w || map->y + tris->h >= map->w)
+		return (-1);
+	while (i < 4)
+	{
+		if (map->map[map->y + tris->py[i]][map->x + tris->px[i]] != '.')
+			return (-1);
+		i++;
+	}
+	return (1);
+}
+
+void		put_tetris(t_map *map, t_tris *tris)
+{
+	int i;
+
+	i = 0;
+	while (i < 4)
+	{
+		map->map[map->y + tris->py[i]][map->x + tris->px[i]] = tris->idx + 'A';
+		i++;
+	}
+}
+
+int		place_it(t_map *map, int i)
+{
+	map->y = 0;
+	while (map->y < map->w)
+	{
+		map->x = 0;
+		while (map->x < map->w)
+		{
+			if (is_putable(map, map->tab[i]) > 0)
+			{
+				put_tetris(map, map->tab[i]);
+				map->tab[i]->plcx = map->x;
+				map->tab[i]->plcy = map->y;
+				return (1);
+			}
+			map->x++;
+		}
+		map->y++;
+	}
+	return (0);;
+}
+
+int		clear_it(t_map *map, int i)
+{
+	int		j;
+	int		k;
+	
+    j = 0;
+    while (j < map->w)
+    {
+        k = 0;
+        while (k < map->w)
+        {
+            if (map->map[j][k] == (char)('A' + i))
+                map->map[j][k] = '.';
+            k++;
+        }
+        j++;
+    }
+    return (0);
+
+}
+
+int		resolve(t_map *map, int i)
+{
+	if (i == 0)
+	{
+		place_it(map, i);
+		while (!resolve(map, ++i))
+		{
+			map->y = map->x == map->w ? map->y++ : map->y;
+			map->x = map->x == map->w ? map->x = 0 : map->x++;
+			if (map->x >= map->w || map->y >= map->w)
+				return (0);
+			clear_it(map, i);
+			place_it(map, i);
+		}
+		return (1);
+	}
+	else
+	{
+		if (!place_it(map, i))
+			return (0);
+		if (!resolve(map, ++i))
+			return (clear_it(map, i));
+		else
+			return (1);
+	}
+}
