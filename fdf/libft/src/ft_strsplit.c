@@ -12,33 +12,6 @@
 
 #include "libft.h"
 
-static size_t		ft_count_word(char const *s, char c)
-{
-	size_t	i;
-	size_t	count;
-
-	count = 0;
-	i = 0;
-	while (s[i] != '\0')
-	{
-		while (s[i] == c)
-			i++;
-		if ((i == 1 && s[i] != c) || (s[i] != c && s[i - 1] == c))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-static int			ft_is_begin_word(char const *s, size_t index, char c)
-{
-	if (index == 0 && s[index] != c)
-		return (1);
-	if (s[index] != c && s[index - 1] == c)
-		return (1);
-	return (0);
-}
-
 char				**ft_strsplit(char const *s, char c)
 {
 	size_t	i;

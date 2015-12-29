@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 15:54:42 by vmarchau          #+#    #+#              #
-#    Updated: 2015/12/22 13:33:24 by vmarchau         ###   ########.fr        #
+#    Updated: 2015/12/29 14:49:44 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = fdf
 CC = gcc
 CFGLAGS = -Werror -Wextra -Wall
 
-SRC_NAME  = main.c parse.c game.c
+SRC_NAME  = main.c parse.c render.c util.c listener.c
 OBJ_NAME = $(SRC_NAME.c=.o)
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
@@ -29,7 +29,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft/
-	@$(CC) $(CFLAGS) -L./libft/ -lft $(SRC) $(INC) -o $(NAME) ./libft/libft.a $(OBJ)
+	@$(CC) $(CFLAGS)  -L/usr/local/lib/ -I/usr/local/include -lmlx -framework OpenGL -framework AppKit -L./libft/ -lft $(SRC) $(INC) -o $(NAME) ./libft/libft.a $(OBJ)
 	@echo "Fdf done."
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c

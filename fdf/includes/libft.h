@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 13:35:21 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/20 16:15:54 by vmarchau         ###   ########.fr       */
+/*   Updated: 2015/12/29 14:22:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void			ft_putnbr_fd(int n, int fd);
 
 int				ft_power(int nb, int pow);
 size_t			ft_count_char(char *str, char c);
+int				ft_is_begin_word(char const *s, size_t index, char c);
+size_t			ft_count_word(char const *s, char c);
 
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));

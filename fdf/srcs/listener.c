@@ -1,42 +1,30 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   listener.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/22 14:44:27 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/22 14:46:56 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/12/29 14:48:05 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/12/29 14:57:48 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_point		*lst_newpt(int x, int y, int h)
+int		onKeyPress(int keycode, void *param)
 {
-	t_point		*tmp;
+	t_env *env;
 
-	if ((tmp = (t_point*)malloc(sizeof(t_point))) == NULL)
-		return (NULL);
-	tmp->x = x;
-	tmp->y = y + h;
-	tmp->next = NULL;
-	return (tmp);
-}
-
-void	debug_point(t_env *env)
-{
-	t_point *tmp;
-
-	tmp = env->first;
-	while (tmp != NULL)
+	env = (t_env *)param;
+	ft_putstr("KEYCODE ");
+	ft_putnbr(keycode);
+	ft_putendl("");
+	if (keycode == 53)
 	{
-		ft_putstr("X: ");
-		ft_putnbr(tmp->x);
-		ft_putstr(" & Y: ");
-		ft_putnbr(tmp->y);
-		ft_putendl("");
-		tmp = tmp->next;
+		mlx_destroy_window(env->mlx, env->display);
+		ft_putendl("EXITING ...");
+		exit(0);
 	}
+	return (0);
 }

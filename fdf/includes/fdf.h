@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:36:01 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/22 14:49:20 by vmarchau         ###   ########.fr       */
+/*   Updated: 2015/12/29 15:15:36 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,9 @@ typedef struct		s_env
 
 int					parse(int const fd, t_env *env);
 t_point				*lst_newpt(int x, int y, int h);
+void				debug_point(t_env *env);
+void				render(t_env *env);
+
+int					onKeyPress(int keycode, void *param);
 
 #endif
