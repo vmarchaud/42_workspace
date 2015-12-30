@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/29 14:29:49 by vmarchau         ###   ########.fr       */
+/*   Updated: 2015/12/30 16:06:07 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ int		parse(int const fd, t_env *env)
 		{
 			if (ft_atoi(tab[i]) < 0)
 				return (-1);
-			tmp->next = lst_newpt(i, y, ft_atoi(tab[i]));
+			tmp->next = lst_newpt(i * 10, y * 10, ft_atoi(tab[i]) * 10);
 			tmp = tmp->next;
 			i++;
 		}
+		env->line_len = i;
 		free_ptr(tab, line);
 		y++;
 	}

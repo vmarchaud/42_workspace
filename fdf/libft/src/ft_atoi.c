@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 15:38:49 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/11/24 16:53:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2015/12/30 13:32:29 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		ft_atoi(char *str)
 		neg = 1;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9' && str[i])
 	{
 		nbr *= 10;
 		nbr += str[i] - 48;

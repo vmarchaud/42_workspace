@@ -20,7 +20,7 @@ t_point		*lst_newpt(int x, int y, int h)
 	if ((tmp = (t_point*)malloc(sizeof(t_point))) == NULL)
 		return (NULL);
 	tmp->x = x;
-	tmp->y = y + h;
+	tmp->y = y - h;
 	tmp->next = NULL;
 	return (tmp);
 }
