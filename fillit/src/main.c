@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/30 14:14:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/28 11:53:53 by vmarchau         ###   ########.fr       */
+/*   Updated: 2015/12/30 12:28:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		main(int size, char **args)
 	map->color = 0;
 	while (!resolve(map, 0))
 		map->w++;
-	map->color = 1;
+	map->color = 0;
 	if (args[2] && ft_strfind(args[2], "-color"))
 		map->color = 1;
 	show_map(map);

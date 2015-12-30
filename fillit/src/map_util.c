@@ -109,3 +109,19 @@ t_tris	*ft_newtris(void const *content, size_t content_size)
 	elem->h = 0;
 	return (elem);
 }
+
+int		is_putable(t_map *map, t_tris *tris)
+{
+	int i;
+
+	i = 0;
+	if (map->x + tris->w >= map->w || map->y + tris->h >= map->w)
+		return (-1);
+	while (i < 4)
+	{
+		if (map->map[map->y + tris->py[i]][map->x + tris->px[i]] != '.')
+			return (-1);
+		i++;
+	}
+	return (1);
+}

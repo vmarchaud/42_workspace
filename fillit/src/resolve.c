@@ -11,25 +11,8 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include <stdio.h>
 
-int			is_putable(t_map *map, t_tris *tris)
-{
-	int i;
-
-	i = 0;
-	if (map->x + tris->w >= map->w || map->y + tris->h >= map->w)
-		return (-1);
-	while (i < 4)
-	{
-		if (map->map[map->y + tris->py[i]][map->x + tris->px[i]] != '.')
-			return (-1);
-		i++;
-	}
-	return (1);
-}
-
-void		put_tetris(t_map *map, t_tris *tris)
+void	put_tetris(t_map *map, t_tris *tris)
 {
 	int i;
 
@@ -67,21 +50,20 @@ int		clear_it(t_map *map, int i)
 {
 	int		j;
 	int		k;
-	
-    j = 0;
-    while (j < map->w)
-    {
-        k = 0;
-        while (k < map->w)
-        {
-            if (map->map[j][k] == 'A' + i)
-                map->map[j][k] = '.';
-            k++;
-        }
-        j++;
-    }
-    return (0);
 
+	j = 0;
+	while (j < map->w)
+	{
+		k = 0;
+		while (k < map->w)
+		{
+			if (map->map[j][k] == 'A' + i)
+				map->map[j][k] = '.';
+			k++;
+		}
+		j++;
+	}
+	return (0);
 }
 
 int		move_it(t_map *map, int i)

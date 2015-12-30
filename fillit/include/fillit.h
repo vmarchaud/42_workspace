@@ -62,18 +62,25 @@ typedef struct			s_map
 }						t_map;
 
 t_map					*parse(int fd, int count);
-int						is_char_near(char *str, char c, size_t index);
 int						is_correct_form(char *str);
 t_map					*verify(t_tris *lst, size_t count);
-t_tris					*ft_newtris(void const *content, size_t content_size);
+
+int						is_char_near(char *str, char c, size_t index);
 void					compute_index(t_tris *lst);
 void					compute_position(t_tris *lst, int pos);
-void					setup_map(t_map *map, int count, t_tris **tab);
-void					show_map(t_map *map);
-int						is_putable(t_map *map, t_tris *tris);
 void					compute_size(t_tris *lst);
-int						resolve(t_map *map, int i);
-void					init_colors(t_map *map);
 char					free_ptr(void *ptr);
+
+void					setup_map(t_map *map, int count, t_tris **tab);
+void					init_colors(t_map *map);
+int						is_putable(t_map *map, t_tris *tris);
+void					show_map(t_map *map);
+t_tris					*ft_newtris(void const *content, size_t content_size);
+
+int						resolve(t_map *map, int i);
+void					put_tetris(t_map *map, t_tris *tris);
+int						place_it(t_map *map, int i);
+int						clear_it(t_map *map, int i);
+int						move_it(t_map *map, int i);
 
 #endif
