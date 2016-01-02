@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:48:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/30 14:16:22 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/01 15:27:37 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int		ft_error(char *str)
 	return (0);
 }
 
-#include <stdio.h>
 int		parse_args(t_env *env, int size, char **args)
 {
 	int i;

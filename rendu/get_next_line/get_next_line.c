@@ -6,19 +6,18 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 13:14:31 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/21 15:53:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/01 13:09:35 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 int		get_next_line(int const fd, char **line)
 {
 	int				ret;
 	char			*rm;
 	char			buffer[BUFF_SIZE + 1];
-	static char		*s[255];
+	static char		*s[1024];
 
 	if (!line || fd < 0 || !(s[fd] = !s[fd] ? ft_strnew(1) : s[fd]))
 		return (-1);

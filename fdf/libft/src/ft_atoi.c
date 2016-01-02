@@ -6,33 +6,48 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 15:38:49 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/30 13:32:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/01 13:00:51 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_atoi(char *str)
+#include "libft.h"
+
+static int	ft_isspace(char c)
+{
+	if (c == ' ' ||
+			c == '\n' ||
+			c == '\t' ||
+			c == '\v' ||
+			c == '\f' ||
+			c == '\r')
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int			ft_atoi(const char *str)
 {
 	int		i;
-	int		neg;
-	int		nbr;
+	int		sign;
+	int		nb;
 
-	nbr = 0;
 	i = 0;
-	neg = 0;
-	while ((str[i] == '\n') || (str[i] == '\t') || (str[i] == '\v') ||
-						(str[i] == ' ') || (str[i] == '\f') || (str[i] == '\r'))
+	nb = 0;
+	sign = 1;
+	while (ft_isspace(str[i]))
 		i++;
 	if (str[i] == '-')
-		neg = 1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9' && str[i])
 	{
-		nbr *= 10;
-		nbr += str[i] - 48;
+		sign = -1;
 		i++;
 	}
-	if (neg)
-		return (-nbr);
-	return (nbr);
+	else if (str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		nb = nb * 10 + (str[i] - '0') * sign;
+		i++;
+	}
+	return (nb);
 }
