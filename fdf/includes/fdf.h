@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:36:01 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/02 13:57:36 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 14:41:02 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct		s_env
 
 	int				cursr_x;
 	int				cursr_y;
+	int				zoom;
 
 	int				size_x;
 	int				size_y;

@@ -6,12 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/28 11:19:00 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 12:38:10 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "get_next_line.h"
+#include <fcntl.h>
 
 int		main(int size, char **args)
 {

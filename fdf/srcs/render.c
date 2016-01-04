@@ -6,11 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:13:08 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/02 13:58:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 15:27:04 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <math.h>
+
 
 void	draw_pixel(t_env *env, int x, int y, int color)
 {
@@ -18,32 +20,33 @@ void	draw_pixel(t_env *env, int x, int y, int color)
 			x + env->cursr_x / 2, y + env->cursr_y / 2, color);
 }
 
-void    draw_line(t_env *env, t_point first, t_point second, int color)
+void    draw_line(t_env *env, t_point p, t_point p1, int color)
 {
-	int e;
-	int dx;
-	int dy;
-
-	e = second.x - first.x;
-	dx = e * 2;
-	dy = (second.y - first.y) * 2;
-	while (first.x <= second.x)
-	{
-		draw_pixel(env, first.x, first.y, color);
-		if (dx > dy)
-			first.x += 1;
-		else
-			first.y += 1;
-		e = (dx > dy ? e - dy : e - dx);
-		if (e <= 0)
-		{
-			if (dx > dy)
-				first.y += 1;
-			else
-				first.x += 1;
-			e = (dx > dy ? e + dx : e + dy);
-		}
-	}
+    t_point    d;
+    t_point    s;
+    int        err;
+    int        e2;
+    
+    d.x = abs((p1.x - p.x));
+    d.y = abs((p1.y - p.y));
+    s.x = (p.x < p1.x ? 1 : -1);
+    s.y = (p.y < p1.y ? 1 : -1);
+    err = d.x - d.y;
+    while (p.x != p1.x || p.y != p1.y)
+    {
+        draw_pixel(env, p.x, p.y, color);
+        e2 = 2 * err;
+        if (e2 > -d.y)
+        {
+            err -= d.y;
+            p.x += s.x;
+        }
+        if (e2 < d.x)
+        {
+            err += d.x;
+            p.y += s.y;
+        }
+    }
 }
 
 t_point		*find_next_idx(t_point *strt, int idx)
@@ -64,24 +67,22 @@ void	render(t_env *env)
 	int		i;
 	int		j;
 
-	debug_points(env);
 	tmp = env->first->next;
 	while (tmp != NULL)
 	{
-		if (tmp->next != NULL && tmp->index != env->size_x)
+		if (tmp->next != NULL && tmp->index < env->size_x - 1)
 			draw_line(env, *tmp, *tmp->next, 0x33FF33);
 		tmp = tmp->next;
 	}
-	i = 0;
-	tmp = env->first->next;
-	draw_line(env, *tmp, *(find_next_idx(tmp->next, i)), 0xFF0000);
 	i = 0;
 	while (i < env->size_x)
 	{
 		j = 0;
 		tmp = env->first->next;
-		while (j < env->size_y - 1)
+		while (j < env->size_y)
 		{
+			if (i == 0 && j == env->size_y - 1)
+				break ;
 			next = find_next_idx(tmp->next, i);
 			draw_line(env, *tmp, *next, 0x33FF33);
 			tmp = next;

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:48:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/01 15:27:37 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 15:14:14 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ int		parse_args(t_env *env, int size, char **args)
 	i = 2;
 	env->win_x = 500;
 	env->win_y = 500;
+	env->zoom = 5;
 	while (i < size)
 	{
 		if (ft_strfind(args[i], "-width") != NULL)
 			env->win_x = ft_atoi(ft_strfind(args[i], "-width"));
 		if (ft_strfind(args[i], "-height") != NULL)
 			env->win_y = ft_atoi(ft_strfind(args[i], "-height"));
+		if (ft_strfind(args[i], "-zoom") != NULL)
+			env->zoom = ft_atoi(ft_strfind(args[i], "-zoom"));
 		i++;
 	}
 	env->cursr_x = env->win_x / 2;
@@ -49,10 +52,10 @@ int		main(int size, char **args)
 	if (size < 2 || !(env = (t_env*)malloc(sizeof(t_env))))
 		return (ft_error("ERROR"));
 	if ((fd = open(args[1], O_RDONLY)) == -1)
-		return (ft_error("ERROR"));	
-	if (!parse(fd, env))
 		return (ft_error("ERROR"));
 	parse_args(env, size, args);
+	if (!parse(fd, env))
+		return (ft_error("ERROR"));
 	ft_putendl("RENDERING ..");
 	env->mlx = mlx_init();
 	env->display = mlx_new_window(env->mlx, env->win_x, env->win_y, "Fdf");

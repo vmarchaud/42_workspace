@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/02 13:34:43 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 15:20:55 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int		parse(int const fd, t_env *env)
 	{
 		tab = ft_strsplit(line, ' ');
 		i = 0;
-		while (i < ft_count_word(line, ' '))
+		while (tab[i] != NULL)
 		{
-			tmp->next = lst_newpt((i - y)* 10, (y + i) * 10,
+			tmp->next = lst_newpt((i - y) * env->zoom, (y + i) * env->zoom,
 					ft_atoi(tab[i]), i);
 			tmp = tmp->next;
 			i++;
