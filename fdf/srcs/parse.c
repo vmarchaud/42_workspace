@@ -6,11 +6,12 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 15:20:55 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 15:54:04 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <math.h>
 
 void	free_ptr(char **tab, char *line)
 {
@@ -36,7 +37,7 @@ int		parse(int const fd, t_env *env)
 		while (tab[i] != NULL)
 		{
 			tmp->next = lst_newpt((i - y) * env->zoom, (y + i) * env->zoom,
-					ft_atoi(tab[i]), i);
+					ft_atoi(tab[i]) * 5, i);
 			tmp = tmp->next;
 			i++;
 		}

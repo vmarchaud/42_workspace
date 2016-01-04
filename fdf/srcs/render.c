@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:13:08 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 15:27:04 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/04 15:49:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 void	draw_pixel(t_env *env, int x, int y, int color)
 {
-	mlx_pixel_put(env->mlx, env->display,
-			x + env->cursr_x / 2, y + env->cursr_y / 2, color);
+	mlx_pixel_put(env->mlx, env->display, x + env->cursr_x,
+			(y + env->cursr_y) / sqrt(3), color);
 }
 
 void    draw_line(t_env *env, t_point p, t_point p1, int color)
