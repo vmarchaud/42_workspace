@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:13:08 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 15:49:19 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/05 15:46:37 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	draw_pixel(t_env *env, int x, int y, int color)
 {
-	mlx_pixel_put(env->mlx, env->display, x + env->cursr_x,
+	mlx_pixel_put(env->mlx, env->display, x + env->cursr_x,			
 			(y + env->cursr_y) / sqrt(3), color);
 }
 
@@ -67,27 +67,15 @@ void	render(t_env *env)
 	int		i;
 	int		j;
 
+	//debug_points(env);
 	tmp = env->first->next;
 	while (tmp != NULL)
 	{
-		if (tmp->next != NULL && tmp->index < env->size_x - 1)
+		if (tmp->next != NULL && tmp->index + 1 == tmp->next->index)
 			draw_line(env, *tmp, *tmp->next, 0x33FF33);
+		if (!(next = find_next_idx(tmp, tmp->index)))
+			draw_line(env, *tmp, *next, 0x33FF33);
 		tmp = tmp->next;
 	}
-	i = 0;
-	while (i < env->size_x)
-	{
-		j = 0;
-		tmp = env->first->next;
-		while (j < env->size_y)
-		{
-			if (i == 0 && j == env->size_y - 1)
-				break ;
-			next = find_next_idx(tmp->next, i);
-			draw_line(env, *tmp, *next, 0x33FF33);
-			tmp = next;
-			j++;
-		}
-		i++;
-	}
+	return ;
 }

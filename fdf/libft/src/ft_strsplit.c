@@ -13,48 +13,49 @@
 
 #include "libft.h"
 
-static int    ft_wcount(char const *s, char c)
+static int			ft_getwordsnb(char const *s, char c)
 {
-	int    i;
-	int    counter;
-
-	i = 0;
-	counter = 0;
-	if (s[i] == 0 || (s[i] != c && i == 0))
-		counter++;
-	while (s[i] != 0)
-	{
-		i++;
-		if (s[i] != c && s[i - 1] == c)
-			counter++;
-	}
-	return (counter);
+    unsigned int	nb;
+    size_t			i;
+    
+    i = 0;
+    nb = 0;
+    while (s && s[i])
+    {
+        while ((char)s[i] == c)
+            i++;
+        if (s[i] && (char)s[i] != c)
+            nb++;
+        while (s[i] && (char)s[i] != c)
+            i++;
+    }
+    return (nb);
 }
 
-char        **ft_strsplit(char const *s, char c)
+char				**ft_strsplit(char const *s, char c)
 {
-	int        i;
-	int        j;
-	int        k;
-	char    **tab;
-
-	i = 0;
-	k = 0;
-	if ((tab = (char **)malloc(sizeof(char*) * ft_wcount(s, c))) == NULL)
-		return (NULL);
-	while (s[i] == c)
-		i++;
-	while (s[i] != 0)
-	{
-		if ((s[i] != c && s[i - 1] == c) || (s[i] != c && i == 0))
-		{
-			j = 0;
-			while (s[i + j] != c && s[i + j] != 0)
-				j++;
-			tab[k++] = ft_strsub(s, i, j);
-		}
-		i++;
-	}
-	tab[k] = 0;
-	return (tab);
+    char			*t;
+    char			**splited;
+    size_t			k;
+    
+    splited = (char**)malloc((ft_getwordsnb(s, c) + 1) * sizeof(char*));
+    t = ft_strdup(s);
+    k = 0;
+    while (t && *t)
+    {
+        while (*t == c)
+        {
+            *t = 0;
+            t++;
+        }
+        if (*t && *t != c)
+        {
+            splited[k] = t;
+            k++;
+        }
+        while (*t && *t != c)
+            t++;
+    }
+    splited[k] = 0;
+    return (splited);
 }

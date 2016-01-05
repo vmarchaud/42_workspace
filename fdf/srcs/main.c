@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:48:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 15:14:14 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/05 15:30:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int		parse_args(t_env *env, int size, char **args)
 	i = 2;
 	env->win_x = 500;
 	env->win_y = 500;
-	env->zoom = 5;
+	env->zoom = 10;
+	env->diff = 3;
 	while (i < size)
 	{
 		if (ft_strfind(args[i], "-width") != NULL)
@@ -37,6 +38,8 @@ int		parse_args(t_env *env, int size, char **args)
 			env->win_y = ft_atoi(ft_strfind(args[i], "-height"));
 		if (ft_strfind(args[i], "-zoom") != NULL)
 			env->zoom = ft_atoi(ft_strfind(args[i], "-zoom"));
+		if (ft_strfind(args[i], "-diff") != NULL)
+			env->diff = ft_atoi(ft_strfind(args[i], "-diff"));
 		i++;
 	}
 	env->cursr_x = env->win_x / 2;
