@@ -6,16 +6,17 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 13:14:31 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 13:43:06 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/06 15:36:01 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int		get_next_line(int const fd, char **line)
 {
-	int				ret;
+	int				ret = -1;
 	char			*rm;
 	char			buffer[BUFF_SIZE + 1];
 	static char		*s[214748364];
@@ -39,5 +40,9 @@ int		get_next_line(int const fd, char **line)
 	else
 		s[fd] = ft_strsub(s[fd], ft_strlen(*line), ft_strlen(s[fd]));
 	free(rm);
-	return (!ret && !ft_strlen(s[fd]) && !ft_strlen(*line) ? 0 : 1);
+	ft_putnbr(ret);
+	ft_putchar(' ');
+	ft_putnbr(ret == 0);
+	ft_putchar(' ');
+	return (ret == 0 && !ft_strlen(s[fd]) && !ft_strlen(*line) ? 0 : 1);
 }

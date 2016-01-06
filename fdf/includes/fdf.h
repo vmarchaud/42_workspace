@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:36:01 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/05 15:38:45 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/06 13:26:39 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void				debug_point(t_point *point);
 void				render(t_env *env);
 void				compute_positon(t_env *env, int oldzoom, int olddiff);
 
-int					onKeyPress(int keycode, void *param);
+int					on_key_press(int keycode, void *param);
 
 #endif

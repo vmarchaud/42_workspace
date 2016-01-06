@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/05 15:56:45 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/06 15:37:40 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@ void	free_ptr(char **tab, char *line)
 	free(line);
 }
 
+#include <stdio.h>
 void	compute_position(t_env *env, int oldzoom, int olddiff)
 {
 	t_point *tmp;
 
+	printf("old %i new %i\n", olddiff, env->diff);
 	tmp = env->first->next;
 	while (tmp != NULL)
 	{
-		tmp->h /= olddiff;
-		tmp->y = tmp->y / oldzoom - tmp->h;
+	
+		tmp->y = tmp->y / oldzoom + tmp->h;
 		tmp->x /= oldzoom;
 		tmp->h *= env->diff;
 		tmp->y = tmp->y * env->zoom - tmp->h;
@@ -60,7 +62,7 @@ int		parse(int const fd, t_env *env)
 		free_ptr(tab, line);
 		y++;
 	}
-	compute_position(env, 1, 1);
+	compute_position(env, 1, 4);
 	env->size_x = i;
 	env->size_y = y;
 	return (1);

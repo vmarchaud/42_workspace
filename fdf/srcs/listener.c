@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:48:05 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/05 15:54:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/06 13:27:14 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	refresh(t_env *env, int oldzoom, int olddiff)
 	render(env);
 }
 
-int		onKeyPress(int key, void *param)
+int		on_key_press(int key, void *param)
 {
 	t_env *env;
 	int		tmp[2];
