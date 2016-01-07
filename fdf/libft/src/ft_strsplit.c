@@ -6,56 +6,75 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/25 12:26:18 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/04 14:36:17 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:45:53 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "libft.h"
 
-static int			ft_getwordsnb(char const *s, char c)
+static char		**ft_strsplitcpy(char const *s, char c, char **tab)
 {
-    unsigned int	nb;
-    size_t			i;
-    
-    i = 0;
-    nb = 0;
-    while (s && s[i])
-    {
-        while ((char)s[i] == c)
-            i++;
-        if (s[i] && (char)s[i] != c)
-            nb++;
-        while (s[i] && (char)s[i] != c)
-            i++;
-    }
-    return (nb);
+	int i;
+	int j;
+	int k;
+
+	i = 0;
+	k = 0;
+	while (s[i])
+	{
+		j = 0;
+		while (s[i] == c)
+			i++;
+		if (!s[i])
+			break ;
+		while (s[i + j++] != c)
+			if (!s[i + j])
+				break ;
+		tab[k] = (char*)malloc(sizeof(char) * (j + 1));
+		j = 0;
+		while (s[i] != c && s[i])
+			tab[k][j++] = s[i++];
+		tab[k][j] = '\0';
+		k++;
+	}
+	tab[k] = 0;
+	return (tab);
 }
 
-char				**ft_strsplit(char const *s, char c)
+static int		ft_split_len(const char *str, char c)
 {
-    char			*t;
-    char			**splited;
-    size_t			k;
-    
-    splited = (char**)malloc((ft_getwordsnb(s, c) + 1) * sizeof(char*));
-    t = ft_strdup(s);
-    k = 0;
-    while (t && *t)
-    {
-        while (*t == c)
-        {
-            *t = 0;
-            t++;
-        }
-        if (*t && *t != c)
-        {
-            splited[k] = t;
-            k++;
-        }
-        while (*t && *t != c)
-            t++;
-    }
-    splited[k] = 0;
-    return (splited);
+	int		len;
+	int		i;
+
+	len = 1;
+	i = 0;
+	while (c && ft_strchr(str + i, c))
+	{
+		while (str[i] == c && str[i])
+			++i;
+		if (str[i] != c)
+			++len;
+		while (str[i] != c && str[i])
+			++i;
+	}
+	return (len);
+}
+
+char			**ft_strsplit(const char *str, char c)
+{
+	char	**tab;
+	int		len;
+	int		i;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[i] == c)
+		i++;
+	if (!str[i])
+		return (ft_memalloc(sizeof(char*)));
+	len = ft_split_len(str, c) + 1;
+	tab = (char**)ft_memalloc(len * sizeof(char*));
+	ft_strsplitcpy(str, c, tab);
+	return (tab);
 }

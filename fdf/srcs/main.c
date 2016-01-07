@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:48:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/06 13:26:26 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:57:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,19 @@ int		main(int size, char **args)
 {
 	int		fd;
 	t_env	*env;
-	
+
 	if (size < 2 || !(env = (t_env*)malloc(sizeof(t_env))))
-		return (ft_error("ERROR"));
+		return (ft_error("ERROR : malloc failed or you failed using the parameters"));
 	if ((fd = open(args[1], O_RDONLY)) == -1)
-		return (ft_error("ERROR"));
+		return (ft_error("ERROR : open failed, file cannot be opened"));
 	parse_args(env, size, args);
 	if (!parse(fd, env))
-		return (ft_error("ERROR"));
-	ft_putendl("RENDERING ..");
+		return (ft_error("ERROR : parsing failed, file may be incorrect"));
+	compute_position(env, 1, 1);
 	env->mlx = mlx_init();
 	env->display = mlx_new_window(env->mlx, env->win_x, env->win_y, "Fdf");
 	if (env->mlx == NULL || env->display == NULL)
 		return (ft_error("ERROR"));
-
 	mlx_key_hook(env->display, &on_key_press, env);
 	render(env);
 	mlx_loop(env->mlx);

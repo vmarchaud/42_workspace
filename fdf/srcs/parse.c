@@ -6,12 +6,11 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/06 15:37:40 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:50:54 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <math.h>
 
 void	free_ptr(char **tab, char *line)
 {
@@ -19,17 +18,15 @@ void	free_ptr(char **tab, char *line)
 	free(line);
 }
 
-#include <stdio.h>
 void	compute_position(t_env *env, int oldzoom, int olddiff)
 {
 	t_point *tmp;
 
-	printf("old %i new %i\n", olddiff, env->diff);
 	tmp = env->first->next;
 	while (tmp != NULL)
 	{
-	
-		tmp->y = tmp->y / oldzoom + tmp->h;
+		tmp->y = (tmp->y + tmp->h) / oldzoom;
+		tmp->h = tmp->h / olddiff;
 		tmp->x /= oldzoom;
 		tmp->h *= env->diff;
 		tmp->y = tmp->y * env->zoom - tmp->h;
@@ -55,14 +52,16 @@ int		parse(int const fd, t_env *env)
 		i = 0;
 		while (tab[i] != NULL)
 		{
+			ft_putstr(tab[i]);
+			ft_putstr(" ");
 			tmp->next = lst_newpt((i - y), (y + i), ft_atoi(tab[i]), i);
 			tmp = tmp->next;
 			i++;
 		}
+		ft_putendl("");
 		free_ptr(tab, line);
 		y++;
 	}
-	compute_position(env, 1, 4);
 	env->size_x = i;
 	env->size_y = y;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:44:27 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/05 15:23:27 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 11:53:23 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,25 @@ t_point		*lst_newpt(int x, int y, int h, int index)
 	if ((tmp = (t_point*)malloc(sizeof(t_point))) == NULL)
 		return (NULL);
 	tmp->x = x;
-	tmp->y = y;
+	tmp->y = y - h;
 	tmp->h = h;
 	tmp->index = index;
 	tmp->next = NULL;
 	return (tmp);
 }
 
-void	debug_point(t_point *point)
+void		debug_point(t_point *point)
 {
-    ft_putstr("X: ");
-    ft_putnbr(point->x);
-    ft_putstr(" & Y: ");
-    ft_putnbr(point->y);
-    ft_putstr(" with index :");
-    ft_putnbr(point->index);
-    ft_putendl("");
-    
+	ft_putstr("X: ");
+	ft_putnbr(point->x);
+	ft_putstr(" & Y: ");
+	ft_putnbr(point->y);
+	ft_putstr(" with index :");
+	ft_putnbr(point->index);
+	ft_putendl("");
 }
 
-void	debug_points(t_env *env)
+void		debug_points(t_env *env)
 {
 	t_point *tmp;
 
