@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 14:40:35 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 12:50:54 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 14:19:02 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	free_ptr(char **tab, char *line)
 	free(line);
 }
 
-void	compute_position(t_env *env, int oldzoom, int olddiff)
+void	recompute_position(t_env *env, int oldzoom, int olddiff)
 {
 	t_point *tmp;
 
@@ -52,13 +52,10 @@ int		parse(int const fd, t_env *env)
 		i = 0;
 		while (tab[i] != NULL)
 		{
-			ft_putstr(tab[i]);
-			ft_putstr(" ");
 			tmp->next = lst_newpt((i - y), (y + i), ft_atoi(tab[i]), i);
 			tmp = tmp->next;
 			i++;
 		}
-		ft_putendl("");
 		free_ptr(tab, line);
 		y++;
 	}

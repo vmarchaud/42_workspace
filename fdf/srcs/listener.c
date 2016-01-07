@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:48:05 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 12:39:40 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 14:19:23 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	refresh(t_env *env, int oldzoom, int olddiff)
 {
 	mlx_clear_window(env->mlx, env->display);
-	compute_position(env, oldzoom, olddiff);
+	recompute_position(env, oldzoom, olddiff);
 	render(env);
 }
 

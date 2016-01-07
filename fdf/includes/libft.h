@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 13:35:21 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/30 13:23:31 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:46:21 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ size_t			ft_strlen(char const *str);
 int				ft_strcmp(const char *str1, const char *str2);
 int				ft_strncmp(const char *str1, const char *str2, size_t nb);
 char			*ft_strrchr(char *str, int c);
-char			*ft_strchr(char *str, int c);
+char			*ft_strchr(char const *str, int c);
 char			*ft_strcat(const char *dest, const char *src);
 char			*ft_strncat(char *dest, const char *src, size_t size);
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 char			*ft_strcpy(char *dest, const char *src);
 char			*ft_strncpy(char *dest, const char *src, size_t size);
-char			*ft_strdup(char *str);
+char			*ft_strdup(char const *str);
 char			*ft_strfind(char *str1, char *str2);
 size_t			ft_strlen_bfr_char(char const *str, char c);
 

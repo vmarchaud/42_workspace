@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:36:01 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/06 13:26:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/07 14:48:13 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_point				*lst_newpt(int x, int y, int h, int index);
 void				debug_points(t_env *env);
 void				debug_point(t_point *point);
 void				render(t_env *env);
-void				compute_positon(t_env *env, int oldzoom, int olddiff);
+
+void				recompute_position(t_env *env, int oldzoom, int olddiff);
 
 int					on_key_press(int keycode, void *param);
 
