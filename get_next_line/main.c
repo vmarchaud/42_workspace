@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/06 15:34:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/08 14:01:45 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int		main(int size, char **args)
 {
-	int 	fd;
+	int		fd;
 	char	*line;
 	int		i;
 
