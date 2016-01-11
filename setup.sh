@@ -5,7 +5,7 @@ curl https://raw.githubusercontent.com/reversTeam/Sublivim/master/installer.sh |
 curl https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim > ~/.vim/colors/monokai.vim
 sed -i -- 's/molokai/monokai/g' ~/.vimrc
 curl https://raw.githubusercontent.com/oskarkrawczyk/honukai-iterm/master/honukai.zsh-theme > ~/.oh-my-zsh/themes/honukai.zsh-theme
-sed -i -- 's/ZSH_THEME="robyrussell"/ZSH_THEME="honukai"' ~/.zshrc 
-source ~/.zshrc
+echo "sed -i -- 's/robyrussell/honukai/g' ~/.zshrc"
+echo "source ~/.zshrc"
 curl https://raw.githubusercontent.com/oskarkrawczyk/honukai-iterm/master/honukai.itermcolors > ~/Downloads/honukai.itermcolors
 open ~/Downloads/iTerm.app/ 
