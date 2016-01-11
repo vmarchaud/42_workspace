@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 13:14:31 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/08 13:46:07 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/11 13:00:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		get_next_line(int const fd, char **line)
 	int				ret;
 	char			*rm;
 	char			buffer[BUFF_SIZE + 1];
-	static char		*s[214748364];
+	static char		*s[2147483648];
 
 	if (!line || fd < 0 || !(s[fd] = !s[fd] ? ft_strnew(1) : s[fd]))
 		return (-1);
