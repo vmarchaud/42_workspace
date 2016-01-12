@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/11 15:17:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/12 15:57:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,21 @@ void		parse_arg(t_env *env, char *arg)
 int			parse(t_env *env, int size, char **args)
 {
 	size_t	i;
-	t_path	*tmp;
 
 	i = 1;
-	tmp = ft_newpath("");
-	env->paths = tmp;
+	env->recursive = FALSE;
+	env->sort_time = FALSE;
+	env->show_dot = FALSE;
+	env->reverse = FALSE;
+	env->format_out = FALSE;
+	env->paths = NULL;
 	while (i < size)
 	{
 		if (!ft_strchr(args[i], '-'))
-		{
-			tmp->next = ft_newpath(args[i]);
-			tmp = tmp->next;
-		}
+			ft_addpath(env, args[i]);
 		else
 			parse_arg(env, args[i] + 1);
 		i++;
 	}
-	if (env->paths->next != NULL)
-		env->paths = env->paths->next;
 	return (TRUE);
 }
