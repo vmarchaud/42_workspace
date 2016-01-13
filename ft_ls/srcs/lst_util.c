@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:28:59 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/12 15:44:51 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/13 15:14:47 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_path		*ft_newpath(char *name)
 {
-	t_path *path = NULL;
+	t_path *path;
 
 	if ((path = (t_path*)malloc(sizeof(t_path))) == NULL)
 		return (NULL);
@@ -30,7 +30,10 @@ t_filew		*ft_newfile(struct dirent *dirent)
 
 	if ((f = (t_filew*)malloc(sizeof(t_filew))) == NULL)
 		return (NULL);
-	f->file = dirent;
+	f->name = ft_strdup(dirent->d_name);
+	if ((f->type = (__uint8_t*)malloc(sizeof(__uint8_t))) == NULL)
+		return (NULL);
+	ft_memcpy(f->type, &dirent->d_type, sizeof(dirent->d_type));
 	f->next = NULL;
 	return (f);
 }
@@ -41,7 +44,7 @@ void		ft_addfile(t_path *path, struct dirent *dirent)
 	t_filew *tmp;
 
 	file = ft_newfile(dirent);
-	if (!path->files)
+	if (path->files == NULL)
 		path->files = file;
 	else
 	{

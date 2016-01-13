@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/12 15:57:19 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/13 13:15:01 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ void		parse_arg(t_env *env, char *arg)
 	}
 }
 
-
 int			parse(t_env *env, int size, char **args)
 {
-	size_t	i;
+	int		i;
 
 	i = 1;
 	env->recursive = FALSE;
@@ -55,5 +54,7 @@ int			parse(t_env *env, int size, char **args)
 			parse_arg(env, args[i] + 1);
 		i++;
 	}
+	if (env->paths == NULL)
+		ft_addpath(env, ".");
 	return (TRUE);
 }

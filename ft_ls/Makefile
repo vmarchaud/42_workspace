@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/01/12 14:29:17 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/01/13 12:38:54 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ LIB_PATH = ./libft/
 
 NAME = ft_ls
 CC = gcc
-CFGLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c parse.c lst_util.c compute.c 
+SRC_NAME = main.c parse.c lst_util.c compute.c util.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
 
@@ -41,7 +41,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2>/dev/null || echo "" > /dev/null
 	$(CC) $(CFLAGS) $(INC_LIBFT) $(INC) -o $@ -c $<
 	@echo "\033[A\033[K\033[A"
-
+	
 clean:
 	@rm -f $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
