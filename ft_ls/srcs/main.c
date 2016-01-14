@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/13 13:37:40 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/14 14:46:35 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ int			main(int size, char **args)
 	if (!parse(env, size, args))
 		exit_clean(1, "parsing failed", env);
 	compute_dirs(env);
-	show_dirs(env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:28:59 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/13 15:14:47 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/14 12:20:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ t_filew		*ft_newfile(struct dirent *dirent)
 	ft_memcpy(f->type, &dirent->d_type, sizeof(dirent->d_type));
 	f->next = NULL;
 	return (f);
+}
+
+void		ft_addfile_to_lst(t_filew *first, t_filew *new)
+{
+	t_filew *tmp;
+
+	if (!first)
+		first = new;
+	else
+	{
+		tmp = first;
+		while (tmp != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 void		ft_addfile(t_path *path, struct dirent *dirent)
