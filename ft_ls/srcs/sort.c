@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/14 15:09:14 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/19 13:59:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void		swap(t_filew *f1, t_filew *f2, t_filew *f3)
 	f3->next = f2;
 }
 
-
 void		sort_by_alpha(t_path *path)
 {
 	t_filew		*curr;
@@ -56,4 +55,20 @@ void		sort_by_alpha(t_path *path)
 	}
 }
 
+void		sort_reverse(t_path *path)
+{
+	t_filew		*tmp;	
+	t_filew		*first;
+	t_filew		*new;
 
+	tmp = path->files;
+	first = NULL;
+	while (tmp)
+	{
+		new = first;
+		first= tmp;
+		tmp = tmp->next;
+		first->next = new;
+	}
+	path->files = first;
+}

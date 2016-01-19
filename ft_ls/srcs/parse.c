@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/13 13:15:01 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/19 14:21:45 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		parse_arg(t_env *env, char *arg)
 		else if (arg[i] == 't')
 			env->sort_time = TRUE;
 		else
-			exit_clean(1, "illegal option", env);
+			exit_clean(1, &arg[i], env);
 		i++;
 	}
 }
@@ -48,10 +48,10 @@ int			parse(t_env *env, int size, char **args)
 	env->paths = NULL;
 	while (i < size)
 	{
-		if (!ft_strchr(args[i], '-'))
-			ft_addpath(env, args[i]);
-		else
+		if (*args[i] == '-')
 			parse_arg(env, args[i] + 1);
+		else	
+			ft_addpath(env, args[i]);
 		i++;
 	}
 	if (env->paths == NULL)

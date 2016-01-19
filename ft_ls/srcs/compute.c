@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/14 15:16:10 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/19 15:17:16 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void		compute_dir(t_env *env, t_path *path)
 			ft_addpath(env, ft_strjoins(path->name, "/", tmp->d_name));
 		ft_addfile(path, tmp);
 	}
-	//sort_by_alpha(path);
+	if (env->sort_time == FALSE)
+		sort_by_alpha(path);
+	if (env->reverse == TRUE)
+		sort_reverse(path);
 	show_dir(env, path);
 	closedir(dir);
 }
@@ -53,6 +56,8 @@ void		show_dir(t_env *env, t_path *path)
 
 	i = 0;
 	tmp = path->files;
+	if (ft_strcmp(path->name, ".") != 0 && ft_strcmp(path->name, "..") != 0)
+		ft_putendl(path->name);
 	while (tmp != NULL)
 	{
 		if (is_hidden(tmp->name) && !env->show_dot)
@@ -68,4 +73,5 @@ void		show_dir(t_env *env, t_path *path)
 		tmp = tmp->next;
 		i++;
 	}
+		ft_putstr("\n\n");
 }
