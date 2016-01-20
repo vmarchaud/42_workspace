@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/22 13:48:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 14:19:11 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 15:03:44 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		main(int size, char **args)
 	if (env->mlx == NULL || env->display == NULL)
 		return (ft_error("ERROR"));
 	mlx_key_hook(env->display, &on_key_press, env);
+	mlx_expose_hook(env->display, &on_expose, env);
 	render(env);
 	mlx_loop(env->mlx);
 	return (0);

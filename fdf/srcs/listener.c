@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/29 14:48:05 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 14:19:23 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 15:26:49 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ void	clean_exit(t_env *env)
 {
 	mlx_destroy_window(env->mlx, env->display);
 	exit(0);
+}
+
+int		on_expose(void *param)
+{
+	t_env *env;
+
+	env = (t_env *)param;
+	refresh(env, env->zoom, env->diff);
+	return (0);
 }
 
 int		on_key_press(int key, void *param)
