@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/14 14:46:35 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 15:40:27 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,6 @@ void		exit_clean(int error, char *reason, t_env *env)
 		ft_putstr("ERROR : ");
 	ft_putendl(reason);
 	exit(0);
-}
-
-void		show_dirs(t_env *env)
-{
-	t_path		*tmp;
-
-	tmp = env->paths;
-	while (tmp != NULL)
-	{
-		if (ft_strcmp(tmp->name, ".") != 0 && *(tmp->name) != '/')
-			ft_putendl(ft_strjoin(tmp->name, ":"));
-		show_dir(env, tmp);
-		if (tmp->next != NULL)
-			ft_putstr("\n\n");
-		tmp = tmp->next;
-	}
 }
 
 void		compute_dirs(t_env *env)

@@ -6,12 +6,11 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/20 14:47:08 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 16:14:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <stdio.h>
 
 char		*ft_strjoins(char *s1, char *s2, char *s3)
 {
