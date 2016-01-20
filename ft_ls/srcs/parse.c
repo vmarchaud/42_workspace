@@ -51,10 +51,10 @@ int			parse(t_env *env, int size, char **args)
 		if (*args[i] == '-')
 			parse_arg(env, args[i] + 1);
 		else	
-			ft_addpath(env, args[i]);
+			ft_addpath_env(env, args[i]);
 		i++;
 	}
 	if (env->paths == NULL)
-		ft_addpath(env, ".");
+		ft_addpath_env(env, ".");
 	return (TRUE);
 }

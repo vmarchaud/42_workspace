@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/19 13:59:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 14:37:45 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_filew		*find_prev(t_filew **head, char *name)
+static t_filew		*find_prev(t_filew **head, char *name)
 {
 	t_filew *tmp;
 
@@ -28,14 +28,14 @@ t_filew		*find_prev(t_filew **head, char *name)
 	return (NULL);
 }
 
-void		swap(t_filew *f1, t_filew *f2, t_filew *f3)
+static void			swap(t_filew *f1, t_filew *f2, t_filew *f3)
 {
 	f1->next = f3;
 	f2->next = f3->next;
 	f3->next = f2;
 }
 
-void		sort_by_alpha(t_path *path)
+void				sort_file_by_alpha(t_path *path)
 {
 	t_filew		*curr;
 	t_filew		*prev;
@@ -55,7 +55,7 @@ void		sort_by_alpha(t_path *path)
 	}
 }
 
-void		sort_reverse(t_path *path)
+void				sort_file_reverse(t_path *path)
 {
 	t_filew		*tmp;	
 	t_filew		*first;

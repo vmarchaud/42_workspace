@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/19 15:14:42 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/20 14:22:29 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 typedef struct		s_path
 {
 	char			*name;
-	struct s_path	*next;
+	struct s_path	*paths;
 	struct s_filew	*files;
+	struct s_path	*next;
 }					t_path;
 
 typedef struct		s_filew
@@ -48,10 +49,10 @@ typedef struct		s_env
 int					parse(t_env *env, int size, char **args);
 void				exit_clean(int error, char *msg, t_env *env);
 
-void				ft_addpath(t_env *env, char *name);
+void				ft_addpath_env(t_env *env, char *name);
+void				ft_addpath_path(t_path *path, char *name);
 void				ft_addfile(t_path *path, struct dirent *file);
-void				ft_addfile_to_lst(t_filew *first, t_filew *news);
-t_path				*ft_newpath(char *name);
+
 void				compute_dir(t_env *env, t_path *path);
 void				compute_dirs(t_env *env);
 void				show_dir(t_env *env, t_path *path);
@@ -59,7 +60,9 @@ void				show_dirs(t_env *env);
 
 int					is_hidden(char *name);
 
-void				sort_by_alpha(t_path *path);
-void				sort_reverse(t_path *path);
+void				sort_file_by_alpha(t_path *path);
+void				sort_file_reverse(t_path *path);
+void				sort_paths_by_alpha(t_path *path);
+void				sort_paths_reverse(t_path *path);
 
 #endif
