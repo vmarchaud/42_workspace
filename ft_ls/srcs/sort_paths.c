@@ -6,69 +6,62 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/20 14:37:22 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/21 16:40:57 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static t_path		*find_prev(t_path **head, char *name)
+void		ft_swap_path(t_path	*cur, t_path *next)
 {
-	t_path *tmp;
+	void			*swap;
+	struct s_path	*swap_path;
+	struct s_filew	*swap_files;
 
-	tmp = *head;
-	if (ft_strcmp((*head)->name, name) == 0)
-		return (*head);
-	while (tmp->next != NULL)
-	{
-		if (ft_strcmp(tmp->next->name, name) == 0)
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
+	swap = cur->name;
+	cur->name = next->name;
+	next->name = swap;
+	swap_path = cur->paths;
+	cur->paths = next->paths;
+	next->paths = swap_path;
+	swap_files = cur->files;
+	cur->files = next->files;
+	next->files = swap_files;
 }
 
-static void		swap(t_path *f1, t_path *f2, t_path *f3)
-{
-	f1->next = f3;
-	f2->next = f3->next;
-	f3->next = f2;
-}
 
-void		sort_paths_by_alpha(t_path *path)
+void		sort_paths_reverse(t_path *list)
 {
-	t_path		*curr;
-	t_path		*prev;
-
-	curr = path->paths;
-	while (curr->next != NULL)
-	{
-		if (ft_strcmp(curr->name, curr->next->name) > 0)
-		{
-			prev = find_prev(&path->paths, curr->name);
-			swap(prev, curr, curr->next);
-			curr = path->paths;
-			prev = NULL;
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-}
-
-void		sort_paths_reverse(t_path *path)
-{
-	t_path		*tmp;	
+	t_path		*tmp;
 	t_path		*first;
 	t_path		*new;
 
-	tmp = path->paths;
+	tmp = list->paths;
 	first = NULL;
 	while (tmp)
 	{
 		new = first;
-		first= tmp;
+		first = tmp;
 		tmp = tmp->next;
 		first->next = new;
 	}
-	path->paths = first;
+	list->paths = first;
+}
+
+void		sort_paths_by_alpha(t_path *lst)
+{
+	t_path	*tmp;
+
+	if (!lst || !lst->next)
+		return ;
+	tmp = lst;
+	while (tmp->next)
+	{
+		if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+		{
+			ft_swap_path(tmp, tmp->next);
+			tmp = lst;
+		}
+		tmp = tmp->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/20 14:22:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/21 12:48:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ void				ft_addfile(t_path *path, struct dirent *file);
 
 void				compute_dir(t_env *env, t_path *path);
 void				compute_dirs(t_env *env);
-void				show_dir(t_env *env, t_path *path);
-void				show_dirs(t_env *env);
+void				explore_dir(t_env *env, t_path *path);
 
-int					is_hidden(char *name);
+int					is_hidden(t_env *env, char *name);
 
 void				sort_file_by_alpha(t_path *path);
 void				sort_file_reverse(t_path *path);
