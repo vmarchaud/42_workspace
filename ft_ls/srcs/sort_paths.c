@@ -6,13 +6,14 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/21 16:40:57 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/22 15:34:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		ft_swap_path(t_path	*cur, t_path *next)
+
+void	ft_swap_path(t_path	*cur, t_path *next)
 {
 	void			*swap;
 	struct s_path	*swap_path;
@@ -29,6 +30,24 @@ void		ft_swap_path(t_path	*cur, t_path *next)
 	next->files = swap_files;
 }
 
+void				sort_paths_by_alpha(t_path *path)
+{
+	t_path		*curr;
+	t_path		*prev;
+
+	curr = path->paths;
+	while (curr->next != NULL)
+	{
+		if (ft_strcmp(curr->name, curr->next->name) > 0)
+		{
+			ft_swap_path(curr, curr->next);
+			curr = path->paths;
+			prev = NULL;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
 
 void		sort_paths_reverse(t_path *list)
 {
@@ -46,22 +65,4 @@ void		sort_paths_reverse(t_path *list)
 		first->next = new;
 	}
 	list->paths = first;
-}
-
-void		sort_paths_by_alpha(t_path *lst)
-{
-	t_path	*tmp;
-
-	if (!lst || !lst->next)
-		return ;
-	tmp = lst;
-	while (tmp->next)
-	{
-		if (ft_strcmp(tmp->name, tmp->next->name) > 0)
-		{
-			ft_swap_path(tmp, tmp->next);
-			tmp = lst;
-		}
-		tmp = tmp->next;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/21 16:29:18 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/22 14:29:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void		show_content(t_env *env, t_path *path)
 		tmp = tmp->next;
 		i++;
 	}
-		ft_putstr("\n\n");
+	ft_putstr("\n\n");
 }
 
 void		explore_dir(t_env *env, t_path *path)
