@@ -18,6 +18,8 @@ t_path		*ft_newpath(char *name)
 
 	if ((path = (t_path*)malloc(sizeof(t_path))) == NULL)
 		return (NULL);
+	if ((path->stat = (struct stat*)malloc(sizeof(struct stat))) == NULL)
+		return (NULL);
 	path->name = name;
 	path->files = NULL;
 	path->paths = NULL;
@@ -36,6 +38,8 @@ t_filew		*ft_newfile(struct dirent *dirent)
 		return (NULL);
 	ft_memcpy(f->type, &dirent->d_type, sizeof(dirent->d_type));
 	f->next = NULL;
+	if ((f->stat = (struct stat*)malloc(sizeof(struct stat))) == NULL)
+		return (NULL);
 	return (f);
 }
 
@@ -45,6 +49,7 @@ void		ft_addfile(t_path *path, struct dirent *dirent)
 	t_filew *tmp;
 
 	file = ft_newfile(dirent);
+	stat(ft_strjoins(path->name, "/", dirent->d_name), file->stat);
 	if (path->files == NULL)
 		path->files = file;
 	else
@@ -79,6 +84,7 @@ void		ft_addpath_path(t_path *path, char *name)
 	t_path *tmp;
 
 	newpath = ft_newpath(name);
+	stat(name, newpath->stat);
 	if (path->paths == NULL)
 		path->paths = newpath;
 	else

@@ -18,6 +18,7 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	void			*swap;
 	struct s_path	*swap_path;
 	struct s_filew	*swap_files;
+	struct stat		*swap_stat;
 
 	swap = cur->name;
 	cur->name = next->name;
@@ -28,6 +29,9 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	swap_files = cur->files;
 	cur->files = next->files;
 	next->files = swap_files;
+	swap_stat = cur->stat;
+	cur->stat = next->stat;
+	next->stat = swap_stat;
 }
 
 void				sort_paths_by_alpha(t_path *path)
@@ -48,6 +52,26 @@ void				sort_paths_by_alpha(t_path *path)
 		curr = curr->next;
 	}
 }
+
+void				sort_paths_by_time(t_path *path)
+{
+	t_path		*curr;
+	t_path		*prev;
+
+	curr = path->paths;
+	while (curr->next != NULL)
+	{
+		if (curr->stat->st_mtime < curr->next->stat->st_mtime)
+		{
+			ft_swap_path(curr, curr->next);
+			curr = path->paths;
+			prev = NULL;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
+
 
 void		sort_paths_reverse(t_path *list)
 {

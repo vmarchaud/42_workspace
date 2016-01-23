@@ -41,6 +41,7 @@ void		compute_dir(t_env *env, t_path *path)
 				!is_hidden(env, tmp->d_name))
 			ft_addpath_path(path, ft_strjoins(path->name, "/", tmp->d_name));
 		ft_addfile(path, tmp);
+		
 	}
 	closedir(dir);
 	explore_dir(env, path);
@@ -79,12 +80,16 @@ void		explore_dir(t_env *env, t_path *path)
 		
 	if (env->sort_time == FALSE)
 		sort_file_by_alpha(path);
+	else if (env->sort_time == TRUE)
+		sort_file_by_time(path);
 	if (env->reverse == TRUE)
 		sort_file_reverse(path);
 	show_content(env, path);
 	tmp = path->paths;
 	if (tmp != NULL && env->sort_time == FALSE)
 		sort_paths_by_alpha(path);
+	else if (tmp != NULL && env->sort_time == TRUE)
+		sort_paths_by_time(path);
 	if (tmp != NULL && env->reverse == TRUE)
 		sort_paths_reverse(path);
 	tmp = path->paths;

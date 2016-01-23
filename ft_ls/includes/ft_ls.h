@@ -24,6 +24,7 @@ typedef struct		s_path
 	char			*name;
 	struct s_path	*paths;
 	struct s_filew	*files;
+	struct stat		*stat;
 	struct s_path	*next;
 }					t_path;
 
@@ -58,10 +59,13 @@ void				compute_dirs(t_env *env);
 void				explore_dir(t_env *env, t_path *path);
 
 int					is_hidden(t_env *env, char *name);
+char				*ft_strjoins(char *s1, char *s2, char *s3);
 
 void				sort_file_by_alpha(t_path *path);
 void				sort_file_reverse(t_path *path);
 void				sort_paths_by_alpha(t_path *path);
 void				sort_paths_reverse(t_path *path);
+void				sort_paths_by_time(t_path *path);
+void				sort_file_by_time(t_path *path);
 
 #endif

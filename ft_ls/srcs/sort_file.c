@@ -55,6 +55,25 @@ void				sort_file_by_alpha(t_path *path)
 	}
 }
 
+void				sort_file_by_time(t_path *path)
+{
+	t_filew		*curr;
+	t_filew		*prev;
+
+	curr = path->files;
+	while (curr->next != NULL)
+	{
+		if (curr->stat->st_mtime < curr->next->stat->st_mtime)
+		{
+			prev = find_prev(&path->files, curr->name);
+			swap(prev, curr, curr->next);
+			curr = path->files;
+			prev = NULL;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
 
 void				sort_file_reverse(t_path *path)
 {
