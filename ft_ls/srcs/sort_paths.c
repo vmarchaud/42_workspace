@@ -6,14 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/22 15:34:19 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/25 15:18:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-
-void	ft_swap_path(t_path	*cur, t_path *next)
+void		ft_swap_path(t_path *cur, t_path *next)
 {
 	void			*swap;
 	struct s_path	*swap_path;
@@ -34,10 +33,9 @@ void	ft_swap_path(t_path	*cur, t_path *next)
 	next->stat = swap_stat;
 }
 
-void				sort_paths_by_alpha(t_path *path)
+void		sort_paths_by_alpha(t_path *path)
 {
 	t_path		*curr;
-	t_path		*prev;
 
 	curr = path->paths;
 	while (curr->next != NULL)
@@ -46,14 +44,13 @@ void				sort_paths_by_alpha(t_path *path)
 		{
 			ft_swap_path(curr, curr->next);
 			curr = path->paths;
-			prev = NULL;
+			continue ;
 		}
-		prev = curr;
 		curr = curr->next;
 	}
 }
 
-void				sort_paths_by_time(t_path *path)
+void		sort_paths_by_time(t_path *path)
 {
 	t_path		*curr;
 	t_path		*prev;
@@ -71,7 +68,6 @@ void				sort_paths_by_time(t_path *path)
 		curr = curr->next;
 	}
 }
-
 
 void		sort_paths_reverse(t_path *list)
 {

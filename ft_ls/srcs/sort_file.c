@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/22 13:32:49 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/25 15:19:27 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void				sort_file_by_time(t_path *path)
 
 void				sort_file_reverse(t_path *path)
 {
-	t_filew		*tmp;	
+	t_filew		*tmp;
 	t_filew		*first;
 	t_filew		*new;
 
@@ -92,5 +92,3 @@ void				sort_file_reverse(t_path *path)
 	}
 	path->files = first;
 }
-
-

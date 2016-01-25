@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/20 16:14:06 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/25 15:19:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			parse(t_env *env, int size, char **args)
 	{
 		if (*args[i] == '-')
 			parse_arg(env, args[i] + 1);
-		else	
+		else
 			ft_addpath_env(env, args[i]);
 		i++;
 	}
