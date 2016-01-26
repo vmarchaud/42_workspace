@@ -23,3 +23,14 @@ int		is_hidden(t_env *env, char *name)
 	else
 		return (FALSE);
 }
+
+char		*ft_strjoins(char *s1, char *s2, char *s3)
+{
+	char	*tmp;
+	char	*ret;
+
+	tmp = ft_strjoin(s1, s2);
+	ret = ft_strjoin(tmp, s3);
+	free(tmp);
+	return (ret);
+}

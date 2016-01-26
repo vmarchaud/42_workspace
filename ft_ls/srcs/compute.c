@@ -6,23 +6,12 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:18:05 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/26 14:51:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <stdio.h>
-
-char		*ft_strjoins(char *s1, char *s2, char *s3)
-{
-	char	*tmp;
-	char	*ret;
-
-	tmp = ft_strjoin(s1, s2);
-	ret = ft_strjoin(tmp, s3);
-	free(tmp);
-	return (ret);
-}
 
 void		compute_dir(t_env *env, t_path *path)
 {
@@ -76,8 +65,33 @@ void		show_content(t_env *env, t_path *path)
 void		show_format_content(t_env *env, t_path *path)
 {
 	t_filew		*tmp;
+	char		*buff;
 
 	tmp = path->files;
+	buff = NULL;
+	while (tmp != NULL)
+	{
+		if (!env->show_dot && is_hidden(env, tmp->name))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		ft_putstr(buff = get_file_type(tmp->stat->st_mode));
+		ft_putstr(buff = get_file_rights(tmp->stat->st_mode));
+		ft_putstr(" ");
+		ft_putstr(buff = ft_itoa(tmp->stat->st_nlink));
+		ft_putstr("\t");
+		ft_putstr(buff = get_file_owner(tmp->stat->st_uid));
+		ft_putstr("\t");
+		ft_putstr(buff = get_file_group(tmp->stat->st_gid));
+		ft_putstr("\t");
+		ft_putnbr(tmp->stat->st_size);
+		ft_putstr("\t");
+		ft_putstr(buff = get_file_time(tmp->stat->st_mtime));
+		ft_putstr(" ");
+		ft_putendl(tmp->name);
+		tmp = tmp->next;
+	}
 }
 
 void		explore_dir(t_env *env, t_path *path)

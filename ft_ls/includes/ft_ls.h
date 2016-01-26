@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/21 12:48:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/26 14:10:17 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,11 @@ void				sort_paths_by_alpha(t_path *path);
 void				sort_paths_reverse(t_path *path);
 void				sort_paths_by_time(t_path *path);
 void				sort_file_by_time(t_path *path);
+
+char				*get_file_type(mode_t st_mode);
+char				*get_file_rights(mode_t st_mode);
+char				*get_file_owner(uid_t st_uid);
+char				*get_file_group(gid_t gid);
+char				*get_file_time(time_t mtime);
 
 #endif
