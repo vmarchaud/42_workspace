@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/26 14:51:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 13:42:45 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		show_content(t_env *env, t_path *path)
 
 	i = 0;
 	tmp = path->files;
-	if (ft_strcmp(path->name, ".") != 0 && ft_strcmp(path->name, "..") != 0)
+	if (!is_hidden(env, path->name) && !is_request_path(env, path->name))
 		ft_putendl(path->name);
 	while (tmp != NULL)
 	{
@@ -62,6 +62,26 @@ void		show_content(t_env *env, t_path *path)
 	ft_putstr("\n\n");
 }
 
+void		show_format_file(t_env *env, t_filew *file)
+{
+	if (!env->show_dot && is_hidden(env, file->name))
+		return ;
+	print_file_type(file->stat->st_mode);
+	print_file_rights(file->stat->st_mode);
+	ft_putstr(" ");
+	ft_putnbr(file->stat->st_nlink);
+	ft_putstr("\t");
+	print_file_owner(file->stat->st_uid);
+	ft_putstr("\t");
+	print_file_group(file->stat->st_gid);
+	ft_putstr("\t");
+	ft_putnbr(file->stat->st_size);
+	ft_putstr("\t");
+	print_file_time(file->stat->st_mtime);
+	ft_putstr(" ");
+	ft_putendl(file->name);
+}
+
 void		show_format_content(t_env *env, t_path *path)
 {
 	t_filew		*tmp;
@@ -69,29 +89,17 @@ void		show_format_content(t_env *env, t_path *path)
 
 	tmp = path->files;
 	buff = NULL;
+	if (!is_hidden(env, path->name) && is_request_path(env, path->name) == 0)
+		ft_putendl(path->name);
+	ft_putstr("total ");
+	ft_putnbr(count_block_used(path));
+	ft_putchar('\n');
 	while (tmp != NULL)
 	{
-		if (!env->show_dot && is_hidden(env, tmp->name))
-		{
-			tmp = tmp->next;
-			continue ;
-		}
-		ft_putstr(buff = get_file_type(tmp->stat->st_mode));
-		ft_putstr(buff = get_file_rights(tmp->stat->st_mode));
-		ft_putstr(" ");
-		ft_putstr(buff = ft_itoa(tmp->stat->st_nlink));
-		ft_putstr("\t");
-		ft_putstr(buff = get_file_owner(tmp->stat->st_uid));
-		ft_putstr("\t");
-		ft_putstr(buff = get_file_group(tmp->stat->st_gid));
-		ft_putstr("\t");
-		ft_putnbr(tmp->stat->st_size);
-		ft_putstr("\t");
-		ft_putstr(buff = get_file_time(tmp->stat->st_mtime));
-		ft_putstr(" ");
-		ft_putendl(tmp->name);
+		show_format_file(env, tmp);
 		tmp = tmp->next;
 	}
+	ft_putstr("\n\n");
 }
 
 void		explore_dir(t_env *env, t_path *path)

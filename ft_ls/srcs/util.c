@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/21 12:48:38 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 12:11:21 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,33 @@ char		*ft_strjoins(char *s1, char *s2, char *s3)
 	ret = ft_strjoin(tmp, s3);
 	free(tmp);
 	return (ret);
+}
+
+size_t		count_block_used(t_path *path)
+{
+	size_t	count;
+	t_filew	*tmp;
+
+	tmp = path->files;
+	count = 0;
+	while (tmp)
+	{
+		count += tmp->stat->st_blocks;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+int			is_request_path(t_env *env, char *name)
+{
+	t_path *tmp;
+
+	tmp = env->paths;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->name, name) == 0)
+			return (TRUE);
+		tmp = tmp->next;
+	}
+	return (FALSE);
 }
