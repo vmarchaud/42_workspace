@@ -6,11 +6,12 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:19:42 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 15:01:17 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#include <stdio.h>
 
 void		parse_arg(t_env *env, char *arg)
 {
@@ -35,23 +36,45 @@ void		parse_arg(t_env *env, char *arg)
 	}
 }
 
+int			check_exist(char *path)
+{
+	struct stat		*stat;
+
+	if ((stat = malloc(sizeof(struct stat))) == NULL)
+		return (-1);
+	if (lstat(path, stat) == -1)
+	{
+		perror(path);
+		free(stat);
+		return (-1);
+	}
+	else if (S_ISDIR(stat->st_mode))
+	{
+		free(stat);
+		return (1);
+	}
+	free(stat);
+	return (0);
+}
+
 int			parse(t_env *env, int size, char **args)
 {
 	int		i;
+	int 	ret;
 
 	i = 1;
-	env->recursive = FALSE;
-	env->sort_time = FALSE;
-	env->show_dot = FALSE;
-	env->reverse = FALSE;
-	env->format_out = FALSE;
-	env->paths = NULL;
 	while (i < size)
 	{
-		if (*args[i] == '-')
+		if (*args[i] == '-' && env->paths == NULL)
 			parse_arg(env, args[i] + 1);
 		else
-			ft_addpath_env(env, args[i]);
+		{
+			if (env->paths != NULL)
+				env->show_path_name = TRUE;
+			ret = check_exist(args[i]);
+			if (ret == 1)
+				ft_addpath_env(env, args[i]);
+		}
 		i++;
 	}
 	if (env->paths == NULL)

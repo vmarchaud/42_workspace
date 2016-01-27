@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 14:18:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 14:59:35 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct			s_env
 	int				sort_time;
 	int				reverse;
 	int				format_out;
+	int				show_path_name;
 }					t_env;
 
 int					parse(t_env *env, int size, char **args);

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 13:49:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 15:14:30 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void		show_content(t_env *env, t_path *path)
 
 	i = 0;
 	tmp = path->files;
-	if (!is_hidden(env, path->name) && !is_request_path(env, path->name))
-		ft_putendl(path->name);
+	if ((ft_strcmp(path->name, ".") != 0 && ft_strcmp(path->name, "..") != 0
+			&& !is_request_path(env, path->name)) || env->show_path_name)
+		ft_putendl(ft_strjoin(path->name, ":"));
 	while (tmp != NULL)
 	{
 		if (is_hidden(env, tmp->name) && !env->show_dot)
@@ -89,9 +90,9 @@ void		show_format_content(t_env *env, t_path *path)
 
 	tmp = path->files;
 	buff = NULL;
-	if (ft_strcmp(".", path->name) != 0 && ft_strcmp("..", path->name) != 0
-			&& is_request_path(env, path->name) == 0)
-		ft_putendl(path->name);
+	if ((ft_strcmp(".", path->name) != 0 && ft_strcmp("..", path->name) != 0
+			&& !is_request_path(env, path->name)) || env->show_path_name)
+		ft_putendl(ft_strjoin(path->name, ":"));
 	ft_putstr("total ");
 	ft_putnbr(count_block_used(path));
 	ft_putchar('\n');
