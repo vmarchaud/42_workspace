@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 14:59:35 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 15:21:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_path
 typedef struct			s_env
 {
 	struct s_path	*paths;
+	struct s_filew 	*files;
 	int				show_dot;
 	int				recursive;
 	int				sort_time;

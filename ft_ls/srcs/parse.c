@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 15:01:17 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 15:36:14 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,35 @@ int			check_exist(char *path)
 	}
 	free(stat);
 	return (0);
+}
+
+void		addfile_to_env(t_env *env, char *path)
+{
+	t_filew		*tmp;
+	t_filew		*new;
+	int			i;
+	char		**tab;
+
+	if ((new = malloc(sizeof(t_filew))) == NULL)
+		return ;
+	tab = ft_strsplit(path, '/');
+	i = 0;
+	while (tab[i])
+		i++;
+	new->name = ft_strdup(tab[i - 1]);
+	if ((new->stat = malloc(sizeof(struct stat))) == NULL)
+		return ;
+	lstat(path, new->stat);
+	new->next = NULL;
+	if (env->files == NULL)
+		env->files = new;
+	else
+	{		
+		tmp = env->files;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 int			parse(t_env *env, int size, char **args)

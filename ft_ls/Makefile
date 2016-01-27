@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/01/26 14:04:49 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/01/27 15:20:44 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2>/dev/null || echo "" > /dev/null
 	$(CC) $(CFLAGS) $(INC_LIBFT) $(INC) -o $@ -c $<
 	@echo "\033[A\033[K\033[A"
-	
+
 clean:
 	@rm -f $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
