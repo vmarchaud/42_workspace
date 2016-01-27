@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 12:11:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 13:56:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		is_hidden(t_env *env, char *name)
+int			is_hidden(t_env *env, char *name)
 {
 	if (ft_strcmp(name, ".") == 0)
 		return (TRUE);

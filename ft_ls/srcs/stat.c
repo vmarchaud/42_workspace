@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:57:23 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 13:01:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 13:56:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	print_file_type(mode_t st_mode)
 
 void	print_file_rights(mode_t st_mode)
 {
-	char *ret; 
-		
+	char *ret;
+
 	ret = ft_strnew(10);
 	ret[0] = ((st_mode & S_IRUSR) ? 'r' : '-');
 	ret[1] = ((st_mode & S_IWUSR) ? 'w' : '-');

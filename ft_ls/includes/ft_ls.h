@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 12:57:59 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/27 14:18:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,16 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# define TRUE 1
-# define FALSE 0
+# define TRUE		1
+# define FALSE		0
+
+typedef struct		s_filew
+{
+	char			*name;
+	struct stat		*stat;
+	__uint8_t		*type;
+	struct s_filew	*next;
+}					t_filew;
 
 typedef struct		s_path
 {
@@ -28,18 +36,9 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
-typedef struct		s_filew
+typedef struct			s_env
 {
-	char			*name;
-	struct stat		*stat;
-	__uint8_t		*type;
-	struct s_filew	*next;
-}					t_filew;
-
-typedef struct		s_env
-{
-	t_path			*paths;
-
+	struct s_path	*paths;
 	int				show_dot;
 	int				recursive;
 	int				sort_time;
