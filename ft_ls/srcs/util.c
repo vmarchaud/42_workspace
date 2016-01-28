@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 15:01:31 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/28 14:20:04 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char		*ft_strjoins(char *s1, char *s2, char *s3)
 	return (ret);
 }
 
-size_t		count_block_used(t_path *path)
+size_t		count_block_used(t_env *env, t_path *path)
 {
 	size_t	count;
 	t_filew	*tmp;
@@ -44,6 +44,11 @@ size_t		count_block_used(t_path *path)
 	count = 0;
 	while (tmp)
 	{
+		if (is_hidden(env, tmp->name))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		count += tmp->stat->st_blocks;
 		tmp = tmp->next;
 	}

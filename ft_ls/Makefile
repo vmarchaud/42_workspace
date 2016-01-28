@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/01/27 15:20:44 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/01/28 14:31:05 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
 SRC_NAME = main.c parse.c lst_util.c compute.c util.c sort_file.c sort_paths.c\
-		   stat.c
+		   stat.c stat2.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
 

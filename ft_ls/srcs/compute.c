@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 15:14:30 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/28 14:30:53 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		show_content(t_env *env, t_path *path)
 	ft_putstr("\n\n");
 }
 
-void		show_format_file(t_env *env, t_filew *file)
+void		show_format_file(t_env *env, t_path *path, t_filew *file)
 {
 	if (!env->show_dot && is_hidden(env, file->name))
 		return ;
@@ -80,7 +80,10 @@ void		show_format_file(t_env *env, t_filew *file)
 	ft_putstr("\t");
 	print_file_time(file->stat->st_mtime);
 	ft_putstr(" ");
-	ft_putendl(file->name);
+	if (*file->type != DT_LNK)
+		ft_putendl(file->name);
+	else
+		show_link(path, file);
 }
 
 void		show_format_content(t_env *env, t_path *path)
@@ -94,11 +97,11 @@ void		show_format_content(t_env *env, t_path *path)
 			&& !is_request_path(env, path->name)) || env->show_path_name)
 		ft_putendl(ft_strjoin(path->name, ":"));
 	ft_putstr("total ");
-	ft_putnbr(count_block_used(path));
+	ft_putnbr(count_block_used(env, path));
 	ft_putchar('\n');
 	while (tmp != NULL)
 	{
-		show_format_file(env, tmp);
+		show_format_file(env, path, tmp);
 		tmp = tmp->next;
 	}
 	ft_putstr("\n\n");

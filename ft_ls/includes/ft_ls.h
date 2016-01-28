@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 15:21:08 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/28 14:29:20 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				explore_dir(t_env *env, t_path *path);
 
 int					is_hidden(t_env *env, char *name);
 char				*ft_strjoins(char *s1, char *s2, char *s3);
-size_t				count_block_used(t_path *path);
+size_t				count_block_used(t_env *env, t_path *path);
 int					is_request_path(t_env *env, char *name);
 
 void				sort_file_by_alpha(t_path *path);
@@ -76,5 +76,7 @@ void				print_file_rights(mode_t st_mode);
 void				print_file_owner(uid_t st_uid);
 void				print_file_group(gid_t gid);
 void				print_file_time(time_t mtime);
+
+void				show_link(t_path *path, t_filew *file);
 
 #endif
