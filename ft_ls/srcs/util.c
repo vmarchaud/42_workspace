@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/28 14:20:04 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/29 13:01:47 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,15 @@ int			is_request_path(t_env *env, char *name)
 		tmp = tmp->next;
 	}
 	return (FALSE);
+}
+
+char		*get_real_path(char *path)
+{
+	char	*result;
+	int 	ret;
+
+	result = ft_strnew(256);
+	ret = readlink(path, result, 256);
+	result[ret] = 0;
+	return (result);
 }

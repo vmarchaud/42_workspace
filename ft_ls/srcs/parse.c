@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/27 15:36:14 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/29 16:06:06 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,14 @@ void		addfile_to_env(t_env *env, char *path)
 		return ;
 	lstat(path, new->stat);
 	new->next = NULL;
+	new->path = ft_strsub(path, 0,  ft_strrchr(path, '/') - path);
+	new->type = NULL;
 	if (env->files == NULL)
 		env->files = new;
 	else
 	{		
 		tmp = env->files;
-		while (tmp->next)
+		while (tmp->next != NULL)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
@@ -103,10 +105,12 @@ int			parse(t_env *env, int size, char **args)
 			ret = check_exist(args[i]);
 			if (ret == 1)
 				ft_addpath_env(env, args[i]);
+			else if (ret == 0)
+				addfile_to_env(env, args[i]);
 		}
 		i++;
 	}
-	if (env->paths == NULL)
+	if (env->paths == NULL && env->files == NULL)
 		ft_addpath_env(env, ".");
 	return (TRUE);
 }

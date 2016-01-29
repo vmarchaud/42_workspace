@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:19:27 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/01/29 15:18:56 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ static void			swap(t_filew *f1, t_filew *f2, t_filew *f3)
 	f3->next = f2;
 }
 
-void				sort_file_by_alpha(t_path *path)
+void				sort_file_by_alpha(t_filew *file)
 {
 	t_filew		*curr;
 	t_filew		*prev;
 
-	curr = path->files;
+	curr = file;
 	while (curr->next != NULL)
 	{
 		if (ft_strcmp(curr->name, curr->next->name) > 0)
 		{
-			prev = find_prev(&path->files, curr->name);
+			prev = find_prev(&file, curr->name);
 			swap(prev, curr, curr->next);
-			curr = path->files;
+			curr = file;
 			prev = NULL;
 		}
 		prev = curr;
@@ -55,19 +55,19 @@ void				sort_file_by_alpha(t_path *path)
 	}
 }
 
-void				sort_file_by_time(t_path *path)
+void				sort_file_by_time(t_filew *file)
 {
 	t_filew		*curr;
 	t_filew		*prev;
 
-	curr = path->files;
+	curr = file;
 	while (curr->next != NULL)
 	{
 		if (curr->stat->st_mtime < curr->next->stat->st_mtime)
 		{
-			prev = find_prev(&path->files, curr->name);
+			prev = find_prev(&file, curr->name);
 			swap(prev, curr, curr->next);
-			curr = path->files;
+			curr = file;
 			prev = NULL;
 		}
 		prev = curr;
@@ -75,13 +75,13 @@ void				sort_file_by_time(t_path *path)
 	}
 }
 
-void				sort_file_reverse(t_path *path)
+void				sort_file_reverse(t_filew *file)
 {
 	t_filew		*tmp;
 	t_filew		*first;
 	t_filew		*new;
 
-	tmp = path->files;
+	tmp = file;
 	first = NULL;
 	while (tmp)
 	{
@@ -90,5 +90,5 @@ void				sort_file_reverse(t_path *path)
 		tmp = tmp->next;
 		first->next = new;
 	}
-	path->files = first;
+	file = first;
 }
