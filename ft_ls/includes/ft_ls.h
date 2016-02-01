@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 15:17:05 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/01 14:29:21 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void				print_file_rights(mode_t st_mode);
 void				print_file_owner(uid_t st_uid);
 void				print_file_group(gid_t gid);
 void				print_file_time(time_t mtime);
-void				show_link(t_path *path, t_filew *file);
+void				print_link(t_path *path, t_filew *file);
+void				print_major_minor(dev_t st_rev);
 
 void				show_format_path(t_env *env, t_path *path);
 void				show_path(t_env *env, t_path *path);
 void				show_format_file(t_env *env, t_path *path, t_filew *file);
 void				show_file(t_env *env, t_path *path, t_filew *file);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 15:36:12 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/01 12:42:40 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void		compute_all(t_env *env)
 			show_file(env, 0 , file);
 		file = file->next;
 	}
-	if (env->files && env->files->next)
+	if (env->files && (env->files->next || env->paths))
 		ft_putstr("\n");
 	path = env->paths;
 	while (path != NULL)

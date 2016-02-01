@@ -77,18 +77,22 @@ void				sort_file_by_time(t_filew *file)
 
 void				sort_file_reverse(t_filew *file)
 {
-	t_filew		*tmp;
-	t_filew		*first;
-	t_filew		*new;
+	t_filew *tmp1;
+	t_filew *tmp2;
+	t_filew *list;
 
-	tmp = file;
-	first = NULL;
-	while (tmp)
+	list = file;
+	if (list != NULL)
 	{
-		new = first;
-		first = tmp;
-		tmp = tmp->next;
-		first->next = new;
+		tmp1 = list->next;
+		list->next = NULL;
+		while (tmp1 != NULL)
+		{
+			tmp2 = tmp1->next;
+			tmp1->next = list;
+			list = tmp1;
+			tmp1 = tmp2;
+		}
 	}
-	file = first;
+	file = list;
 }

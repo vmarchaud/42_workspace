@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 15:31:24 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/01 14:32:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void		compute_dir(t_env *env, t_path *path)
 			ft_addpath_path(path, ft_strjoins(path->name, "/", tmp->d_name));
 		ft_addfile(path, tmp);
 	}
-	closedir(dir);
 	explore_dir(env, path);
+	closedir(dir);
 }
 
 void		explore_dir(t_env *env, t_path *path)

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/29 13:50:04 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 14:36:38 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/01 14:29:23 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,17 @@ void		show_format_file(t_env *env, t_path *path, t_filew *file)
 	ft_putstr("\t");
 	print_file_group(file->stat->st_gid);
 	ft_putstr("\t");
-	ft_putnbr(file->stat->st_size);
+	if (S_ISCHR(file->stat->st_mode) || S_ISBLK(file->stat->st_mode))
+		print_major_minor(file->stat->st_rdev);
+	else
+		ft_putnbr(file->stat->st_size);
 	ft_putstr("\t");
 	print_file_time(file->stat->st_mtime);
 	ft_putstr(" ");
 	if (!S_ISLNK(file->stat->st_mode))
 		ft_putendl(file->name);
 	else
-		show_link(path, file);
+		print_link(path, file);
 }
 
 void		show_format_path(t_env *env, t_path *path)
