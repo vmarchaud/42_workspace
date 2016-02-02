@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 15:18:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/02 10:57:17 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void				sort_file_by_time(t_filew *file)
 	}
 }
 
-void				sort_file_reverse(t_filew *file)
+t_filew				*sort_file_reverse(t_filew *file)
 {
 	t_filew *tmp1;
 	t_filew *tmp2;
@@ -94,5 +94,5 @@ void				sort_file_reverse(t_filew *file)
 			tmp1 = tmp2;
 		}
 	}
-	file = list;
+	return (list);
 }

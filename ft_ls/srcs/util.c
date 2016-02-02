@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 13:01:47 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/02 14:26:00 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			is_request_path(t_env *env, char *name)
 char		*get_real_path(char *path)
 {
 	char	*result;
-	int 	ret;
+	int		ret;
 
 	result = ft_strnew(256);
 	ret = readlink(path, result, 256);

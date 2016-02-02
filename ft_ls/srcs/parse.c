@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/29 16:06:06 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/02 14:25:40 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,23 @@ int			check_exist(char *path)
 	return (0);
 }
 
+void		pushfile(t_env *env, t_filew *new)
+{
+	t_filew *tmp;
+
+	if (env->files == NULL)
+		env->files = new;
+	else
+	{
+		tmp = env->files;
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
 void		addfile_to_env(t_env *env, char *path)
 {
-	t_filew		*tmp;
 	t_filew		*new;
 	int			i;
 	char		**tab;
@@ -75,23 +89,18 @@ void		addfile_to_env(t_env *env, char *path)
 		return ;
 	lstat(path, new->stat);
 	new->next = NULL;
-	new->path = ft_strsub(path, 0,  ft_strrchr(path, '/') - path);
-	new->type = NULL;
-	if (env->files == NULL)
-		env->files = new;
+	if (ft_strchr(path, '/'))
+		new->path = ft_strsub(path, 0, ft_strrchr(path, '/') - path);
 	else
-	{		
-		tmp = env->files;
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
+		new->path = NULL;
+	new->type = NULL;
+	pushfile(env, new);
 }
 
 int			parse(t_env *env, int size, char **args)
 {
 	int		i;
-	int 	ret;
+	int		ret;
 
 	i = 1;
 	while (i < size)

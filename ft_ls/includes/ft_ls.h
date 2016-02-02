@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/01 14:29:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/02 16:02:55 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 # define TRUE		1
 # define FALSE		0
 
+typedef struct stat	t_stat;
+
 typedef struct		s_filew
 {
 	char			*name;
-	struct stat		*stat;
+	t_stat			*stat;
 	__uint8_t		*type;
 	char			*path;
 	struct s_filew	*next;
@@ -33,14 +35,14 @@ typedef struct		s_path
 	char			*name;
 	struct s_path	*paths;
 	struct s_filew	*files;
-	struct stat		*stat;
+	t_stat			*stat;
 	struct s_path	*next;
 }					t_path;
 
-typedef struct			s_env
+typedef struct		s_env
 {
 	struct s_path	*paths;
-	struct s_filew 	*files;
+	struct s_filew	*files;
 	int				show_dot;
 	int				recursive;
 	int				sort_time;
@@ -68,7 +70,7 @@ int					is_request_path(t_env *env, char *name);
 char				*get_real_path(char *path);
 
 void				sort_file_by_alpha(t_filew *file);
-void				sort_file_reverse(t_filew *file);
+t_filew				*sort_file_reverse(t_filew *file);
 void				sort_paths_by_alpha(t_path *path);
 void				sort_paths_reverse(t_path *path);
 void				sort_paths_by_time(t_path *path);
