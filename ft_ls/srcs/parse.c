@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 14:25:40 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:32:22 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		parse_arg(t_env *env, char *arg)
 		else if (arg[i] == 't')
 			env->sort_time = TRUE;
 		else
-			exit_clean(1, &arg[i], env);
+			exit_clean(1, ft_strjoin("illegal option -- ", arg), env);
 		i++;
 	}
 }
@@ -52,6 +52,11 @@ int			check_exist(char *path)
 	{
 		free(stat);
 		return (1);
+	}
+	else if (S_ISLNK(stat->st_mode))
+	{
+		free(stat);
+		return (3);
 	}
 	free(stat);
 	return (0);
@@ -116,10 +121,14 @@ int			parse(t_env *env, int size, char **args)
 				ft_addpath_env(env, args[i]);
 			else if (ret == 0)
 				addfile_to_env(env, args[i]);
+			else if (ret == 3 && !env->format_out)
+				ft_addpath_env(env, get_real_path(args[i]));
+			else if (ret == 3)
+				addfile_to_env(env, args[i]);
 		}
 		i++;
 	}
-	if (env->paths == NULL && env->files == NULL)
+	if (env->paths == NULL && env->files == NULL && ret != -1)
 		ft_addpath_env(env, ".");
 	return (TRUE);
 }

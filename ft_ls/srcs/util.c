@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/13 12:35:14 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 14:26:00 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:05:40 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ char		*get_real_path(char *path)
 	result = ft_strnew(256);
 	ret = readlink(path, result, 256);
 	result[ret] = 0;
+	if (path[0] == '/')
+		result = ft_strjoin("/", result);
 	return (result);
 }

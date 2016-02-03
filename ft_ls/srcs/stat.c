@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 12:57:23 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/28 14:07:31 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 13:47:01 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	print_file_rights(mode_t st_mode)
 	ret[1] = ((st_mode & S_IWUSR) ? 'w' : '-');
 	ret[2] = ((st_mode & S_IXUSR) ? 'x' : '-');
 	ret[2] = ((st_mode & S_ISUID) ? 'S' : ret[2]);
-	ret[2] = (ret[2] == 'S' && (st_mode & 0100) ? 's' : ret[2]);
+	ret[2] = (ret[2] == 'S' && (st_mode & S_IXUSR) ? 's' : ret[2]);
 	ret[3] = ((st_mode & S_IRGRP) ? 'r' : '-');
 	ret[4] = ((st_mode & S_IWGRP) ? 'w' : '-');
 	ret[5] = ((st_mode & S_IXGRP) ? 'x' : '-');
 	ret[5] = ((st_mode & S_ISGID) ? 'S' : ret[5]);
-	ret[5] = (ret[5] == 'S' && (st_mode & 0010) ? 's' : ret[5]);
+	ret[5] = (ret[5] == 'S' && (st_mode & S_IXGRP) ? 's' : ret[5]);
 	ret[6] = ((st_mode & S_IROTH) ? 'r' : '-');
 	ret[7] = ((st_mode & S_IWOTH) ? 'w' : '-');
 	ret[8] = ((st_mode & S_IXOTH) ? 'x' : '-');
 	ret[8] = ((st_mode & S_ISVTX) ? 'T' : ret[8]);
-	ret[8] = (ret[8] == 'T' && (st_mode & 0100) ? 't' : ret[8]);
+	ret[8] = (ret[8] == 'T' && (st_mode & S_IXOTH) ? 't' : ret[8]);
 	ft_putstr(ret);
 	ft_strdel(&ret);
 }

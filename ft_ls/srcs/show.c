@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/29 13:50:04 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/01 14:29:23 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 14:31:30 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,26 @@ void		show_format_file(t_env *env, t_path *path, t_filew *file)
 void		show_format_path(t_env *env, t_path *path)
 {
 	t_filew		*tmp;
-	char		*buff;
 
 	tmp = path->files;
-	buff = NULL;
 	if ((ft_strcmp(".", path->name) != 0 && ft_strcmp("..", path->name) != 0
 			&& !is_request_path(env, path->name)) || env->show_path_name)
 		ft_putendl(ft_strjoin(path->name, ":"));
-	ft_putstr("total ");
-	ft_putnbr(count_block_used(env, path));
-	ft_putchar('\n');
+	
+	if (path->files != NULL)
+	{
+		ft_putstr("total ");
+		ft_putnbr(count_block_used(env, path));
+		ft_putchar('\n');
+	}
 	while (tmp != NULL)
 	{
 		show_format_file(env, path, tmp);
 		tmp = tmp->next;
 	}
+	ft_putstr("\n");
+	if (path->files)
+		free_files(path->files);
 }
 
 void		show_file(t_env *env, t_path *path, t_filew *file)
@@ -81,4 +86,6 @@ void		show_path(t_env *env, t_path *path)
 		tmp = tmp->next;
 	}
 	ft_putstr("\n");
+	if (path->files)
+		free_files(path->files);
 }

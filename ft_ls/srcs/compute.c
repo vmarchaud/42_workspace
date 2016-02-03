@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:57:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 15:19:29 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,15 @@ void		compute_dir(t_env *env, t_path *path)
 	path->files = NULL;
 	while ((tmp = readdir(dir)) != NULL)
 	{
-		if (env->recursive && tmp->d_type == DT_DIR &&
-				!is_hidden(env, tmp->d_name))
-			ft_addpath_path(path, ft_strjoins(path->name, "/", tmp->d_name));
+		if (env->recursive)
+		{
+			if (tmp->d_type == DT_DIR && !is_hidden(env, tmp->d_name))
+				ft_addpath_path(path,
+						ft_strjoins(path->name, "/", tmp->d_name));
+			else if (tmp->d_type == DT_LNK && !is_hidden(env, tmp->d_name))
+				ft_addpath_path(path, get_real_path(ft_strjoins(path->name, "/",
+								tmp->d_name)));
+		}
 		ft_addfile(path, tmp);
 	}
 	explore_dir(env, path);

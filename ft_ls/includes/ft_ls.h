@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 16:02:55 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/03 14:21:49 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,8 @@ void				show_format_path(t_env *env, t_path *path);
 void				show_path(t_env *env, t_path *path);
 void				show_format_file(t_env *env, t_path *path, t_filew *file);
 void				show_file(t_env *env, t_path *path, t_filew *file);
+
+void				free_files(t_filew *head);
+void				free_paths(t_path *head);
 
 #endif
