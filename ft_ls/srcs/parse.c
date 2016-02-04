@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/03 15:32:22 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/04 14:43:57 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int			parse(t_env *env, int size, char **args)
 			else if (ret == 0)
 				addfile_to_env(env, args[i]);
 			else if (ret == 3 && !env->format_out)
-				ft_addpath_env(env, get_real_path(args[i]));
+				ft_addpath_env(env, args[i]);
 			else if (ret == 3)
 				addfile_to_env(env, args[i]);
 		}

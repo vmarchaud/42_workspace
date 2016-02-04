@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/03 15:19:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/04 14:45:55 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@ void		compute_dir(t_env *env, t_path *path)
 {
 	struct dirent	*tmp;
 	DIR				*dir;
+	char			*name;
 
-	if ((dir = opendir(path->name)) == NULL)
+	if (S_ISLNK(path->stat->st_mode))
+		name = get_real_path(path->name);
+	else
+		name = path->name;
+	if ((dir = opendir(name)) == NULL)
 	{
 		perror(path->name);
 		return ;
@@ -30,10 +35,7 @@ void		compute_dir(t_env *env, t_path *path)
 		{
 			if (tmp->d_type == DT_DIR && !is_hidden(env, tmp->d_name))
 				ft_addpath_path(path,
-						ft_strjoins(path->name, "/", tmp->d_name));
-			else if (tmp->d_type == DT_LNK && !is_hidden(env, tmp->d_name))
-				ft_addpath_path(path, get_real_path(ft_strjoins(path->name, "/",
-								tmp->d_name)));
+						ft_strjoins(name, "/", tmp->d_name));
 		}
 		ft_addfile(path, tmp);
 	}

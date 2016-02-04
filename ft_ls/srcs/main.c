@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 14:26:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/04 16:03:15 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void			exit_clean(int error, char *reason, t_env *env)
 	if (error)
 		ft_putstr("ERROR : ");
 	ft_putendl(reason);
+	free(env);
 	exit(0);
 }
 
@@ -90,5 +91,6 @@ int				main(int size, char **args)
 	if (!parse(env, size, args))
 		exit_clean(1, "parsing failed", env);
 	compute_all(env);
+	free(env);
 	return (0);
 }
