@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/04 16:03:15 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/05 13:47:27 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,15 @@ static void		sort_all(t_env *env)
 	if (env->sort_time)
 	{
 		if (env->files && env->files->next)
-			sort_file_by_time(env->files);
-		if (env->paths && env->paths->next)
-			sort_paths_by_time(env->paths);
-	}
-	else
-	{
-		if (env->files && env->files->next)
+		{
 			sort_file_by_alpha(env->files);
+			sort_file_by_time(env->files);
+		}
 		if (env->paths && env->paths->next)
+		{
 			sort_paths_by_alpha(env->paths);
+			sort_paths_by_time(env->paths);
+		}
 	}
 	if (env->reverse)
 	{
