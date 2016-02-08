@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/25 13:44:29 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/11/26 12:33:25 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+void	ft_putnbr(int n)
 {
-	int		fd;
-	char	*line;
-	int		i;
-
-	(void)size;
-	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	if (n == -2147483648)
+		ft_putstr("-2147483648");
+	else
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
-		i++;
+		if (n < 0)
+		{
+			ft_putchar('-');
+			n = -n;
+		}
+		if (n >= 10)
+			ft_putnbr(n / 10);
+		ft_putchar((n % 10) + '0');
 	}
-	return (0);
 }

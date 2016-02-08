@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/27 11:59:51 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/12/11 11:53:41 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+t_list		*ft_lstnew(void const *content, size_t content_size)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	t_list	*elem;
 
-	(void)size;
-	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	if ((elem = (t_list *)malloc(sizeof(t_list))) == 0)
+		return (NULL);
+	if (content == NULL)
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
-		i++;
+		elem->content = NULL;
+		elem->content_size = 0;
 	}
-	return (0);
+	else
+	{
+		if ((elem->content = malloc(content_size)) == 0)
+			return (NULL);
+		ft_memmove(elem->content, content, content_size);
+		elem->content_size = content_size;
+	}
+	elem->next = NULL;
+	return (elem);
 }

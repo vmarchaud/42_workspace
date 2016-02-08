@@ -1,34 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/23 15:38:49 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/01/01 13:00:51 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+static int	ft_isspace(char c)
 {
-	int		fd;
-	char	*line;
-	int		i;
-
-	(void)size;
-	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	if (c == ' ' ||
+			c == '\n' ||
+			c == '\t' ||
+			c == '\v' ||
+			c == '\f' ||
+			c == '\r')
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
-		i++;
+		return (1);
 	}
 	return (0);
+}
+
+int			ft_atoi(const char *str)
+{
+	int		i;
+	int		sign;
+	int		nb;
+
+	i = 0;
+	nb = 0;
+	sign = 1;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	else if (str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]))
+	{
+		nb = nb * 10 + (str[i] - '0') * sign;
+		i++;
+	}
+	return (nb);
 }

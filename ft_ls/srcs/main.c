@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/05 13:47:27 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 13:03:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ int				main(int size, char **args)
 	env->show_path_name = FALSE;
 	env->paths = NULL;
 	env->files = NULL;
-	if (!parse(env, size, args))
-		exit_clean(1, "parsing failed", env);
+	parse(env, size, args);
 	compute_all(env);
 	free(env);
 	return (0);

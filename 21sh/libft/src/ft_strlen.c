@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/23 14:10:08 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/12/20 14:00:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+size_t		ft_strlen(char const *str)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t	tmp;
 
-	(void)size;
-	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
-	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
-		i++;
-	}
-	return (0);
+	tmp = 0;
+	while (str[tmp] != '\0')
+		tmp++;
+	return (tmp);
 }

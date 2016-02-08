@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/05 13:47:49 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 13:01:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void		compute_dir(t_env *env, t_path *path)
 		if (env->recursive)
 		{
 			if (tmp->d_type == DT_DIR && !is_hidden(env, tmp->d_name))
-				ft_addpath_path(path,
-						ft_strjoins(name, "/", tmp->d_name));
+				ft_addpath_path(path, ft_strjoins(name, "/", tmp->d_name));
 		}
 		ft_addfile(path, tmp);
 	}

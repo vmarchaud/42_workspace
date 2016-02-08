@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/25 11:25:10 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/11/25 11:28:20 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t	i;
+	size_t	j;
 
-	(void)size;
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	j = 0;
+	if (s1)
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
-		i++;
+		if (!s2)
+			return ((char *)s1);
+		while (s1[i] != '\0' && i < n)
+		{
+			j = 0;
+			while (s1[i + j] && (i + j) < n && s1[i + j] == s2[j])
+				j++;
+			if (s2[j] == '\0')
+				return ((char *)&s1[i]);
+			i++;
+		}
 	}
-	return (0);
+	return (NULL);
 }

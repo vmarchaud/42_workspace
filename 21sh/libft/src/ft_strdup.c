@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/23 18:07:08 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/01/05 14:28:57 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+char	*ft_strdup(char const *str)
 {
-	int		fd;
-	char	*line;
+	char	*new;
 	int		i;
 
-	(void)size;
+	new = (char *)malloc(sizeof(char) * ft_strlen(str));
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	while (str[i] != '\0')
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
+		new[i] = str[i];
 		i++;
 	}
-	return (0);
+	new[i] = '\0';
+	return (new);
 }

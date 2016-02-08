@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/23 16:46:54 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/11/24 13:35:55 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+char	*ft_strncat(char *dest, const char *src, size_t nb)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t	i;
+	size_t	j;
 
-	(void)size;
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	while (dest[i] != '\0')
+		i++;
+	j = 0;
+	while (src[j] != '\0' && j < nb)
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
+		dest[i] = src[j];
+		j++;
 		i++;
 	}
-	return (0);
+	dest[i] = '\0';
+	return (dest);
 }

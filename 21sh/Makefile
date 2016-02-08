@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/02/08 12:59:35 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/02/05 12:31:35 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ INC_PATH = ./includes/
 INC_LIBFT_PATH = ./libft/includes/
 LIB_PATH = ./libft/
 
-NAME = minishell
+NAME = ft_ls
 CC = gcc
 CFLAGS = -Werror -Wextra -Wall
 
-SRC_NAME = main.c
+SRC_NAME = main.c parse.c lst_util.c compute.c util.c sort_file.c sort_paths.c\
+		   stat.c stat2.c show.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 LIB_NAME = libft.a
 

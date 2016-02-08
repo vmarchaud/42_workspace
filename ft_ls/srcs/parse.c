@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 14:21:26 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/04 14:43:57 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 13:03:10 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,13 @@ void		addfile_to_env(t_env *env, char *path)
 	pushfile(env, new);
 }
 
-int			parse(t_env *env, int size, char **args)
+void		parse(t_env *env, int size, char **args)
 {
 	int		i;
 	int		ret;
 
-	i = 1;
-	while (i < size)
+	i = 0;
+	while (++i < size)
 	{
 		if (*args[i] == '-' && env->paths == NULL)
 			parse_arg(env, args[i] + 1);
@@ -126,9 +126,7 @@ int			parse(t_env *env, int size, char **args)
 			else if (ret == 3)
 				addfile_to_env(env, args[i]);
 		}
-		i++;
 	}
 	if (env->paths == NULL && env->files == NULL && ret != -1)
 		ft_addpath_env(env, ".");
-	return (TRUE);
 }

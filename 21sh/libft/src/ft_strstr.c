@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/23 14:20:45 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/11/25 15:01:40 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
-
-int		main(int size, char **args)
+char	*ft_strstr(char *str1, char *str2)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	int i;
+	int j;
+	int size;
 
-	(void)size;
+	size = 0;
+	while (str2[size] != '\0')
+		size++;
+	if (size == 0)
+		return (str1);
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	j = 0;
+	while (str1[i] != '\0')
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
+		while (str1[i + j] == str2[j])
+		{
+			j++;
+			if (j == size)
+				return (str1 + i);
+		}
+		j = 0;
 		i++;
 	}
 	return (0);

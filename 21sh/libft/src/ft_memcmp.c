@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/11/24 11:38:08 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/11/24 13:20:05 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+int		ft_memcmp(const void *s1, const void *s2, size_t size)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-	(void)size;
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	if (size == 0)
+		return (0);
+	while (i < size)
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
+		if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
 		i++;
 	}
 	return (0);

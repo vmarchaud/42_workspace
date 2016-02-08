@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_count_char.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/28 11:10:30 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:48:29 by vmarchau         ###   ########.fr       */
+/*   Created: 2015/12/02 13:13:26 by vmarchau          #+#    #+#             */
+/*   Updated: 2015/12/02 13:43:17 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "get_next_line.h"
-#include <fcntl.h>
 
-int		main(int size, char **args)
+size_t		ft_count_char(char *str, char c)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t i;
+	size_t count;
 
-	(void)size;
 	i = 0;
-	fd = open(args[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	count = 0;
+	while (str[i])
 	{
-		ft_putnbr(i);
-		ft_putchar('\t');
-		ft_putendl(line);
+		if (str[i] == c)
+			count++;
 		i++;
 	}
-	return (0);
+	return (count);
 }

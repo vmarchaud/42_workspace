@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:39:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/03 14:21:49 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 13:03:46 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct		s_env
 	int				show_path_name;
 }					t_env;
 
-int					parse(t_env *env, int size, char **args);
+void				parse(t_env *env, int size, char **args);
 void				exit_clean(int error, char *msg, t_env *env);
 
 void				ft_addpath_env(t_env *env, char *name);
