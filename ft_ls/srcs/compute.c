@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 11:37:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/08 13:01:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 14:31:10 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		explore_dir(t_env *env, t_path *path)
 	if (tmp != NULL && env->sort_time == TRUE)
 		sort_paths_by_time(path);
 	if (tmp != NULL && env->reverse == TRUE)
-		sort_paths_reverse(path);
+		path->paths = sort_paths_reverse(path->paths);
 	tmp = path->paths;
 	while (tmp != NULL)
 	{

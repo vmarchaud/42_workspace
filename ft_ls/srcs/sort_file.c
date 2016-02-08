@@ -12,66 +12,57 @@
 
 #include "ft_ls.h"
 
-static t_filew		*find_prev(t_filew **head, char *name)
+static void			swap_files(t_filew *cur, t_filew *next)
 {
-	t_filew *tmp;
+	void		*swap;
+	__uint8_t	*tmp;
+	struct stat *tmpp;
 
-	tmp = *head;
-	if (ft_strcmp((*head)->name, name) == 0)
-		return (*head);
-	while (tmp->next != NULL)
-	{
-		if (ft_strcmp(tmp->next->name, name) == 0)
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-static void			swap(t_filew *f1, t_filew *f2, t_filew *f3)
-{
-	f1->next = f3;
-	f2->next = f3->next;
-	f3->next = f2;
+	swap = cur->name;
+	cur->name = next->name;
+	next->name = swap;
+	tmp = cur->type;
+	cur->type = next->type;
+	next->type = tmp;
+	tmpp = cur->stat;
+	cur->stat = next->stat;
+	next->stat = tmpp;
+	swap = cur->path;
+	cur->path = next->path;
+	next->path = swap;
 }
 
 void				sort_file_by_alpha(t_filew *file)
 {
 	t_filew		*curr;
-	t_filew		*prev;
 
 	curr = file;
 	while (curr->next != NULL)
 	{
 		if (ft_strcmp(curr->name, curr->next->name) > 0)
 		{
-			prev = find_prev(&file, curr->name);
-			swap(prev, curr, curr->next);
+			swap_files(curr, curr->next);
 			curr = file;
-			prev = NULL;
+			continue ;
 		}
-		prev = curr;
 		curr = curr->next;
 	}
 }
 
 void				sort_file_by_time(t_filew *file)
 {
-	t_filew		*curr;
-	t_filew		*prev;
+	t_filew	*tmp;
 
-	curr = file;
-	while (curr->next != NULL)
+	tmp = file;
+	while (tmp && tmp->next != NULL)
 	{
-		if (curr->stat->st_mtime < curr->next->stat->st_mtime)
+		if (tmp->stat->st_mtime < tmp->next->stat->st_mtime)
 		{
-			prev = find_prev(&file, curr->name);
-			swap(prev, curr, curr->next);
-			curr = file;
-			prev = NULL;
+			swap_files(tmp, tmp->next);
+			tmp = file;
+			continue ;
 		}
-		prev = curr;
-		curr = curr->next;
+		tmp = tmp->next;
 	}
 }
 

@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void		ft_swap_path(t_path *cur, t_path *next)
+void		swap_path(t_path *cur, t_path *next)
 {
 	void			*swap;
 	struct s_path	*swap_path;
@@ -37,45 +37,43 @@ void		sort_paths_by_alpha(t_path *path)
 {
 	t_path		*curr;
 
-	curr = path->paths;
+	curr = path;
 	while (curr->next != NULL)
 	{
 		if (ft_strcmp(curr->name, curr->next->name) > 0)
 		{
-			ft_swap_path(curr, curr->next);
-			curr = path->paths;
+			swap_path(curr, curr->next);
+			curr = path;
 			continue ;
 		}
 		curr = curr->next;
 	}
 }
 
-void		sort_paths_by_time(t_path *path)
+void		sort_paths_by_time(t_path *lst)
 {
-	t_path		*curr;
-	t_path		*prev;
+	t_path	*tmp;
 
-	curr = path->paths;
-	while (curr->next != NULL)
+	tmp = lst;
+	while (tmp && tmp->next != NULL)
 	{
-		if (curr->stat->st_mtime < curr->next->stat->st_mtime)
+		if (tmp->stat->st_mtime < tmp->next->stat->st_mtime)
 		{
-			ft_swap_path(curr, curr->next);
-			curr = path->paths;
-			prev = NULL;
+			swap_path(tmp, tmp->next);
+			tmp = lst;
+			continue ;
 		}
-		prev = curr;
-		curr = curr->next;
+		tmp = tmp->next;
 	}
 }
 
-void		sort_paths_reverse(t_path *list)
+t_path		*sort_paths_reverse(t_path *list)
 {
-	t_path		*tmp;
-	t_path		*first;
-	t_path		*new;
+	t_path	*tmp;
+	t_path	*first;
+	t_path	*new;
 
-	tmp = list->paths;
+	tmp = list;
 	first = NULL;
 	while (tmp)
 	{
@@ -84,5 +82,6 @@ void		sort_paths_reverse(t_path *list)
 		tmp = tmp->next;
 		first->next = new;
 	}
-	list->paths = first;
+	return (first);
 }
+

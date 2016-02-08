@@ -72,7 +72,7 @@ char				*get_real_path(char *path);
 void				sort_file_by_alpha(t_filew *file);
 t_filew				*sort_file_reverse(t_filew *file);
 void				sort_paths_by_alpha(t_path *path);
-void				sort_paths_reverse(t_path *path);
+t_path				*sort_paths_reverse(t_path *list);
 void				sort_paths_by_time(t_path *path);
 void				sort_file_by_time(t_filew *file);
 
