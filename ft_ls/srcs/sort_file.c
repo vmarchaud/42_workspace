@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/02 10:57:17 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/08 15:16:46 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,51 @@ static void			swap_files(t_filew *cur, t_filew *next)
 	next->path = swap;
 }
 
-void				sort_file_by_alpha(t_filew *file)
+void				sort_file_by_alpha(t_filew *lst)
 {
-	t_filew		*curr;
+	t_filew	*tmp;
+	int		flag;
 
-	curr = file;
-	while (curr->next != NULL)
+	flag = 1;
+	if (!lst || !lst->next)
+		return ;
+	while (flag)
 	{
-		if (ft_strcmp(curr->name, curr->next->name) > 0)
+		tmp = lst;
+		flag = 0;
+		while (tmp->next)
 		{
-			swap_files(curr, curr->next);
-			curr = file;
-			continue ;
+			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+			{
+				swap_files(tmp, tmp->next);
+				flag = 1;
+			}
+			tmp = tmp->next;
 		}
-		curr = curr->next;
 	}
 }
 
-void				sort_file_by_time(t_filew *file)
+void				sort_file_by_time(t_filew *lst)
 {
-	t_filew	*tmp;
+	t_filew *tmp;
+	int		flag;
 
-	tmp = file;
-	while (tmp && tmp->next != NULL)
+	flag = 1;
+	if (!lst || !lst->next)
+		return ;
+	while (flag)
 	{
-		if (tmp->stat->st_mtime < tmp->next->stat->st_mtime)
+		tmp = lst;
+		flag = 0;
+		while (tmp->next)
 		{
-			swap_files(tmp, tmp->next);
-			tmp = file;
-			continue ;
+			if (tmp->stat->st_mtime < tmp->next->stat->st_mtime)
+			{
+				swap_files(tmp, tmp->next);
+				flag = 1;
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
 }
 
