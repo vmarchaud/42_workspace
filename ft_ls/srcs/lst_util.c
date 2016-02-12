@@ -34,12 +34,10 @@ t_filew		*ft_newfile(struct dirent *dirent)
 	if ((f = (t_filew*)malloc(sizeof(t_filew))) == NULL)
 		return (NULL);
 	f->name = ft_strdup(dirent->d_name);
-	if ((f->type = (__uint8_t*)malloc(sizeof(__uint8_t))) == NULL)
-		return (NULL);
-	ft_memcpy(f->type, &dirent->d_type, sizeof(dirent->d_type));
 	f->next = NULL;
 	if ((f->stat = (struct stat*)malloc(sizeof(struct stat))) == NULL)
 		return (NULL);
+	f->path = NULL;
 	return (f);
 }
 

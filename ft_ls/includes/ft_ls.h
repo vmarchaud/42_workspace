@@ -25,7 +25,7 @@ typedef struct		s_filew
 {
 	char			*name;
 	t_stat			*stat;
-	__uint8_t		*type;
+	int				*type;
 	char			*path;
 	struct s_filew	*next;
 }					t_filew;
@@ -69,7 +69,7 @@ size_t				count_block_used(t_env *env, t_path *path);
 int					is_request_path(t_env *env, char *name);
 char				*get_real_path(char *path);
 
-void				sort_file_by_alpha(t_filew *file);
+t_filew				*sort_file_by_alpha(t_filew *file);
 t_filew				*sort_file_reverse(t_filew *file);
 void				sort_paths_by_alpha(t_path *path);
 t_path				*sort_paths_reverse(t_path *list);

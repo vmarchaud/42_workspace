@@ -12,48 +12,36 @@
 
 #include "ft_ls.h"
 
-static void			swap_files(t_filew *cur, t_filew *next)
+static void			swap_files(t_filew *cur, t_filew *nexte)
 {
 	void		*swap;
-	__uint8_t	*tmp;
 	struct stat *tmpp;
 
 	swap = cur->name;
-	cur->name = next->name;
-	next->name = swap;
-	tmp = cur->type;
-	cur->type = next->type;
-	next->type = tmp;
+	cur->name = nexte->name;
+	nexte->name = swap;
 	tmpp = cur->stat;
-	cur->stat = next->stat;
-	next->stat = tmpp;
-	swap = cur->path;
-	cur->path = next->path;
-	next->path = swap;
+	cur->stat = nexte->stat;
+	nexte->stat = tmpp;
 }
 
-void				sort_file_by_alpha(t_filew *lst)
+#include <stdio.h>
+t_filew				*sort_file_by_alpha(t_filew *lst)
 {
 	t_filew	*tmp;
-	int		flag;
-
-	flag = 1;
-	if (!lst || !lst->next)
-		return ;
-	while (flag)
+	
+	tmp = lst;
+	while (tmp->next)
 	{
-		tmp = lst;
-		flag = 0;
-		while (tmp->next)
+		if (strcmp(tmp->name, tmp->next->name) > 0)
 		{
-			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
-			{
-				swap_files(tmp, tmp->next);
-				flag = 1;
-			}
-			tmp = tmp->next;
+			swap_files(tmp, tmp->next);
+			tmp = lst;
 		}
+		else
+			tmp = tmp->next;
 	}
+	return (lst);
 }
 
 void				sort_file_by_time(t_filew *lst)

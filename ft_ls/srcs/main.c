@@ -14,7 +14,6 @@
 
 void			exit_clean(int error, char *reason, t_env *env)
 {
-	(void)env;
 	if (error)
 		ft_putstr("ERROR : ");
 	ft_putendl(reason);
@@ -26,7 +25,7 @@ static void		sort_all(t_env *env)
 {
 
 	if (env->files && env->files->next)
-		sort_file_by_alpha(env->files);
+		env->files = sort_file_by_alpha(env->files);
 	if (env->paths && env->paths->next)
 		sort_paths_by_alpha(env->paths);
 

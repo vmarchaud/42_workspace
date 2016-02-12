@@ -47,7 +47,7 @@ void		explore_dir(t_env *env, t_path *path)
 	t_path *tmp;
 
 	if (path->files)
-		sort_file_by_alpha(path->files);
+		path->files = sort_file_by_alpha(path->files);
 	if (env->sort_time == TRUE)
 		sort_file_by_time(path->files);
 	if (env->reverse == TRUE)
