@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/25 15:18:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/13 14:20:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,3 @@ t_path		*sort_paths_reverse(t_path *list)
 	}
 	return (first);
 }
-

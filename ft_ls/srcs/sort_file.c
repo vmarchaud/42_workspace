@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:46:56 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/08 15:16:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/13 14:14:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,32 @@ static void			swap_files(t_filew *cur, t_filew *nexte)
 	tmpp = cur->stat;
 	cur->stat = nexte->stat;
 	nexte->stat = tmpp;
+	swap = cur->path;
+	cur->path = nexte->path;
+	nexte->path = swap;
 }
 
-#include <stdio.h>
 t_filew				*sort_file_by_alpha(t_filew *lst)
 {
 	t_filew	*tmp;
-	
-	tmp = lst;
-	while (tmp->next)
+	int		flag;
+
+	flag = 1;
+	if (!lst || !lst->next)
+		return (NULL);
+	while (flag)
 	{
-		if (strcmp(tmp->name, tmp->next->name) > 0)
+		tmp = lst;
+		flag = 0;
+		while (tmp->next)
 		{
-			swap_files(tmp, tmp->next);
-			tmp = lst;
-		}
-		else
+			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+			{
+				swap_files(tmp, tmp->next);
+				flag = 1;
+			}
 			tmp = tmp->next;
+		}
 	}
 	return (lst);
 }

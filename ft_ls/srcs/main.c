@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:34:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/08 14:30:39 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/13 14:20:18 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ void			exit_clean(int error, char *reason, t_env *env)
 
 static void		sort_all(t_env *env)
 {
-
 	if (env->files && env->files->next)
 		env->files = sort_file_by_alpha(env->files);
 	if (env->paths && env->paths->next)
 		sort_paths_by_alpha(env->paths);
-
 	if (env->sort_time)
 	{
 		if (env->files && env->files->next)
