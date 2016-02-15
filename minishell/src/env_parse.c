@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   env_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/23 18:07:08 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 12:04:40 by vmarchau         ###   ########.fr       */
+/*   Created: 2016/02/15 12:24:32 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/02/15 12:33:18 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(char const *str)
+char	**env_to_tab(t_env	*env, size_t size)
 {
-	char	*new;
-	int		i;
+	char	**tab;
+	size_t	i;
+	t_env	*tmp;
 
-	new = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if ((tab = malloc(sizeof(char*) * size)) == NULL)
+		return (NULL);
 	i = 0;
-	while (str[i] != '\0')
+	tmp = env;
+	while (i < size)
 	{
-		new[i] = str[i];
+		tab[i] = tmp->value;
 		i++;
+		tmp = tmp->next;
 	}
-	new[i] = '\0';
-	return (new);
+	return (0);
 }
