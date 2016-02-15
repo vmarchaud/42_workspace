@@ -1,48 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_parse.c                                        :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/15 12:24:32 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 13:15:19 by vmarchau         ###   ########.fr       */
+/*   Created: 2016/02/15 13:16:00 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/02/15 13:21:01 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**env_to_tab(t_env	*env, size_t size)
+
+void	show_env(t_env *lst)
 {
-	char	**tab;
-	size_t	i;
 	t_env	*tmp;
 
-	if ((tab = malloc(sizeof(char*) * (size + 1))) == NULL)
-		return (NULL);
-	i = 0;
-	tmp = env;
-	while (i < size)
+	tmp = lst;
+	while (tmp)
 	{
-		tab[i] = assmbl_env(tmp->key, tmp->value);
-		i++;
+		write(1, tmp->key, ft_strlen(tmp->key));
+		write(1, "=", 1);
+		write(1, tmp->value, ft_strlen(tmp->value));
+		write(1, "\n", 1);
 		tmp = tmp->next;
 	}
-	tab[i] == NULL;
-	return (0);
 }
 
-t_env		*tab_to_env(char **tab, size_t size)
-{
-	t_env	*head;
-	size_t	*i;
 
-	while (i < size)
-	{
-		if (!head)
-			head = deassmbl_env(tab[i]);
-		else
-			add_env_entry(head, deassmbl_env(tab[i]));
-	}
-	return (head);
+void	builtin_env(t_global *gbl, int size, char **args)
+{
+	(void)size;
+	(void)args;
+	show_env(gbl->env);
 }
