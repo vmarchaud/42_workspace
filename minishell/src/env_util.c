@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:05:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 13:13:20 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/16 12:28:54 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,18 @@ t_env	*deassmbl_env(char *entry)
 	tab = ft_strsplit(entry, "=");
 	env = new_entry(tab[0], tab[1]);
 	return (env);
+}
+
+t_env	*find_entry(t_global *gbl, char *name)
+{
+	t_env *tmp;
+
+	tmp = gbl->env;
+	while(tmp->next)
+	{
+		if (ft_strcmp(name, tmp->key) == 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

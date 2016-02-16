@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 15:06:00 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/16 12:54:09 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_env				*tab_to_env(char **tab, size_t size);
 
 char				*assmbl_env(char *key, char *value);
 t_env				*deassmbl_env(char *entry);
+t_env				*find_entry(t_global *gbl, char *name);
 
 t_cmd				*new_cmd(char *name, builtin_cmd *funci);
 t_cmd				*register_cmd(t_global *gbl, char *name, builtin_cmd *func);
@@ -58,6 +59,10 @@ t_cmd				*find_cmd(t_global *gbl, char *name);
 
 void				builtin_env(t_global *gbl, int size, char **args);
 
+void				execute(t_global *gbl, char *path, int size, char **args);
+int					execute_cmd(t_global *gbl, int size, char **args);
+
 int					array_size(void **array);
+char				*strjoins(char *first, char *second, char *third);
 
 #endif

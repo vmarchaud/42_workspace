@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 16:01:02 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/16 12:15:48 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	core(t_global *gbl)
 			args = ft_strsplit(line, ' ');
 			if ((cmd = find_cmd(gbl, args[0])) != NULL)
 				cmd->func(gbl, array_size(args), args);
-			else if ()
+			else
+				exec_on_path(gbl, array_size(args), args);
 		}
 	}
 }
