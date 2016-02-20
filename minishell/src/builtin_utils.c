@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:25:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 15:09:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/20 12:52:04 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd		*new_cmd(char *name, builtin_cmd *func)
+t_cmd		*new_cmd(char *name, t_builtin_cmd *func)
 {
 	t_cmd	*new;
 
@@ -24,7 +24,7 @@ t_cmd		*new_cmd(char *name, builtin_cmd *func)
 	return (new);
 }
 
-t_cmd		*register_cmd(t_global *gbl, char *name, builtin_cmd *func)
+t_cmd		*register_cmd(t_global *gbl, char *name, t_builtin_cmd *func)
 {
 	t_cmd	*tmp;
 	t_cmd	*new;

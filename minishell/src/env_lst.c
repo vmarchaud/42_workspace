@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 12:37:32 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/15 13:14:55 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/20 13:04:36 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@ t_env	*new_entry(char *key, char *value)
 
 t_env	*add_env_entry(t_env *env, t_env *entry)
 {
-	if (!env)
+	t_env	*tmp;
+
+	if (env == NULL)
 		env = entry;
 	else
 	{
 		tmp = env;
 		while (tmp->next)
-			tmp = tmp-next;
+			tmp = tmp->next;
 		tmp->next = entry;
 	}
 	return (env);
@@ -62,11 +64,11 @@ t_env	*del_env_entry(t_env *head, char *key)
 		if (ft_strcmp(key, tmp->key) == 0)
 		{
 			if (!prev)
-				clear_elem(head);
+				clear_entry(head);
 			else
 			{
 				prev->next = tmp->next;
-				clear_elem(tmp);
+				clear_entry(tmp);
 			}
 			return (head);
 		}

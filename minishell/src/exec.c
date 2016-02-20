@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/16 12:54:11 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/20 13:07:51 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ char		*check_with_env(t_global *gbl, char *name)
 }
 
 void		execute(t_global *gbl, char *path, int size, char **args)
+{
+	(void)size;
+	fork();
+	execve(path, args, gbl->tabenv);
+}
 
 int			execute_cmd(t_global *gbl, int size, char **args)
 {
@@ -70,6 +75,6 @@ int			execute_cmd(t_global *gbl, int size, char **args)
 	else if (ret == 0 && (path = check_with_env(gbl, args[0])) != NULL)
 		execute(gbl, path, size, args);
 	else
-		ft_putstr("not found");
-	
+		ft_putendl("command not found");
+	return (0);	
 }

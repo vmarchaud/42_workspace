@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 15:06:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/16 12:34:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/20 12:50:49 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		array_size(void **array)
+int		array_size(char **array)
 {
 	int	i;
 	

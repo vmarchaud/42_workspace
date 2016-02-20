@@ -1,55 +1,61 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/02/08 12:59:35 by vmarchau         ###   ########.fr        #
+#    Created: 2015/03/20 14:17:44 by vtarreau          #+#    #+#              #
+#    Updated: 2016/02/20 12:58:02 by vmarchau         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
-
-SRC_PATH = ./srcs/
-OBJ_PATH = ./obj/
-INC_PATH = ./includes/
-INC_LIBFT_PATH = ./libft/includes/
-LIB_PATH = ./libft/
+#******************************************************************************#
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wall -Wextra -g
 
-SRC_NAME = main.c
+SRC_PATH = ./src/
+SRC_NAME = 	main.c builtin_env.c builtin_utils.c env_lst.c env_util.c exec.c \
+			util.c env_parse.c
+
+OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LIB_NAME = libft.a
 
-SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
+INC_PATH = ./libft/includes/ ./includes/
+
+LIB_PATH = ./libft/
+LIB_NAME = ./libft/libft.a
+
+SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
+LIB = $(addprefix -L,$(LIB_PATH))
 INC = $(addprefix -I,$(INC_PATH))
-INC_LIBFT = $(addprefix -I,$(INC_LIBFT_PATH))
-LIB = $(LIB_PATH)$(LIB_NAME)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@make -C $(LIB_PATH)
-	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME)
-	@echo $(NAME) "done."
+		make -C $(LIB_PATH)
+		$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@mkdir $(OBJ_PATH) 2>/dev/null || echo "" > /dev/null
-	$(CC) $(CFLAGS) $(INC_LIBFT) $(INC) -o $@ -c $<
-	@echo "\033[A\033[K\033[A"
+			@mkdir $(OBJ_PATH) 2> /dev/null || echo "" >/dev/null
+			$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 clean:
-	@rm -f $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
+		rm -fv $(OBJ)
+		@make -C $(LIB_PATH) clean
+		@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
 
-fclean: clean
-	@make fclean -C $(LIB_PATH)
-	@rm -f $(NAME)
+fclean:
+		rm -fv $(OBJ)
+		rm -fv $(NAME)
+		@make -C $(LIB_PATH) fclean
 
 re: fclean all
 
-.PHONY: clean fclean re all
+norme:
+	norminette $(SRC)
+	norminette $(IN_PATH)*.h
+
+
+

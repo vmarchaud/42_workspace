@@ -6,12 +6,11 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/16 12:15:48 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/20 13:07:06 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	core(t_global *gbl)
 {
@@ -28,8 +27,10 @@ void	core(t_global *gbl)
 			if ((cmd = find_cmd(gbl, args[0])) != NULL)
 				cmd->func(gbl, array_size(args), args);
 			else
-				exec_on_path(gbl, array_size(args), args);
+				execute_cmd(gbl, array_size(args), args);
 		}
+		free(line);
+		free(args);
 	}
 }
 
@@ -51,7 +52,9 @@ int		main(int size, char **args, char **env)
 	while (env[env_size])
 		env_size++;
 	gbl->env_size = env_size;
+	gbl->tabenv = args;
 	gbl->env = tab_to_env(env, env_size);
+	gbl->cmds = NULL;
 	register_cmds(gbl);
 	core(gbl);
 }
