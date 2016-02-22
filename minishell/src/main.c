@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 13:24:23 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/22 16:28:25 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	register_cmds(t_global *gbl)
 	register_cmd(gbl, "exit", &builtin_exit);
 	register_cmd(gbl, "setenv", &builtin_setenv);
 	register_cmd(gbl, "unsetenv", &builtin_unsetenv);
+	register_cmd(gbl, "cd", &builtin_cd);
 }
 
 int		main(int size, char **args, char **env)

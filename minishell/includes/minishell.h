@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/20 14:50:53 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/22 16:28:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void				builtin_env(t_global *gbl, int size, char **args);
 void				builtin_exit(t_global *gbl, int size, char **args);
 void				builtin_setenv(t_global *gbl, int size, char **args);
 void				builtin_unsetenv(t_global *gbl, int size, char **args);
+void				builtin_cd(t_global *gbl, int size, char **args);
 
 void				execute(t_global *gbl, char *path, int size, char **args);
 int					execute_cmd(t_global *gbl, int size, char **args);
