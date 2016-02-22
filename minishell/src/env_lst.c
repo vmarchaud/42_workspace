@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 12:37:32 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/20 14:49:27 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/22 12:38:37 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env	*add_env_entry(t_env *env, t_env *entry)
 {
 	t_env	*tmp;
 
-	if (!env)
+	if (env == NULL)
 		env = entry;
 	else
 	{

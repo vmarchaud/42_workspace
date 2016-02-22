@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/20 13:39:04 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/22 12:42:23 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		execute(t_global *gbl, char *path, int size, char **args)
 	(void)size;
 	if (fork() == 0)
 	{
-		execve(path, args, env_to_tab(gbl->env, gbl->env_size));
+		execve(path, args, gbl->tabenv);
 		exit(0);
 	}
 	wait(NULL);
