@@ -6,13 +6,13 @@
 /*   By: vmarchau <edelangh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/22 14:56:40 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 15:06:10 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:22:26 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*strreplace(char *str, char *torepl, char *repl)
+char	*strreplace_once(char *str, char *torepl, char *repl)
 {
 	char	*tmp;
 	char	*i;

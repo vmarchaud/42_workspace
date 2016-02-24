@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 16:28:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:47:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void				update_tabenv(t_global *gbl);
 char				*assmbl_env(char *key, char *value);
 t_env				*deassmbl_env(char *entry);
 t_env				*find_entry(t_global *gbl, char *name);
+t_env				*put_entry(t_global *gbl, char *key, char *name);
 
 t_cmd				*new_cmd(char *name, t_builtin_cmd *func);
 t_cmd				*register_cmd(t_global *gbl, char *name, t_builtin_cmd *f);

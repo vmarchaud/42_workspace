@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:05:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 13:01:47 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 12:43:31 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_env	*deassmbl_env(char *entry)
 	return (env);
 }
 
-#include <stdio.h>
 t_env	*find_entry(t_global *gbl, char *name)
 {
 	t_env *tmp;
@@ -48,4 +47,18 @@ t_env	*find_entry(t_global *gbl, char *name)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+t_env	*put_entry(t_global *gbl, char *key, char *value)
+{
+	t_env	*tmp;
+
+	if ((tmp = find_entry(gbl, key)) != NULL)
+	{
+		tmp->old_value = tmp->value;
+		tmp->value = value;
+	}
+	else
+		add_env_entry(gbl->env, new_entry(key, value));
+	return (gbl->env);
 }
