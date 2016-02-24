@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/22 13:24:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 14:23:30 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 15:32:16 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ int		verify_access(char *path)
 		return (0);
 	}
 	return (1);
+}
+
+void	builtin_cd_here(t_global *gbl, char *path)
+{
+	char	**tab;
+
+	if ((tab = malloc(sizeof(char*) * 3)) == NULL)
+		return ;
+	tab[0] = ft_strdup("cd");
+	tab[1] = path;
+	tab[2] = NULL;
+	builtin_cd(gbl, 2, tab);
 }
 
 void	builtin_cd(t_global *gbl, int size, char **args)

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 12:42:23 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 15:38:46 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char		*check_with_env(t_global *gbl, char *name)
 void		execute(t_global *gbl, char *path, int size, char **args)
 {
 	(void)size;
+	if (access(path, X_OK) != 0)
+		return (ft_putendl_fd("Permission denied", 2));
 	if (fork() == 0)
 	{
 		execve(path, args, gbl->tabenv);
@@ -72,9 +74,9 @@ int			execute_cmd(t_global *gbl, int size, char **args)
 	char	*path;
 
 	ret = get_type(args[0]);
-	//if (ret == 2)
-		// builtin_cd
-	if (ret == 1)
+	if (ret == 2 || ret == 3)
+		builtin_cd_here(gbl, args[0]);
+	else if (ret == 1)
 		execute(gbl, args[0], size, args);
 	else if (ret == 0 && (path = check_with_env(gbl, *args)) != NULL)
 		execute(gbl, path, size, args);
