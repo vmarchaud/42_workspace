@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 15:06:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/20 14:31:42 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:44:46 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,20 @@ void	update_shell_lvl(t_global *gbl)
 		*tmp += 1;
 		env->value = tmp;
 	}
+}
+
+int		contains_char(char *str)
+{
+	int	i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (ft_isprint(str[i]) && str[i] != ' ')
+			count++;
+		i++;
+	}
+	return (count > 0 ? 1 : 0);
 }

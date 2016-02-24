@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 12:47:42 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:39:05 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int					execute_cmd(t_global *gbl, int size, char **args);
 int					array_size(char **array);
 char				*strjoins(char *first, char *second, char *third);
 void				update_shell_lvl(t_global *gbl);
+int					contains_char(char *str);
 
 #endif

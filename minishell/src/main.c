@@ -6,31 +6,38 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/22 16:28:25 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/24 14:46:49 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	evaluate_line(t_global *gbl, char *line)
+{
+	t_cmd	*cmd;
+	char	**args;
+
+	if (ft_strlen(line) > 0 && contains_char(line))
+	{
+		line = ft_replace_char(line, '\t', ' ');
+		args = ft_strsplit(line, ' ');
+		if ((cmd = find_cmd(gbl, args[0])) != NULL)
+			cmd->func(gbl, array_size(args), args);
+		else
+			execute_cmd(gbl, array_size(args), args);
+		free(args);
+	}
+}
+
 void	core(t_global *gbl)
 {
 	char	*line;
-	char	**args;
-	t_cmd	*cmd;
 
 	while ((ft_putstr("$> "), 42))
 	{
 		get_next_line(0, &line);
-		if (ft_strlen(line) > 0)
-		{
-			args = ft_strsplit(line, ' ');
-			if ((cmd = find_cmd(gbl, args[0])) != NULL)
-				cmd->func(gbl, array_size(args), args);
-			else
-				execute_cmd(gbl, array_size(args), args);
-			free(line);
-			free(args);
-		}
+		evaluate_line(gbl, line);
+		free(line);
 	}
 }
 
