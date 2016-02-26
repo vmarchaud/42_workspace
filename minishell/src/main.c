@@ -6,11 +6,12 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 14:46:49 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/26 14:02:14 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
 void	evaluate_line(t_global *gbl, char *line)
 {
@@ -32,11 +33,17 @@ void	evaluate_line(t_global *gbl, char *line)
 void	core(t_global *gbl)
 {
 	char	*line;
+	int		i;
+	char	**cmd;
 
 	while ((ft_putstr("$> "), 42))
 	{
+		i = 0;
 		get_next_line(0, &line);
-		evaluate_line(gbl, line);
+		cmd = ft_strsplit(line, ';');
+		while (cmd[i] != NULL)
+			evaluate_line(gbl, cmd[i++]);
+		free(cmd);
 		free(line);
 	}
 }
@@ -59,6 +66,7 @@ int		main(int size, char **args, char **env)
 	(void)args;
 	if ((gbl = malloc(sizeof(t_global))) == NULL)
 		return (0);
+	signal(SIGINT, SIG_IGN);
 	env_size = array_size(env);
 	gbl->env_size = env_size;
 	gbl->env = tab_to_env(env, env_size);

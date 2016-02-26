@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 15:06:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 14:44:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/26 14:17:53 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	update_shell_lvl(t_global *gbl)
 
 	env = find_entry(gbl, "SHLVL");
 	if (env == NULL)
-		add_env_entry(gbl->env, new_entry("SHLVL", "1"));
+		gbl->env = add_env_entry(gbl->env, new_entry("SHLVL", "1"));
 	else
 	{
 		tmp = env->value;
@@ -64,4 +64,11 @@ int		contains_char(char *str)
 		i++;
 	}
 	return (count > 0 ? 1 : 0);
+}
+
+void	sighandler(int signum)
+{
+	ft_putstr("\n");
+	(void)signum;
+	return ;
 }

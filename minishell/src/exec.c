@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 15:38:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/26 13:34:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void		execute(t_global *gbl, char *path, int size, char **args)
 	(void)size;
 	if (access(path, X_OK) != 0)
 		return (ft_putendl_fd("Permission denied", 2));
-	if (fork() == 0)
+	if (vfork() == 0)
 	{
+		signal(SIGINT, &sighandler);
 		execve(path, args, gbl->tabenv);
-		exit(0);
 	}
 	wait(NULL);
 }

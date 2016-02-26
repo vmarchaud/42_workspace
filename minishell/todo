@@ -1,3 +1,2 @@
 signal
-split cmds by ;
 env -i && env PATH=toto

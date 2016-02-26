@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:16:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/20 14:54:35 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/26 15:45:48 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	show_env(t_env *lst)
 		tmp = tmp->next;
 	}
 }
-
 
 void	builtin_env(t_global *gbl, int size, char **args)
 {
@@ -53,6 +52,35 @@ void	builtin_unsetenv(t_global *gbl, int size, char **args)
 	update_tabenv(gbl);
 }
 
+char	*replace_variable(t_global *gbl, char *key)
+{
+	t_env	*entry;
+	char	**tab;
+	int		i;
+
+	if (ft_strchr(key, '$') == NULL)
+		return (key);
+	tab = ft_strsplit(key, ':');
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		if (!ft_strchr(tab[i], '$'))
+		{
+			i++;
+			continue ;
+		}
+		entry = find_entry(gbl, ft_strchr(tab[i], '$') + 1);
+		if (entry == NULL)
+		{
+			i++;
+			continue ;
+		}
+		tab[i] = strreplace_once(tab[i], ft_strchr(tab[i], '$'), entry->value);
+		i++;
+	}
+	return (assemble_tab((const char **)tab, ":")); 
+}
+
 void	builtin_setenv(t_global *gbl, int size, char **args)
 {
 	t_env	*entry;
@@ -62,10 +90,11 @@ void	builtin_setenv(t_global *gbl, int size, char **args)
 	if (!args[1] || ft_strchr(args[1], '=') ||
 			!args[2] || ft_strchr(args[2], '='))
 		return (ft_putendl_fd("syntax error : setenv <key> <value>", 2));
-
+	
 	entry = find_entry(gbl, args[1]);
+	args[2] = replace_variable(gbl, args[2]);
 	if (entry == NULL)
-		add_env_entry(gbl->env, new_entry(args[1], args[2]));
+		gbl->env = add_env_entry(gbl->env, new_entry(args[1], args[2]));
 	else {
 		entry->old_value = entry->value;
 		entry->value = args[2];

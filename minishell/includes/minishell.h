@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 15:31:24 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/02/26 13:26:50 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ int					array_size(char **array);
 char				*strjoins(char *first, char *second, char *third);
 void				update_shell_lvl(t_global *gbl);
 int					contains_char(char *str);
+void				sighandler(int signum);
 
 #endif
