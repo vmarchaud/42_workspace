@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int			get_type(char *path)
+int		get_type(char *path)
 {
 	struct stat		*stat;
 	int				ret;
@@ -33,7 +33,7 @@ int			get_type(char *path)
 	return (ret);
 }
 
-char		*check_with_env(t_global *gbl, char *name)
+char	*check_with_env(t_global *gbl, char *name)
 {
 	int		i;
 	char	**tab;
@@ -55,20 +55,21 @@ char		*check_with_env(t_global *gbl, char *name)
 	return (NULL);
 }
 
-void		execute(t_global *gbl, char *path, int size, char **args)
+void	execute(t_global *gbl, char *path, int size, char **args, char **tab)
 {
 	(void)size;
+	(void)gbl;
 	if (access(path, X_OK) != 0)
 		return (ft_putendl_fd("Permission denied", 2));
 	if (vfork() == 0)
 	{
 		signal(SIGINT, &sighandler);
-		execve(path, args, gbl->tabenv);
+		execve(path, args, tab);
 	}
 	wait(NULL);
 }
 
-int			execute_cmd(t_global *gbl, int size, char **args)
+int		execute_cmd(t_global *gbl, int size, char **args, char **tab)
 {
 	int		ret;
 	char	*path;
@@ -77,9 +78,9 @@ int			execute_cmd(t_global *gbl, int size, char **args)
 	if (ret == 2 || ret == 3)
 		builtin_cd_here(gbl, args[0]);
 	else if (ret == 1)
-		execute(gbl, args[0], size, args);
+		execute(gbl, args[0], size, args, tab);
 	else if (ret == 0 && (path = check_with_env(gbl, *args)) != NULL)
-		execute(gbl, path, size, args);
+		execute(gbl, path, size, args, tab);
 	else
 		ft_putendl("command not found");
 	return (0);	

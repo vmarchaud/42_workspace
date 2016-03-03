@@ -16,16 +16,19 @@
 void	evaluate_line(t_global *gbl, char *line)
 {
 	t_cmd	*cmd;
+	t_alias	*alias;
 	char	**args;
 
 	if (ft_strlen(line) > 0 && contains_char(line))
 	{
 		line = ft_replace_char(line, '\t', ' ');
+		if((alias = find_alias(gbl, line)) != NULL)
+			line = alias->value;
 		args = ft_strsplit(line, ' ');
 		if ((cmd = find_cmd(gbl, args[0])) != NULL)
 			cmd->func(gbl, array_size(args), args);
 		else
-			execute_cmd(gbl, array_size(args), args);
+			execute_cmd(gbl, array_size(args), args, gbl->tabenv);
 		free(args);
 	}
 }
@@ -55,6 +58,8 @@ void	register_cmds(t_global *gbl)
 	register_cmd(gbl, "setenv", &builtin_setenv);
 	register_cmd(gbl, "unsetenv", &builtin_unsetenv);
 	register_cmd(gbl, "cd", &builtin_cd);
+	register_cmd(gbl, "alias", &builtin_alias);
+	register_cmd(gbl, "unalias", &builtin_unalias);
 }
 
 int		main(int size, char **args, char **env)
@@ -73,6 +78,8 @@ int		main(int size, char **args, char **env)
 	update_shell_lvl(gbl);
 	gbl->tabenv = env_to_tab(gbl->env, env_size);
 	gbl->cmds = NULL;
+	gbl->aliases = NULL;
+	gbl->aliases = add_alias(gbl->aliases, new_alias("ls", "ls -G"));
 	register_cmds(gbl);
 	core(gbl);
 }

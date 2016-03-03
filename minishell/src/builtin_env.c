@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	show_env(t_env *lst)
 {
 	t_env	*tmp;
@@ -30,9 +29,13 @@ void	show_env(t_env *lst)
 
 void	builtin_env(t_global *gbl, int size, char **args)
 {
-	(void)size;
+	char	*tmp = NULL;
+
 	(void)args;
-	show_env(gbl->env);
+	if (size == 1)
+		show_env(gbl->env);
+	else if (size > 3 && ft_strcmp(args[1], "-i"))
+		execute_cmd(gbl, size - 2, &args[2], &tmp);
 }
 
 void	builtin_unsetenv(t_global *gbl, int size, char **args)

@@ -16,7 +16,8 @@ CFLAGS = -Werror -Wall -Wextra -g
 
 SRC_PATH = ./src/
 SRC_NAME = 	main.c builtin_env.c builtin_utils.c env_lst.c env_util.c exec.c \
-			util.c env_parse.c builtin_exit.c builtin_cd.c
+			util.c env_parse.c builtin_exit.c builtin_cd.c builtin_alias.c \
+			alias_util.c alias_lst.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

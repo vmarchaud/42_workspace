@@ -31,7 +31,7 @@ t_cmd		*register_cmd(t_global *gbl, char *name, t_builtin_cmd *func)
 	
 	new = new_cmd(name, func);
 	tmp = gbl->cmds;
-	if (!gbl->cmds)
+	if (gbl->cmds == NULL)
 		gbl->cmds = new;
 	else
 	{

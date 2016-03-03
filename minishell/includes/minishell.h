@@ -26,9 +26,17 @@ typedef struct	s_env
 	struct s_env	*next;
 }				t_env;
 
+typedef struct	s_alias
+{
+	char			*key;
+	char			*value;
+	struct s_alias	*next;
+}				t_alias;
+
 typedef	struct	s_global
 {
 	t_env			*env;
+	t_alias			*aliases;
 	char			**tabenv;
 	size_t			env_size;
 	struct s_cmd	*cmds;
@@ -44,38 +52,48 @@ typedef struct	s_cmd
 }				t_cmd;
 
 
-t_env				*new_entry(char *key, char *value);
-void				clear_entry(t_env *env);
-t_env				*del_env_entry(t_env *head, char *key);
-t_env				*add_env_entry(t_env *head, t_env *entry);
+t_env			*new_entry(char *key, char *value);
+void			clear_entry(t_env *env);
+t_env			*del_env_entry(t_env *head, char *key);
+t_env			*add_env_entry(t_env *head, t_env *entry);
 
-char				**env_to_tab(t_env *env, size_t size);
-t_env				*tab_to_env(char **tab, size_t size);
-void				update_tabenv(t_global *gbl);
+char			**env_to_tab(t_env *env, size_t size);
+t_env			*tab_to_env(char **tab, size_t size);
+void			update_tabenv(t_global *gbl);
 
-char				*assmbl_env(char *key, char *value);
-t_env				*deassmbl_env(char *entry);
-t_env				*find_entry(t_global *gbl, char *name);
-t_env				*put_entry(t_global *gbl, char *key, char *name);
+char			*assmbl_env(char *key, char *value);
+t_env			*deassmbl_env(char *entry);
+t_env			*find_entry(t_global *gbl, char *name);
+t_env			*put_entry(t_global *gbl, char *key, char *name);
 
-t_cmd				*new_cmd(char *name, t_builtin_cmd *func);
-t_cmd				*register_cmd(t_global *gbl, char *name, t_builtin_cmd *f);
-t_cmd				*find_cmd(t_global *gbl, char *name);
+t_cmd			*new_cmd(char *name, t_builtin_cmd *func);
+t_cmd			*register_cmd(t_global *gbl, char *name, t_builtin_cmd *f);
+t_cmd			*find_cmd(t_global *gbl, char *name);
 
-void				builtin_env(t_global *gbl, int size, char **args);
-void				builtin_exit(t_global *gbl, int size, char **args);
-void				builtin_setenv(t_global *gbl, int size, char **args);
-void				builtin_unsetenv(t_global *gbl, int size, char **args);
-void				builtin_cd(t_global *gbl, int size, char **args);
-void				builtin_cd_here(t_global *gbl, char *path);
+void			builtin_env(t_global *gbl, int size, char **args);
+void			builtin_exit(t_global *gbl, int size, char **args);
+void			builtin_setenv(t_global *gbl, int size, char **args);
+void			builtin_unsetenv(t_global *gbl, int size, char **args);
+void			builtin_cd(t_global *gbl, int size, char **args);
+void			builtin_cd_here(t_global *gbl, char *path);
+void			builtin_alias(t_global *gbl, int size, char **args);
+void			builtin_unalias(t_global *gbl, int size, char **args);
 
-void				execute(t_global *gbl, char *path, int size, char **args);
-int					execute_cmd(t_global *gbl, int size, char **args);
+void			execute(t_global *gbl, char *path, int size,
+						char **args, char **tab);
+int				execute_cmd(t_global *gbl, int size, char **args, char **tab);
 
-int					array_size(char **array);
-char				*strjoins(char *first, char *second, char *third);
-void				update_shell_lvl(t_global *gbl);
-int					contains_char(char *str);
-void				sighandler(int signum);
+int				array_size(char **array);
+char			*strjoins(char *first, char *second, char *third);
+void			update_shell_lvl(t_global *gbl);
+int				contains_char(char *str);
+void			sighandler(int signum);
+
+t_alias			*del_alias(t_alias *head, char *key);
+void			clear_alias(t_alias *alias);
+t_alias			*new_alias(char *key, char *value);
+t_alias			*add_alias(t_alias *head, t_alias *entry);
+t_alias			*find_alias(t_global *gbl, char *name);
+t_alias			*put_alias(t_global *gbl, char *key, char *value);
 
 #endif
