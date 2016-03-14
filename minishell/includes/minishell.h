@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 15:13:19 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 15:22:30 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ typedef struct		s_alias
 	struct s_alias	*next;
 }					t_alias;
 
-typedef void		(t_builtin_cmd)	(void*, int, char **);
+typedef	struct		s_global
+{
+	t_env			*env;
+	t_alias			*aliases;
+	char			**tabenv;
+	size_t			env_size;
+	struct s_cmd	*cmds;
+}					t_global;
+
+typedef void		(t_builtin_cmd)(t_global*, int, char **);
 
 typedef struct		s_cmd
 {
@@ -43,15 +52,6 @@ typedef struct		s_cmd
 	t_builtin_cmd	*func;
 	struct s_cmd	*next;
 }					t_cmd;
-
-typedef	struct		s_global
-{
-	t_env			*env;
-	t_alias			*aliases;
-	char			**tabenv;
-	size_t			env_size;
-	t_cmd			*cmds;
-}					t_global;
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);
