@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 12:37:32 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/26 14:18:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 14:44:21 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ t_alias	*new_alias(char *key, char *value)
 	return (new);
 }
 
-
 t_alias	*add_alias(t_alias *head, t_alias *entry)
 {
 	t_alias	*tmp;
 
 	if (head == NULL)
-		head= entry;
+		head = entry;
 	else
 	{
 		tmp = head;
@@ -56,13 +55,14 @@ t_alias	*del_alias(t_alias *head, char *key)
 	t_alias	*prev;
 
 	tmp = head;
+	prev = NULL;
 	while (tmp)
 	{
 		if (ft_strcmp(key, tmp->key) == 0)
 		{
-			if (!prev)
+			if (prev == NULL)
 			{
-				head = head->next;
+				head = tmp->next;
 				clear_alias(tmp);
 			}
 			else

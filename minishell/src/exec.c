@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/26 13:34:24 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 14:54:56 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int		get_type(char *path)
 {
-	struct stat		*stat;
 	int				ret;
+	t_stat			*stat;
 
 	if ((stat = malloc(sizeof(struct stat))) == NULL)
-		return -1;
+		return (-1);
 	if (lstat(path, stat) == -1)
 		ret = 0;
 	else if (S_ISDIR(stat->st_mode))
@@ -55,18 +55,20 @@ char	*check_with_env(t_global *gbl, char *name)
 	return (NULL);
 }
 
-void	execute(t_global *gbl, char *path, int size, char **args, char **tab)
+void	execute(t_global *gbl, char *path, char **args, char **tab)
 {
-	(void)size;
 	(void)gbl;
 	if (access(path, X_OK) != 0)
 		return (ft_putendl_fd("Permission denied", 2));
-	if (vfork() == 0)
+	if (fork() == 0)
 	{
-		signal(SIGINT, &sighandler);
+		signal(SIGINT, SIG_DFL);
 		execve(path, args, tab);
+		exit(0);
 	}
+	signal(SIGINT, &sighandler);
 	wait(NULL);
+	signal(SIGINT, SIG_IGN);
 }
 
 int		execute_cmd(t_global *gbl, int size, char **args, char **tab)
@@ -74,14 +76,15 @@ int		execute_cmd(t_global *gbl, int size, char **args, char **tab)
 	int		ret;
 	char	*path;
 
+	(void)size;
 	ret = get_type(args[0]);
 	if (ret == 2 || ret == 3)
 		builtin_cd_here(gbl, args[0]);
 	else if (ret == 1)
-		execute(gbl, args[0], size, args, tab);
+		execute(gbl, args[0], args, tab);
 	else if (ret == 0 && (path = check_with_env(gbl, *args)) != NULL)
-		execute(gbl, path, size, args, tab);
+		execute(gbl, path, args, tab);
 	else
 		ft_putendl("command not found");
-	return (0);	
+	return (0);
 }

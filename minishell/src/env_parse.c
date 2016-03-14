@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 12:24:32 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/26 14:05:54 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 14:43:42 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**env_to_tab(t_env	*env, size_t size)
+char		**env_to_tab(t_env *env, size_t size)
 {
 	char	**tab;
 	size_t	i;

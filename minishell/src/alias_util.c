@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:05:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 12:43:31 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 14:44:06 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_alias	*find_alias(t_global *gbl, char *name)
 	t_alias *tmp;
 
 	tmp = gbl->aliases;
-	while(tmp)
+	while (tmp)
 	{
 		if (ft_strcmp(name, tmp->key) == 0)
 			return (tmp);

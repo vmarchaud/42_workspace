@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/22 13:24:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/24 15:32:16 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 13:49:22 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,17 @@ int		verify_access(char *path)
 
 	if ((stat = malloc(sizeof(struct stat))) == NULL)
 		return (0);
-	lstat(path, stat);
-	if (!S_ISDIR(stat->st_mode) && !S_ISLNK(stat->st_mode))
-	{
-		ft_putendl_fd("cd: cannot cd in this type", 2);
-		return (0);
-	}
-	else if (access(path, F_OK) != 0)
-	{
+	if (access(path, F_OK) != 0)
 		ft_putendl_fd("cd: directory cant be accessed", 2);
-		return (0);
-	}
-	else if (access(path, X_OK) != 0)
-	{
+	else if (lstat(path, stat) < 0)
 		ft_putendl_fd("cd: permission denied", 2);
-		return (0);
-	}
-	return (1);
+	else if (!S_ISDIR(stat->st_mode) && !S_ISLNK(stat->st_mode))
+		ft_putendl_fd("cd: cannot cd in this type", 2);
+	else if (access(path, X_OK) != 0)
+		ft_putendl_fd("cd: permission denied", 2);
+	else
+		return (1);
+	return (0);
 }
 
 void	builtin_cd_here(t_global *gbl, char *path)

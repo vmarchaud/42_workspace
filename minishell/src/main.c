@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/26 14:02:14 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/14 14:42:28 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	evaluate_line(t_global *gbl, char *line)
 	if (ft_strlen(line) > 0 && contains_char(line))
 	{
 		line = ft_replace_char(line, '\t', ' ');
-		if((alias = find_alias(gbl, line)) != NULL)
+		if ((alias = find_alias(gbl, line)) != NULL)
 			line = alias->value;
 		args = ft_strsplit(line, ' ');
 		if ((cmd = find_cmd(gbl, args[0])) != NULL)
@@ -39,8 +39,9 @@ void	core(t_global *gbl)
 	int		i;
 	char	**cmd;
 
-	while ((ft_putstr("$> "), 42))
+	while (42)
 	{
+		ft_putstr("$> ");
 		i = 0;
 		get_next_line(0, &line);
 		cmd = ft_strsplit(line, ';');
@@ -60,6 +61,8 @@ void	register_cmds(t_global *gbl)
 	register_cmd(gbl, "cd", &builtin_cd);
 	register_cmd(gbl, "alias", &builtin_alias);
 	register_cmd(gbl, "unalias", &builtin_unalias);
+	register_cmd(gbl, "aliaslst", &builtin_aliaslist);
+	put_alias(gbl, ft_strdup("ls"), ft_strdup("ls -G"));
 }
 
 int		main(int size, char **args, char **env)
@@ -79,7 +82,6 @@ int		main(int size, char **args, char **env)
 	gbl->tabenv = env_to_tab(gbl->env, env_size);
 	gbl->cmds = NULL;
 	gbl->aliases = NULL;
-	gbl->aliases = add_alias(gbl->aliases, new_alias("ls", "ls -G"));
 	register_cmds(gbl);
 	core(gbl);
 }
