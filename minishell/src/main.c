@@ -13,26 +13,6 @@
 #include "minishell.h"
 #include <signal.h>
 
-void	evaluate_line(t_global *gbl, char *line)
-{
-	t_cmd	*cmd;
-	t_alias	*alias;
-	char	**args;
-
-	if (ft_strlen(line) > 0 && contains_char(line))
-	{
-		line = ft_replace_char(line, '\t', ' ');
-		if ((alias = find_alias(gbl, line)) != NULL)
-			line = alias->value;
-		args = ft_strsplit(line, ' ');
-		if ((cmd = find_cmd(gbl, args[0])) != NULL)
-			cmd->func(gbl, array_size(args), args);
-		else
-			execute_cmd(gbl, array_size(args), args, gbl->tabenv);
-		free(args);
-	}
-}
-
 void	core(t_global *gbl)
 {
 	char	*line;

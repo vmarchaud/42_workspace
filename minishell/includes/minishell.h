@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 15:22:30 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 12:49:41 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct		s_cmd
 	t_builtin_cmd	*func;
 	struct s_cmd	*next;
 }					t_cmd;
+
+void				evaluate_line(t_global *gbl, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);
