@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/25 12:12:20 by vmarchau          #+#    #+#             */
-/*   Updated: 2015/12/15 14:15:57 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 16:01:36 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	str = ft_strnew(ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = ft_strnew(ft_strlen(s1) + ft_strlen(s2));
 	if (!str)
 		return (NULL);
 	i = 0;

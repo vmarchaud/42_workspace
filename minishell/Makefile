@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/16 15:01:51 by vmarchau          #+#    #+#              #
-#    Updated: 2016/03/16 15:13:02 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/03/16 16:10:49 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,10 @@ INC = $(addprefix -I,$(INC_PATH))
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-		@make -C $(LIB_PATH)
+$(LIB_PATH):
+	@make -C $(LIB_PATH)
+
+$(NAME): $(OBJ) $(LIB_PATH)
 		@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
 		@echo $(NAME) "done."
 
@@ -60,4 +62,4 @@ norme:
 	norminette $(SRC)
 	norminette $(IN_PATH)*.h
 
-.PHONY: clean re all fclean norme
+.PHONY: clean re all fclean norme $(LIB_PATH)

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:16:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 13:22:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 15:20:06 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	builtin_alias(t_global *gbl, int size, char **args)
 		return (ft_putendl_fd("usage error : alias <key> <value>", 2));
 	if (!args[1] || !args[2])
 		return (ft_putendl_fd("syntax error : alias <key> <value>", 2));
-	put_alias(gbl, args[1], args[2]);
+	gbl->aliases = put_alias(gbl, ft_strdup(args[1]), ft_strdup(args[2]));
 }
 
 void	builtin_aliaslist(t_global *gbl, int size, char **args)

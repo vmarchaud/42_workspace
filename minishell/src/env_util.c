@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:05:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 15:37:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 15:51:10 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,13 @@ t_env	*put_entry(t_global *gbl, char *key, char *value)
 	if ((tmp = find_entry(gbl, key)) != NULL)
 	{
 		tmp->old_value = tmp->value;
-		tmp->value = value;
+		tmp->value = ft_strdup(value);
 	}
 	else
-		add_env_entry(gbl->env, new_entry(key, value));
+	{
+		gbl->env = add_env_entry(gbl->env,
+				new_entry(ft_strdup(key), ft_strdup(value)));
+		gbl->env_size++;
+	}
 	return (gbl->env);
 }
