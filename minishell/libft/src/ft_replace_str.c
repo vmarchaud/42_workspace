@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 12:32:27 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 13:37:58 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 14:43:10 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_replace_str(char *str, char *pattern, char *repl)
 	while (ft_strstr(str, pattern) != NULL)
 	{
 		tmp = ft_strdup(str);
-		buff  = ft_strstr(tmp, pattern);
+		buff = ft_strstr(tmp, pattern);
 		*buff = 0;
 		buff = ft_strjoin(tmp, repl);
 		free(tmp);

@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_replace_char.c                                  :+:      :+:    :+:   */
+/*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/24 14:31:28 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 14:42:57 by vmarchau         ###   ########.fr       */
+/*   Created: 2016/03/16 14:50:57 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/03/16 14:56:55 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef TYPEDEF_H
+# define TYPEDEF_H
 
-char	*ft_replace_char(char *s, char old, char new)
-{
-	int i;
+typedef struct stat		t_stat;
+typedef struct s_cmd	t_cmd;
+typedef struct s_env	t_env;
+typedef struct s_alias	t_alias;
+typedef struct s_global	t_global;
+typedef void			(t_builtin_cmd)(t_global*, int, char **);
 
-	i = -1;
-	while (s[++i])
-	{
-		if (s[i] == old)
-			s[i] = new;
-	}
-	return (s);
-}
+#endif

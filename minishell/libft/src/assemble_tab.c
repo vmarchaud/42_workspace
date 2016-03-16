@@ -6,17 +6,17 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/26 14:44:12 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/02/26 15:27:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 14:42:32 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int    st_getlen(char const **table, int patern_len)
+static int		st_getlen(char const **table, int patern_len)
 {
-	int        ret;
-	int        overflow;
-	int        i;
+	int		ret;
+	int		overflow;
+	int		i;
 
 	i = 0;
 	ret = 1 - patern_len;
@@ -31,10 +31,10 @@ static int    st_getlen(char const **table, int patern_len)
 	return (ret);
 }
 
-char        *assemble_tab(char const **table, char const *patern)
+char			*assemble_tab(char const **table, char const *patern)
 {
-	char    *new;
-	int        i;
+	char	*new;
+	int		i;
 
 	i = st_getlen(table, ft_strlen(patern));
 	if (i < 0)

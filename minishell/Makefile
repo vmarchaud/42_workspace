@@ -1,18 +1,18 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vtarreau <vtarreau@student.42.fr>          +#+  +:+       +#+         #
+#    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/03/20 14:17:44 by vtarreau          #+#    #+#              #
-#    Updated: 2016/03/16 12:50:01 by vmarchau         ###   ########.fr        #
+#    Created: 2016/03/16 15:01:51 by vmarchau          #+#    #+#              #
+#    Updated: 2016/03/16 15:13:02 by vmarchau         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra -g
+CFLAGS = -Werror -Wall -Wextra
 
 SRC_PATH = ./src/
 SRC_NAME = 	main.c builtin_env.c builtin_utils.c env_lst.c env_util.c exec.c \
@@ -35,21 +35,23 @@ INC = $(addprefix -I,$(INC_PATH))
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		make -C $(LIB_PATH)
-		$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
+		@make -C $(LIB_PATH)
+		@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
+		@echo $(NAME) "done."
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-			@mkdir $(OBJ_PATH) 2> /dev/null || echo "" >/dev/null
-			$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+		@mkdir $(OBJ_PATH) 2> /dev/null || echo "" >/dev/null
+		$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+		@echo "\033[A\033[K\033[A"
 
 clean:
-		rm -fv $(OBJ)
+		@rm -rf $(OBJ)
 		@make -C $(LIB_PATH) clean
 		@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
 
 fclean:
-		rm -fv $(OBJ)
-		rm -fv $(NAME)
+		@rm -rf $(OBJ)
+		@rm -rf $(NAME)
 		@make -C $(LIB_PATH) fclean
 
 re: fclean all
@@ -58,5 +60,4 @@ norme:
 	norminette $(SRC)
 	norminette $(IN_PATH)*.h
 
-
-
+.PHONY: clean re all fclean norme

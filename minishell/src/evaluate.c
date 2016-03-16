@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 14:08:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 14:59:07 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,16 @@ char	*replace_pattern(t_global *gbl, char *line)
 	while (ft_strchr(line, '$') != NULL && count < 5)
 	{
 		entry = gbl->env;
-		while (entry)
+		while (entry && ft_strchr(line, '$'))
 		{
-			if (ft_strmatches(entry->key, ft_strchr(line, '$')))
+			if (ft_strncmp(entry->key, ft_strchr(line, '$') + 1,
+						ft_strlen(entry->key)) == 0)
 				line = ft_replace_str(line, ft_strjoin("$", entry->key),
 						entry->value);
 			entry = entry->next;
 		}
 		count++;
 	}
-	ft_putnbr(count);
-	ft_putendl(line);
 	return (line);
 }
 
@@ -57,6 +56,6 @@ void	evaluate_line(t_global *gbl, char *line)
 			cmd->func(gbl, array_size(args), args);
 		else
 			execute_cmd(gbl, array_size(args), args, gbl->tabenv);
-		free(args);
+		ft_freetab(args);
 	}
 }

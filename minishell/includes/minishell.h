@@ -6,52 +6,49 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 12:49:41 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 14:56:41 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft.h"
+# include "typedef.h"
 # include <sys/stat.h>
 # include <sys/types.h>
 # define FALSE 0
 # define TRUE 1
 
-typedef struct stat	t_stat;
-
-typedef struct		s_env
+struct				s_env
 {
 	char			*key;
 	char			*value;
 	char			*old_value;
-	struct s_env	*next;
-}					t_env;
+	t_env			*next;
+};
 
-typedef struct		s_alias
+struct				s_alias
 {
 	char			*key;
 	char			*value;
-	struct s_alias	*next;
-}					t_alias;
+	t_alias			*next;
+};
 
-typedef	struct		s_global
+struct				s_global
 {
 	t_env			*env;
 	t_alias			*aliases;
 	char			**tabenv;
 	size_t			env_size;
-	struct s_cmd	*cmds;
-}					t_global;
+	t_cmd			*cmds;
+};
 
-typedef void		(t_builtin_cmd)(t_global*, int, char **);
-
-typedef struct		s_cmd
+struct				s_cmd
 {
 	char			*name;
 	t_builtin_cmd	*func;
-	struct s_cmd	*next;
-}					t_cmd;
+	t_cmd			*next;
+};
 
 void				evaluate_line(t_global *gbl, char *line);
 
