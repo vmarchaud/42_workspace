@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 14:58:32 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 13:44:18 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	core(t_global *gbl)
 		cmd = ft_strsplit(line, ';');
 		while (cmd[i] != NULL)
 			evaluate_line(gbl, cmd[i++]);
-		ft_freetab(cmd);
 		free(line);
+		ft_freetab(cmd);
 	}
 }
 

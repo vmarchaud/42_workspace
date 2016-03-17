@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:05:57 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 15:51:10 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 11:45:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_env	*deassmbl_env(char *entry)
 	tab = ft_strsplit(entry, '=');
 	if (!tab[1])
 		tab[1] = ft_strdup("");
-	env = new_entry(tab[0], tab[1]);
+	env = new_entry(ft_strdup(tab[0]), ft_strdup(tab[1]));
+	ft_freetab(tab);
 	return (env);
 }
 

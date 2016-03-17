@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 13:16:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 15:54:15 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 11:45:34 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	show_env(t_env *lst)
 	tmp = lst;
 	while (tmp)
 	{
-		write(2, "AA", 2);
 		write(1, tmp->key, ft_strlen(tmp->key));
-		write(2, "BB", 2);
 		write(1, "=", 1);
 		write(1, tmp->value, ft_strlen(tmp->value));
 		write(1, "\n", 1);

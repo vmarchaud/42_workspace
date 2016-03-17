@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/16 12:32:27 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 16:11:17 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 12:07:00 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ char	*ft_replace_str(char *str, char *pattern, char *repl)
 			free(del);
 		}
 		str = buff;
+		del = str;
+		str = ft_strdup(str);
+		free(del);
 	}
-	return (ft_strdup(str));
+	free(pattern);
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/16 11:55:17 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 14:54:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 11:48:44 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,15 @@ char	*check_with_env(t_global *gbl, char *name)
 	while (tab[i])
 	{
 		if (get_type((ret = strjoins(tab[i], "/", name))) == 1)
+		{
+			ft_freetab(tab);
 			return (ret);
+		}
 		else
 			free(ret);
 		i++;
 	}
+	ft_freetab(tab);
 	return (NULL);
 }
 
@@ -69,6 +73,7 @@ void	execute(t_global *gbl, char *path, char **args, char **tab)
 	signal(SIGINT, &sighandler);
 	wait(NULL);
 	signal(SIGINT, SIG_IGN);
+	free(path);
 }
 
 int		execute_cmd(t_global *gbl, int size, char **args, char **tab)
@@ -81,7 +86,7 @@ int		execute_cmd(t_global *gbl, int size, char **args, char **tab)
 	if (ret == 2 || ret == 3)
 		builtin_cd_here(gbl, args[0]);
 	else if (ret == 1)
-		execute(gbl, args[0], args, tab);
+		execute(gbl, ft_strdup(args[0]), args, tab);
 	else if (ret == 0 && (path = check_with_env(gbl, *args)) != NULL)
 		execute(gbl, path, args, tab);
 	else

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 16:05:51 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/17 13:48:37 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char	*replace_pattern(t_global *gbl, char *line)
 
 	count = 0;
 	if (ft_strchr(line, '~') && (entry = find_entry(gbl, "HOME")) != NULL)
-		line = ft_replace_str(line, "~", entry->value);
+		line = ft_replace_str(line, ft_strdup("~"), entry->value);
 	if (ft_strstr(line, " -") && (entry = find_entry(gbl, "OLDPWD")) != NULL &&
 			*(ft_strchr(line, '-') + 1) == 0)
-		line = ft_replace_str(line, "-", entry->value);
+		line = ft_replace_str(line, ft_strdup("-"), entry->value);
 	while (ft_strchr(line, '$') != NULL && count < 5)
 	{
 		entry = gbl->env;
