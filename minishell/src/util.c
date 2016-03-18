@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 15:06:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/14 14:40:30 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/18 12:49:00 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,17 @@ char	*strjoins(char *first, char *second, char *third)
 void	update_shell_lvl(t_global *gbl)
 {
 	t_env	*env;
+	char	*tmp;
 
 	env = find_entry(gbl, "SHLVL");
-	if (env == NULL || !env->value)
+	if (env == NULL)
 		gbl->env = put_entry(gbl, ft_strdup("SHLVL"), ft_strdup("1"));
 	else
+	{
+		tmp = env->value;
 		env->value = ft_itoa(ft_atoi(env->value) + 1);
+		free(tmp);
+	}
 }
 
 int		contains_char(char *str)
