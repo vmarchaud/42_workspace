@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/25 12:26:18 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 12:45:53 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 16:04:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char		**ft_strsplitcpy(char const *s, char c, char **tab)
 		tab[k][j] = '\0';
 		k++;
 	}
-	tab[k] = 0;
+	tab[k] = NULL;
 	return (tab);
 }
 

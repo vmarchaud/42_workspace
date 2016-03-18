@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/25 12:12:20 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 16:01:36 by vmarchau         ###   ########.fr       */
+/*   Created: 2016/03/16 14:50:57 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/03/18 14:25:27 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef TYPEDEF_H
+# define TYPEDEF_H
 
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*str;
-	size_t	i;
-	size_t	j;
+typedef struct stat		t_stat;
+typedef struct s_cmd	t_cmd;
+typedef struct s_env	t_env;
+typedef struct s_alias	t_alias;
+typedef struct s_global	t_global;
+typedef void			(t_builtin_cmd)(t_global*, int, char **);
+typedef struct termios	t_termios;
 
-	str = ft_strnew(ft_strlen(s1) + ft_strlen(s2));
-	if (!str)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[j++] = s2[i++];
-	return (str);
-}
+#endif

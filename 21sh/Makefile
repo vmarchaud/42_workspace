@@ -5,52 +5,61 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/01/11 12:36:55 by vmarchau          #+#    #+#              #
-#    Updated: 2016/02/05 12:31:35 by vmarchau         ###   ########.fr        #
+#    Created: 2016/03/16 15:01:51 by vmarchau          #+#    #+#              #
+#    Updated: 2016/03/18 14:41:01 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC_PATH = ./srcs/
-OBJ_PATH = ./obj/
-INC_PATH = ./includes/
-INC_LIBFT_PATH = ./libft/includes/
-LIB_PATH = ./libft/
-
-NAME = ft_ls
+NAME = 21sh
 CC = gcc
-CFLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wall -Wextra
 
-SRC_NAME = main.c parse.c lst_util.c compute.c util.c sort_file.c sort_paths.c\
-		   stat.c stat2.c show.c
+SRC_PATH = ./src/
+SRC_NAME = 	main.c builtin_env.c builtin_utils.c env_lst.c env_util.c exec.c \
+			util.c env_parse.c builtin_exit.c builtin_cd.c builtin_alias.c \
+			alias_util.c alias_lst.c evaluate.c termcaps.c
+
+OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
-LIB_NAME = libft.a
 
-SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
+INC_PATH = ./libft/includes/ ./includes/
+
+LIB_PATH = ./libft/
+LIB_NAME = ./libft/libft.a
+
+SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
+LIB = $(addprefix -L,$(LIB_PATH))
 INC = $(addprefix -I,$(INC_PATH))
-INC_LIBFT = $(addprefix -I,$(INC_LIBFT_PATH))
-LIB = $(LIB_PATH)$(LIB_NAME)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(LIB_PATH):
 	@make -C $(LIB_PATH)
-	@$(CC) $(CFLAGS) $(LIB) $(INC_LIBFT) $(INC) $(OBJ) -o $(NAME)
-	@echo $(NAME) "done."
+
+$(NAME): $(OBJ) $(LIB_PATH)
+		@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
+		@echo $(NAME) "done."
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@mkdir $(OBJ_PATH) 2>/dev/null || echo "" > /dev/null
-	$(CC) $(CFLAGS) $(INC_LIBFT) $(INC) -o $@ -c $<
-	@echo "\033[A\033[K\033[A"
+		@mkdir $(OBJ_PATH) 2> /dev/null || echo "" >/dev/null
+		$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+		@echo "\033[A\033[K\033[A"
 
 clean:
-	@rm -f $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
+		@rm -rf $(OBJ)
+		@make -C $(LIB_PATH) clean
+		@rmdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
 
-fclean: clean
-	@make fclean -C $(LIB_PATH)
-	@rm -f $(NAME)
+fclean:
+		@rm -rf $(OBJ)
+		@rm -rf $(NAME)
+		@make -C $(LIB_PATH) fclean
 
 re: fclean all
 
-.PHONY: clean fclean re all
+norme:
+	norminette $(SRC)
+	norminette $(IN_PATH)*.h
+
+.PHONY: clean re all fclean norme $(LIB_PATH)

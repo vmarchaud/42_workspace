@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 13:35:21 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/01/07 12:46:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/16 14:59:35 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ char			*ft_strncpy(char *dest, const char *src, size_t size);
 char			*ft_strdup(char const *str);
 char			*ft_strfind(char *str1, char *str2);
 size_t			ft_strlen_bfr_char(char const *str, char c);
+char			*strreplace_once(char *str, char *torepl, char *repl);
+char			*ft_replace_char(char *str, char old, char neuw);
+char			*assemble_tab(char const **tab, char const *between);
+char			*ft_replace_str(char *str, char *pattern, char *repl);
+int				ft_strmatches(char *str, char *str2);
 
 int				ft_memcmp(const void *s1, const void *s2, size_t size);
 void			*ft_memchr(const void *s, int c, size_t size);
@@ -87,6 +92,7 @@ int				ft_power(int nb, int pow);
 size_t			ft_count_char(char *str, char c);
 int				ft_is_begin_word(char const *s, size_t index, char c);
 size_t			ft_count_word(char const *s, char c);
+void			ft_freetab(char **tab);
 
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));

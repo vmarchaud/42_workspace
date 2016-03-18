@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strmatches.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/25 12:12:20 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 16:01:36 by vmarchau         ###   ########.fr       */
+/*   Created: 2016/03/16 13:59:04 by vmarchau          #+#    #+#             */
+/*   Updated: 2016/03/16 14:00:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+int		ft_strmatches(char *str, char *str2)
 {
-	char	*str;
-	size_t	i;
-	size_t	j;
+	int		i;
 
-	str = ft_strnew(ft_strlen(s1) + ft_strlen(s2));
-	if (!str)
-		return (NULL);
 	i = 0;
-	j = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[j++] = s2[i++];
-	return (str);
+	while (str[i] && str2[i])
+	{
+		if (str[i] != str2[i])
+			return (0);
+		i++;
+	}
+	return (1);
 }
