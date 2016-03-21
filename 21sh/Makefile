@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/16 15:01:51 by vmarchau          #+#    #+#              #
-#    Updated: 2016/03/18 14:41:01 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/03/21 13:03:49 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ INC_PATH = ./libft/includes/ ./includes/
 
 LIB_PATH = ./libft/
 LIB_NAME = ./libft/libft.a
+TERMCAPS = -lncurses
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
@@ -38,7 +39,7 @@ $(LIB_PATH):
 	@make -C $(LIB_PATH)
 
 $(NAME): $(OBJ) $(LIB_PATH)
-		@$(CC) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
+		@$(CC) $(TERMCAPS) $(CFLAGS) $(LIB) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ)
 		@echo $(NAME) "done."
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c

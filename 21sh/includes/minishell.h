@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/18 14:41:35 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/21 15:39:33 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include <sys/types.h>
 # define FALSE 0
 # define TRUE 1
+# undef tab
+# define ISKEYUP(in) (in[0] == 65 && in[1] == 91 && in[2] == 27 ? 1 : 0)
+# define ISKEYDOWN(in) (in[0] == 66 && in[1] == 91 && in[2] == 27 ? 1 : 0)
+# define ISKEYRIGHT(in) (in[0] == 67 && in[1] == 91 && in[2] == 27 ? 1 : 0)
+# define ISKEYLEFT(in) (in[0] == 68 && in[1] == 91 && in[2] == 27 ? 1 : 0)
 
 struct				s_env
 {
@@ -57,6 +62,7 @@ void				evaluate_line(t_global *gbl, char *line);
 
 void				setup_term(t_global *gbl);
 void				reset_term(t_global *gbl);
+char				*handle_input(char *input, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);

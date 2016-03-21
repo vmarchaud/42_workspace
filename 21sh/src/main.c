@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/18 14:48:46 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/21 15:43:04 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,20 @@ void	core(t_global *gbl)
 	char	*line;
 	int		i;
 	char	**cmd;
-	char	buff[4];
-
+	char	buff[21];
+	
 	while (42)
 	{
 		ft_putstr("$> ");
 		i = 0;
+		line = ft_strnew(1);
 		while (ft_strchr(line, '\n') == NULL)
 		{
-			read(0, buffer, 3);
-			buff[3] = 0;
-			line = ft_strjoin(line, buff);
-			printf("%s\n", buffer);;
+			ft_bzero(buff, 21);
+			read(0, buff, 20);
+			line = handle_input(buff, line);
 		}
+		line = ft_replace_char(line, '\n', '\0');
 		cmd = ft_strsplit(line, ';');
 		while (cmd[i] != NULL)
 			evaluate_line(gbl, cmd[i++]);
