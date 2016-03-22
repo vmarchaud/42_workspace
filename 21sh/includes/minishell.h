@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/21 15:39:33 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/22 14:15:12 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # define FALSE 0
 # define TRUE 1
 # undef tab
-# define ISKEYUP(in) (in[0] == 65 && in[1] == 91 && in[2] == 27 ? 1 : 0)
-# define ISKEYDOWN(in) (in[0] == 66 && in[1] == 91 && in[2] == 27 ? 1 : 0)
-# define ISKEYRIGHT(in) (in[0] == 67 && in[1] == 91 && in[2] == 27 ? 1 : 0)
-# define ISKEYLEFT(in) (in[0] == 68 && in[1] == 91 && in[2] == 27 ? 1 : 0)
+# define ISKEYUP(in) (in[0] == 27 && in[1] == 91 && in[2] == 65 ? 1 : 0)
+# define ISKEYDOWN(in) (in[0] == 27 && in[1] == 91 && in[2] == 66 ? 1 : 0)
+# define ISKEYRIGHT(in) (in[0] == 27 && in[1] == 91 && in[2] == 67 ? 1 : 0)
+# define ISKEYLEFT(in) (in[0] == 27 && in[1] == 91 && in[2] == 68 ? 1 : 0)
 
 struct				s_env
 {
@@ -49,6 +49,7 @@ struct				s_global
 	size_t			env_size;
 	t_cmd			*cmds;
 	t_termios		*term;
+	t_cursor		*cursor;
 };
 
 struct				s_cmd
@@ -58,11 +59,17 @@ struct				s_cmd
 	t_cmd			*next;
 };
 
+struct				s_cursor
+{
+	size_t			x;
+	size_t			y;
+};
+
 void				evaluate_line(t_global *gbl, char *line);
 
 void				setup_term(t_global *gbl);
 void				reset_term(t_global *gbl);
-char				*handle_input(char *input, char *line);
+char				*handle_input(t_global *gbl, char *input, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);

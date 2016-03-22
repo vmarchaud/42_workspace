@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 14:17:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/21 15:55:33 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/22 14:16:54 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ void	reset_term(t_global *gbl)
 		return ;
 }
 
-char	*handle_input(char *input, char *line)
+char	*handle_input(t_global *gbl, char *input, char *line)
 {
 	char	*tmp;
 
+	(void)gbl;
 	if (ISKEYLEFT(input) && ft_strlen(line) > 0)
 		ft_putstr(tgetstr("le", NULL));
 	else if (ISKEYRIGHT(input))
