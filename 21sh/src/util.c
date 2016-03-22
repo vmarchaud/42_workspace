@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 15:06:11 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/18 12:49:00 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/22 15:46:19 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ int		contains_char(char *str)
 void	sighandler(int signum)
 {
 	ft_putstr("\n");
+	ft_putstr_fd("\n", 0);
 	(void)signum;
 }
