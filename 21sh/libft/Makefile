@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/30 15:54:42 by vmarchau          #+#    #+#              #
-#    Updated: 2016/03/16 14:01:26 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/03/24 13:48:55 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC_NAME  = ft_toupper.c ft_tolower.c ft_isalpha.c ft_memalloc.c ft_memdel.c \
 			ft_lstmap.c ft_lstnew.c ft_count_char.c ft_strfind.c ft_isnumeric.c \
 			ft_strlen_bfr_char.c ft_lstpush_back.c get_next_line.c \
 			strreplace_once.c ft_replace_char.c assemble_tab.c ft_replace_str.c\
-			ft_freetab.c ft_strmatches.c
+			ft_freetab.c ft_strmatches.c ft_str_leftpad.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

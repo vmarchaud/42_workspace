@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/22 14:15:12 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/24 13:07:11 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 # define FALSE 0
 # define TRUE 1
 # undef tab
-# define ISKEYUP(in) (in[0] == 27 && in[1] == 91 && in[2] == 65 ? 1 : 0)
-# define ISKEYDOWN(in) (in[0] == 27 && in[1] == 91 && in[2] == 66 ? 1 : 0)
-# define ISKEYRIGHT(in) (in[0] == 27 && in[1] == 91 && in[2] == 67 ? 1 : 0)
-# define ISKEYLEFT(in) (in[0] == 27 && in[1] == 91 && in[2] == 68 ? 1 : 0)
+# define ISARROW_UP(in) (in[0] == 27 && in[1] == 91 && in[2] == 65 ? 1 : 0)
+# define ISARROW_DOWN(in) (in[0] == 27 && in[1] == 91 && in[2] == 66 ? 1 : 0)
+# define ISARROW_RIGHT(in) (in[0] == 27 && in[1] == 91 && in[2] == 67 ? 1 : 0)
+# define ISARROW_LEFT(in) (in[0] == 27 && in[1] == 91 && in[2] == 68 ? 1 : 0)
 
+#define ISARROW(in) \
+	(ISARROW_UP(in) || ISARROW_DOWN(in) || ISARROW_RIGHT(in) || ISARROW_LEFT(in))
 struct				s_env
 {
 	char			*key;
@@ -108,6 +110,7 @@ char				*strjoins(char *first, char *second, char *third);
 void				update_shell_lvl(t_global *gbl);
 int					contains_char(char *str);
 void				sighandler(int signum);
+void				reset_cursor(t_global *gbl);
 
 t_alias				*del_alias(t_alias *head, char *key);
 void				clear_alias(t_alias *alias);

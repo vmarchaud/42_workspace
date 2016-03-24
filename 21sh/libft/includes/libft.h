@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 13:35:21 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/16 14:59:35 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/24 14:19:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char			*ft_replace_char(char *str, char old, char neuw);
 char			*assemble_tab(char const **tab, char const *between);
 char			*ft_replace_str(char *str, char *pattern, char *repl);
 int				ft_strmatches(char *str, char *str2);
+char			*ft_str_leftpad(char *str, size_t start, size_t padding);
 
 int				ft_memcmp(const void *s1, const void *s2, size_t size);
 void			*ft_memchr(const void *s, int c, size_t size);

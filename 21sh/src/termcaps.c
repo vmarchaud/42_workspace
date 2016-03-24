@@ -44,22 +44,3 @@ void	reset_term(t_global *gbl)
 	if (tcsetattr(0, TCSANOW, &term) == -1)
 		return ;
 }
-
-char	*handle_input(t_global *gbl, char *input, char *line)
-{
-	char	*tmp;
-
-	(void)gbl;
-	if (ISKEYLEFT(input) && ft_strlen(line) > 0)
-		ft_putstr(tgetstr("le", NULL));
-	else if (ISKEYRIGHT(input))
-		ft_putstr(tgetstr("nd", NULL));
-	else if (ft_isprint(input[0]) || input[0] == '\n')
-	{
-		tmp = line;
-		line = ft_strjoin(line, input);
-		free(tmp);
-		ft_putstr(input);
-	}
-	return (line);
-}
