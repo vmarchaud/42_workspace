@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/24 12:18:58 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 14:36:29 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 void	core(t_global *gbl)
 {
 	char	*line;
-	int		i;
-	char	**cmd;
 	char	buff[21];
+	int		i;
 
 	while (42)
 	{
@@ -35,12 +34,11 @@ void	core(t_global *gbl)
 			i = ft_strlen(line) - 1;
 		}
 		line[i] = 0;
-		i = 0;
-		cmd = ft_strsplit(line, ';');
-		while (cmd[i] != NULL)
-			evaluate_line(gbl, cmd[i++]);
+		evaluate_line(gbl, line);
+		gbl->history = reset_hist(gbl->history);
+		if (ft_strlen(line) > 0)
+			gbl->history = add_hist(gbl->history, new_hist(ft_strdup(line)));
 		free(line);
-		ft_freetab(cmd);
 	}
 }
 
@@ -71,6 +69,7 @@ t_global	*init(char **env)
 	gbl->tabenv = env_to_tab(gbl->env, env_size);
 	gbl->cmds = NULL;
 	gbl->aliases = NULL;
+	gbl->history = new_hist("");
 	if ((gbl->cursor = malloc(sizeof(t_cursor))) == NULL)
 		return (NULL);
 	gbl->cursor->x = 0;

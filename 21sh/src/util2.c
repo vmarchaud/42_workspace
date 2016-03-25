@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 12:02:24 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/24 12:14:16 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 12:31:20 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,4 +16,5 @@ void		reset_cursor(t_global *gbl)
 {
 	gbl->cursor->x = 0;
 	gbl->cursor->y = 0;
+	ft_putstr(tgetstr("sc", NULL));
 }

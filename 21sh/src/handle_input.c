@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/24 15:38:50 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 14:36:09 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,21 @@ char	*handle_arrow(t_global *gbl, char *input, char *line) {
 	{
 		ft_putstr(tgetstr("nd", NULL));
 		gbl->cursor->x++;
+	}
+	else if ((ISARROW_UP(input) || ISARROW_DOWN(input)) && gbl->history)
+	{
+		if ((ISARROW_UP(input) && gbl->history->next == NULL) ||
+			(ISARROW_DOWN(input) && gbl->history->prev == NULL))
+			return (line);
+		ft_putstr(tgetstr("rc", NULL));
+		ft_putstr(tgetstr("ce", NULL));
+		if (ISARROW_UP(input))
+			gbl->history = gbl->history->next;
+		else
+			gbl->history = gbl->history->prev;
+		line = ft_strdup(gbl->history->cmd);
+		ft_putstr(line);
+		gbl->cursor->x = ft_strlen(line);
 	}
   return (line);
 }

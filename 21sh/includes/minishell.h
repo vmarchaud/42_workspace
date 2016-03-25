@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/24 13:07:11 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 13:50:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 #define ISARROW(in) \
 	(ISARROW_UP(in) || ISARROW_DOWN(in) || ISARROW_RIGHT(in) || ISARROW_LEFT(in))
+
 struct				s_env
 {
 	char			*key;
@@ -50,8 +51,10 @@ struct				s_global
 	char			**tabenv;
 	size_t			env_size;
 	t_cmd			*cmds;
+	t_hist			*history;
 	t_termios		*term;
 	t_cursor		*cursor;
+	char			*line;
 };
 
 struct				s_cmd
@@ -65,6 +68,13 @@ struct				s_cursor
 {
 	size_t			x;
 	size_t			y;
+};
+
+struct				s_hist
+{
+	char			*cmd;
+	t_hist			*next;
+	t_hist			*prev;
 };
 
 void				evaluate_line(t_global *gbl, char *line);
@@ -118,5 +128,11 @@ t_alias				*new_alias(char *key, char *value);
 t_alias				*add_alias(t_alias *head, t_alias *entry);
 t_alias				*find_alias(t_global *gbl, char *name);
 t_alias				*put_alias(t_global *gbl, char *key, char *value);
+
+t_hist				*new_hist(char *cmd);
+t_hist				*add_hist(t_hist *head, t_hist *value);
+t_hist				*find_hist(t_hist *head, char *cmd);
+t_hist				*reset_hist(t_hist *head);
+void				print_history(t_hist *head);
 
 #endif
