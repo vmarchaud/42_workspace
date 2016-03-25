@@ -6,23 +6,18 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/25 14:36:09 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 15:11:22 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*handle_arrow(t_global *gbl, char *input, char *line) {
+char	*handle_arrow(t_global *gbl, char *input, char *line)
+{
 	if (ISARROW_LEFT(input) && gbl->cursor->x != 0)
-	{
-		ft_putstr(tgetstr("le", NULL));
-		gbl->cursor->x--;
-	}
+		ft_putstr(tgetstr("le", NULL + (gbl->cursor->x++ & 0)));
 	else if (ISARROW_RIGHT(input) && gbl->cursor->x != ft_strlen(line))
-	{
-		ft_putstr(tgetstr("nd", NULL));
-		gbl->cursor->x++;
-	}
+		ft_putstr(tgetstr("nd", NULL + (gbl->cursor->x++ & 0)));
 	else if ((ISARROW_UP(input) || ISARROW_DOWN(input)) && gbl->history)
 	{
 		if ((ISARROW_UP(input) && gbl->history->next == NULL) ||
@@ -38,7 +33,7 @@ char	*handle_arrow(t_global *gbl, char *input, char *line) {
 		ft_putstr(line);
 		gbl->cursor->x = ft_strlen(line);
 	}
-  return (line);
+	return (line);
 }
 
 char	*handle_delete(t_global *gbl, char *input, char *line)
@@ -71,7 +66,7 @@ char	*handle_input(t_global *gbl, char *input, char *line)
 
 	(void)gbl;
 	if (ISARROW(input))
- 		line = handle_arrow(gbl, input, line);
+		line = handle_arrow(gbl, input, line);
 	else if (input[0] == 127 && gbl->cursor->x > 0)
 		line = handle_delete(gbl, input, line);
 	else if (ft_isprint(input[0]) || input[0] == '\n' || input[0] == '\t')

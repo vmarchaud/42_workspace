@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/25 14:36:29 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 15:22:16 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <stdio.h>
 
-void	core(t_global *gbl)
+void		core(t_global *gbl)
 {
 	char	*line;
 	char	buff[21];
@@ -42,7 +42,7 @@ void	core(t_global *gbl)
 	}
 }
 
-void	register_cmds(t_global *gbl)
+void		register_cmds(t_global *gbl)
 {
 	register_cmd(gbl, "env", &builtin_env);
 	register_cmd(gbl, "exit", &builtin_exit);
@@ -77,7 +77,7 @@ t_global	*init(char **env)
 	return (gbl);
 }
 
-int		main(int size, char **args, char **env)
+int			main(int size, char **args, char **env)
 {
 	t_global	*gbl;
 
