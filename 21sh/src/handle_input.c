@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/25 15:11:22 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/28 12:16:23 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*handle_arrow(t_global *gbl, char *input, char *line)
 {
 	if (ISARROW_LEFT(input) && gbl->cursor->x != 0)
-		ft_putstr(tgetstr("le", NULL + (gbl->cursor->x++ & 0)));
+		ft_putstr(tgetstr("le", NULL + (gbl->cursor->x-- & 0)));
 	else if (ISARROW_RIGHT(input) && gbl->cursor->x != ft_strlen(line))
 		ft_putstr(tgetstr("nd", NULL + (gbl->cursor->x++ & 0)));
 	else if ((ISARROW_UP(input) || ISARROW_DOWN(input)) && gbl->history)
@@ -36,7 +36,7 @@ char	*handle_arrow(t_global *gbl, char *input, char *line)
 	return (line);
 }
 
-char	*handle_delete(t_global *gbl, char *input, char *line)
+char	*handle_left_delete(t_global *gbl, char *input, char *line)
 {
 	size_t		i;
 
@@ -60,16 +60,42 @@ char	*handle_delete(t_global *gbl, char *input, char *line)
 	return (line);
 }
 
+char	*handle_rewriting(t_global *gbl, char *input, char *line)
+{
+	char	*new;
+	char	*del;
+	char	*tmp;
+
+	new = ft_strsub(line, 0, gbl->cursor->x);
+	del = new;
+	new = ft_strjoin(new, input);
+	free(del);
+	del = new;
+	tmp = ft_strsub(line, gbl->cursor->x, ft_strlen(line) - gbl->cursor->x);
+	new = ft_strjoin(new, tmp);
+	free(tmp);
+	free(del);
+	ft_putstr(tgetstr("sc", NULL));
+	ft_putstr(tgetstr("ce", NULL));
+	ft_putstr(new + gbl->cursor->x);
+	ft_putstr(tgetstr("rc", NULL));
+	ft_putstr(tgetstr("nd", NULL));
+	gbl->cursor->x++;
+	free(line);
+	return (new);
+}
+
 char	*handle_input(t_global *gbl, char *input, char *line)
 {
 	char	*tmp;
 
-	(void)gbl;
 	if (ISARROW(input))
 		line = handle_arrow(gbl, input, line);
 	else if (input[0] == 127 && gbl->cursor->x > 0)
-		line = handle_delete(gbl, input, line);
-	else if (ft_isprint(input[0]) || input[0] == '\n' || input[0] == '\t')
+		line = handle_left_delete(gbl, input, line);
+	else if (ft_isprint(input[0]) && gbl->cursor->x != ft_strlen(line))
+		line = handle_rewriting(gbl, input, line);
+	else if (ft_isprint(input[0]) || input[0] == '\n')
 	{
 		tmp = line;
 		line = ft_strjoin(line, input);

@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/25 15:25:05 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/25 15:31:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define ISARROW_DOWN(in) (in[0] == 27 && in[1] == 91 && in[2] == 66 ? 1 : 0)
 # define ISARROW_RIGHT(in) (in[0] == 27 && in[1] == 91 && in[2] == 67 ? 1 : 0)
 # define ISARROW_LEFT(in) (in[0] == 27 && in[1] == 91 && in[2] == 68 ? 1 : 0)
-# define ISARROW_LEFT_RIGHT(in) (ISARROW_RIGHT(in) || ISARROW_UP(in))
+# define ISARROW_LEFT_RIGHT(in) (ISARROW_RIGHT(in) || ISARROW_LEFT(in))
 # define ISARROW_UP_DOWN(in) (ISARROW_UP(in) || ISARROW_DOWN(in))
 # define ISARROW(in) (ISARROW_UP_DOWN(in) || ISARROW_LEFT_RIGHT(in))
 
