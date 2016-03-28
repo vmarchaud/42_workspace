@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/28 12:16:23 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/28 14:57:03 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,35 @@ char	*handle_rewriting(t_global *gbl, char *input, char *line)
 	return (new);
 }
 
+char 	*handle_ctrl_arrow(t_global *gbl, char *input, char *line)
+{
+	if (ISCTRLARROW_LEFT(input))
+		prev_word(gbl, line);
+	else if (ISCTRLARROW_RIGHT(input))
+		next_word(gbl, line);
+	return (line);
+}
+
 char	*handle_input(t_global *gbl, char *input, char *line)
 {
 	char	*tmp;
+	int		i;
 
+	i = 0;
+/*	while (input[i])
+	{
+		ft_putchar(' ');
+		ft_putnbr(input[i++]);
+	}*/
+	
 	if (ISARROW(input))
 		line = handle_arrow(gbl, input, line);
 	else if (input[0] == 127 && gbl->cursor->x > 0)
 		line = handle_left_delete(gbl, input, line);
 	else if (ft_isprint(input[0]) && gbl->cursor->x != ft_strlen(line))
 		line = handle_rewriting(gbl, input, line);
+	else if (ISCTRLARROW(input))
+		line = handle_ctrl_arrow(gbl, input, line); 
 	else if (ft_isprint(input[0]) || input[0] == '\n')
 	{
 		tmp = line;
