@@ -6,7 +6,7 @@
 #    By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/16 15:01:51 by vmarchau          #+#    #+#              #
-#    Updated: 2016/03/25 12:22:22 by vmarchau         ###   ########.fr        #
+#    Updated: 2016/03/30 13:19:43 by vmarchau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ CFLAGS = -Werror -Wall -Wextra
 SRC_PATH = ./src/
 SRC_NAME = 	main.c builtin_env.c builtin_utils.c env_lst.c env_util.c exec.c \
 			util.c env_parse.c builtin_exit.c builtin_cd.c builtin_alias.c \
-			alias_util.c alias_lst.c evaluate.c termcaps.c util2.c \
-			handle_input.c history_lst.c
+			alias_util.c alias_lst.c evaluate.c termcaps.c util_cursor.c \
+			handle_input.c history_lst.c handle_input_2.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

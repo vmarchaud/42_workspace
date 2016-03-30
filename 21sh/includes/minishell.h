@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/28 14:56:42 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/30 13:24:02 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define ISCTRLARROW(in) (in[0] == 27 && in[1] == 27 && in[2] == 91)
 # define ISCTRLARROW_LEFT(in) (in[3] == 68)
 # define ISCTRLARROW_RIGHT(in) (in[3] == 67)
+# define IS_HOME(in) (in[0] == 27 && in[1] == 91 && in[2] == 72)
+# define IS_END(in) (in[0] == 27 && in[1] == 91 && in[2] == 70)
+# define IS_HOME_END(in) (IS_HOME(in) || IS_END(in))
 
 struct				s_env
 {
@@ -84,7 +87,12 @@ void				evaluate_line(t_global *gbl, char *line);
 
 void				setup_term(t_global *gbl);
 void				reset_term(t_global *gbl);
+
 char				*handle_input(t_global *gbl, char *input, char *line);
+char				*handle_arrow(t_global *gbl, char *input, char *line);
+char				*handle_left_delete(t_global *gbl, char *input, char *line);
+char				*handle_rewriting(t_global *gbl, char *input, char *line);
+char				*handle_home_end(t_global *gbl, char *input, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);
@@ -123,9 +131,12 @@ char				*strjoins(char *first, char *second, char *third);
 void				update_shell_lvl(t_global *gbl);
 int					contains_char(char *str);
 void				sighandler(int signum);
+
 void				reset_cursor(t_global *gbl);
 void				next_word(t_global *gbl, char *line);
 void				prev_word(t_global *gbl, char *line);
+void				goto_end(t_global *gbl, char *line);
+void				goto_start(t_global *gbl);
 
 t_alias				*del_alias(t_alias *head, char *key);
 void				clear_alias(t_alias *alias);
