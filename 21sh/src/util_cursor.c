@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 12:02:24 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 13:27:21 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/30 13:53:41 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,16 @@ void		reset_cursor(t_global *gbl)
 
 void		goto_start(t_global *gbl)
 {
-	size_t	x;
-	size_t	y;
-
-	x = gbl->cursor->x;
-	y = gbl->cursor->y;
-	while (x > 0)
+	while (gbl->cursor->x > 0)
 	{
 		ft_putstr(tgetstr("le", NULL));
-		x--;
-	}
-	while (y > 0)
-	{
-		ft_putstr(tgetstr("up", NULL));
-		y--;
+		gbl->cursor->x--;
 	}
 }
 
 void		goto_end(t_global *gbl, char *line)
 {
+
 	while (gbl->cursor->x != ft_strlen(line))
 	{
 		ft_putstr(tgetstr("nd", NULL));
@@ -67,6 +58,8 @@ void		prev_word(t_global *gbl, char	*line)
 {
 	size_t	i;
 
+	if (gbl->cursor->x == 0)
+		return ;
 	i = gbl->cursor->x - 1;
 	while (i > 0)
 	{
