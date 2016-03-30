@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 13:24:02 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/30 15:25:12 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 # define IS_HOME(in) (in[0] == 27 && in[1] == 91 && in[2] == 72)
 # define IS_END(in) (in[0] == 27 && in[1] == 91 && in[2] == 70)
 # define IS_HOME_END(in) (IS_HOME(in) || IS_END(in))
+# define IS_CLIP_P(in) (in[0] == 16)
+# define IS_CLIP_A(in) (in[0] == 1)
+# define IS_CLIP_X(in) (in[0] == 24)
+# define IS_CLIPBOARD(in) (IS_CLIP_P(in) || IS_CLIP_A(in) || IS_CLIP_X(in))
 
 struct				s_env
 {
@@ -60,7 +64,7 @@ struct				s_global
 	t_hist			*history;
 	t_termios		*term;
 	t_cursor		*cursor;
-	char			*line;
+	char			*clipboard;
 };
 
 struct				s_cmd
@@ -93,6 +97,7 @@ char				*handle_arrow(t_global *gbl, char *input, char *line);
 char				*handle_left_delete(t_global *gbl, char *input, char *line);
 char				*handle_rewriting(t_global *gbl, char *input, char *line);
 char				*handle_home_end(t_global *gbl, char *input, char *line);
+char				*handle_clipboard(t_global *gbl, char *input, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);

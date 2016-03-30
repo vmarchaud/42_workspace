@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 13:24:11 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/30 15:25:56 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char	*handle_input(t_global *gbl, char *input, char *line)
 		line = handle_ctrl_arrow(gbl, input, line); 
 	else if (IS_HOME_END(input))
 		line = handle_home_end(gbl, input, line);
+	else if (IS_CLIPBOARD(input))
+		line = handle_clipboard(gbl, input, line);
 	else if (ft_isprint(input[0]) || input[0] == '\n')
 	{
 		tmp = line;

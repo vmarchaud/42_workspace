@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/25 15:22:16 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/03/30 14:40:58 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ t_global	*init(char **env)
 	gbl->history = new_hist("");
 	if ((gbl->cursor = malloc(sizeof(t_cursor))) == NULL)
 		return (NULL);
-	gbl->cursor->x = 0;
-	gbl->cursor->y = 0;
+	gbl->clipboard = NULL;
 	return (gbl);
 }
 
