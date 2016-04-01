@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/04/01 15:08:17 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 16:31:15 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*handle_input(t_global *gbl, char *input, char *line)
 		line = handle_arrow(gbl, input, line);
 	else if (input[0] == 127 && gbl->term->x > 0)
 		line = handle_left_delete(gbl, input, line);
-	else if (ft_isprint(input[0]) && gbl->term->x != gbl->lines->size)
+	else if (ft_isprint(input[0]) && gbl->term->x == 4545)
 		line = handle_rewriting(gbl, input, line);
 	else if (ISCTRLARROW(input))
 		line = handle_ctrl_arrow(gbl, input, line);
