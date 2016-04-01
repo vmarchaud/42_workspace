@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 13:09:37 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/04/01 13:27:22 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 15:11:45 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ char	*handle_clipboard(t_global *gbl, char *input, char *line)
 {
 	int	i;
 
-	if (IS_CLIP_A(input) && gbl->cursor->x != ft_strlen(line))
-		gbl->clipboard = ft_strdup(line + gbl->cursor->x);
-	else if (IS_CLIP_X(input) && gbl->cursor->x != ft_strlen(line))
+	if (IS_CLIP_A(input) && gbl->term->x != ft_strlen(line))
+		gbl->clipboard = ft_strdup(line + gbl->term->x);
+	else if (IS_CLIP_X(input) && gbl->term->x != ft_strlen(line))
 	{
-		gbl->clipboard = ft_strdup(line + gbl->cursor->x);
-		line[gbl->cursor->x] = 0;
-		ft_putstr(tgetstr("ce", NULL));
+		gbl->clipboard = ft_strdup(line + gbl->term->x);
+		line[gbl->term->x] = 0;
+		ft_putstr(tgetstr("cd", NULL));
 	}
 	else if (IS_CLIP_P(input) && gbl->clipboard != NULL)
 	{
@@ -40,7 +40,7 @@ char	*handle_clipboard(t_global *gbl, char *input, char *line)
 		while (i > 0)
 		{
 			ft_putstr(tgetstr("nd", NULL));
-			gbl->cursor->x++;
+			gbl->term->x++;
 			i--;
 		}
 	}
@@ -57,8 +57,8 @@ char	*handle_enter(t_global *gbl, char *input, char *line)
 		line = ft_strjoin(line, input);
 		free(del);
 		ft_putstr(input);
-		gbl->cursor->x = 0;
-		gbl->cursor->y++;
+		gbl->term->x = 0;
+		gbl->term->y++;
 		gbl->lines = add_line(gbl);
 	}
 	else

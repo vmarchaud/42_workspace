@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 14:17:33 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/22 15:58:14 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 14:48:33 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	setup_term(t_global *gbl)
 {
-	t_env		*entry;
-	t_termios	term;
+	t_env			*entry;
+	struct termios	term;
 
 	(void)gbl;
 	entry = find_entry(gbl, "TERM");
@@ -35,7 +35,7 @@ void	setup_term(t_global *gbl)
 
 void	reset_term(t_global *gbl)
 {
-	t_termios	term;
+	struct termios	term;
 
 	(void)gbl;
 	if (tcgetattr(0, &term) == -1)

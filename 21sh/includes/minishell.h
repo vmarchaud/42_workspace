@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/04/01 14:06:52 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 14:54:29 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ struct				s_global
 	size_t			env_size;
 	t_cmd			*cmds;
 	t_hist			*history;
-	t_termios		*term;
-	t_cursor		*cursor;
+	t_term			*term;
 	char			*clipboard;
 	int				submit_line;
 	t_line			*lines;
@@ -86,12 +85,11 @@ struct				s_cmd
 	t_cmd			*next;
 };
 
-struct				s_cursor
+struct				s_term
 {
 	size_t			x;
 	size_t			y;
-	size_t			max_y;
-	size_t			max_x;
+	size_t			size_x;
 };
 
 struct				s_hist

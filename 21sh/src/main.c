@@ -6,13 +6,13 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/04/01 14:36:08 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 15:00:24 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
-#include <stdio.h>
+#include <sys/ioctl.h>
 
 void		core(t_global *gbl)
 {
@@ -23,20 +23,19 @@ void		core(t_global *gbl)
 	{
 		ft_putstr("$> ");
 		reset_cursor(gbl);
+		line = ft_strnew(1);
 		gbl->submit_line = FALSE;
 		while (gbl->submit_line == FALSE)
 		{
 			ft_bzero(buff, 21);
 			read(0, buff, 20);
-			gbl->lines->content  = handle_input(gbl, buff, gbl->lines->content);
+			line  = handle_input(gbl, buff, line);
 		}
-		line = compact_lines(gbl);
 		evaluate_line(gbl, line);
 		gbl->history = reset_hist(gbl->history);
 		if (ft_strlen(line) > 0)
 			gbl->history = add_hist(gbl->history, new_hist(ft_strdup(line)));
 		free(line);
-		gbl->lines = reset_lines(gbl);
 	}
 }
 
@@ -55,8 +54,9 @@ void		register_cmds(t_global *gbl)
 
 t_global	*init(char **env)
 {
-	t_global	*gbl;
-	size_t		env_size;
+	t_global		*gbl;
+	size_t			env_size;
+	struct winsize	win;
 
 	if ((gbl = malloc(sizeof(t_global))) == NULL)
 		return (NULL);
@@ -68,10 +68,12 @@ t_global	*init(char **env)
 	gbl->cmds = NULL;
 	gbl->aliases = NULL;
 	gbl->history = new_hist("");
-	if ((gbl->cursor = malloc(sizeof(t_cursor))) == NULL)
+	if ((gbl->term = malloc(sizeof(t_term))) == NULL)
 		return (NULL);
 	gbl->clipboard = NULL;
 	gbl->lines = new_line(gbl);
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &win);
+	gbl->term->size_x = win.ws_col;
 	return (gbl);
 }
 
