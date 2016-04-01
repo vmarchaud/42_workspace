@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 13:09:37 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 15:31:32 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 13:27:22 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,28 @@ char	*handle_clipboard(t_global *gbl, char *input, char *line)
 			gbl->cursor->x++;
 			i--;
 		}
+	}
+	return (line);
+}
+
+char	*handle_enter(t_global *gbl, char *input, char *line)
+{
+	char	*del;
+
+	if (line[ft_strlen(line) - 1] == 92)
+	{
+		del = line;
+		line = ft_strjoin(line, input);
+		free(del);
+		ft_putstr(input);
+		gbl->cursor->x = 0;
+		gbl->cursor->y++;
+		gbl->lines = add_line(gbl);
+	}
+	else
+	{
+		ft_putstr(input);
+		gbl->submit_line = TRUE;
 	}
 	return (line);
 }

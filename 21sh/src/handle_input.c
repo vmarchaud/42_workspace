@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:01:00 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 15:25:56 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 13:25:33 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,11 @@ char	*handle_input(t_global *gbl, char *input, char *line)
 		ft_putchar(' ');
 		ft_putnbr(input[i++]);
 	}*/
-	
 	if (ISARROW(input))
 		line = handle_arrow(gbl, input, line);
 	else if (input[0] == 127 && gbl->cursor->x > 0)
 		line = handle_left_delete(gbl, input, line);
-	else if (ft_isprint(input[0]) && gbl->cursor->x != ft_strlen(line))
+	else if (ft_isprint(input[0]) && gbl->cursor->x != gbl->lines->size)
 		line = handle_rewriting(gbl, input, line);
 	else if (ISCTRLARROW(input))
 		line = handle_ctrl_arrow(gbl, input, line); 
@@ -118,13 +117,17 @@ char	*handle_input(t_global *gbl, char *input, char *line)
 		line = handle_home_end(gbl, input, line);
 	else if (IS_CLIPBOARD(input))
 		line = handle_clipboard(gbl, input, line);
-	else if (ft_isprint(input[0]) || input[0] == '\n')
+	else if (input[0] == '\n')
+		line = handle_enter(gbl, input, line);
+	else if (ft_isprint(input[0]))
 	{
 		tmp = line;
 		line = ft_strjoin(line, input);
 		free(tmp);
 		ft_putstr(input);
 		gbl->cursor->x++;
+		gbl->lines->size++;
+		gbl->lines->content = line;
 	}
 	return (line);
 }

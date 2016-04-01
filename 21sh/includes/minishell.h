@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/08 12:59:44 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 15:25:12 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 14:06:52 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define FALSE 0
 # define TRUE 1
 # undef tab
+# undef lines
+# undef delete_line
 # define ISARROW_UP(in) (in[0] == 27 && in[1] == 91 && in[2] == 65)
 # define ISARROW_DOWN(in) (in[0] == 27 && in[1] == 91 && in[2] == 66)
 # define ISARROW_RIGHT(in) (in[0] == 27 && in[1] == 91 && in[2] == 67)
@@ -47,6 +49,14 @@ struct				s_env
 	t_env			*next;
 };
 
+struct				s_line
+{
+	size_t			index;
+	char			*content;
+	size_t			size;
+	t_line			*next;
+	t_line			*prev;
+};
 struct				s_alias
 {
 	char			*key;
@@ -65,6 +75,8 @@ struct				s_global
 	t_termios		*term;
 	t_cursor		*cursor;
 	char			*clipboard;
+	int				submit_line;
+	t_line			*lines;
 };
 
 struct				s_cmd
@@ -78,6 +90,8 @@ struct				s_cursor
 {
 	size_t			x;
 	size_t			y;
+	size_t			max_y;
+	size_t			max_x;
 };
 
 struct				s_hist
@@ -98,6 +112,7 @@ char				*handle_left_delete(t_global *gbl, char *input, char *line);
 char				*handle_rewriting(t_global *gbl, char *input, char *line);
 char				*handle_home_end(t_global *gbl, char *input, char *line);
 char				*handle_clipboard(t_global *gbl, char *input, char *line);
+char				*handle_enter(t_global *gbl, char *input, char *line);
 
 t_env				*new_entry(char *key, char *value);
 void				clear_entry(t_env *env);
@@ -155,5 +170,12 @@ t_hist				*add_hist(t_hist *head, t_hist *value);
 t_hist				*find_hist(t_hist *head, char *cmd);
 t_hist				*reset_hist(t_hist *head);
 void				print_history(t_hist *head);
+
+t_line				*new_line(t_global *gbl);
+t_line				*add_line(t_global *gbl);
+void				delete_line(t_line *line);
+size_t				find_available_index(t_global *gbl);
+char				*compact_lines(t_global *gbl);
+t_line				*reset_lines(t_global *gbl);
 
 #endif

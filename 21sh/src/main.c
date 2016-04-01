@@ -6,7 +6,7 @@
 /*   By: vmarchau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 14:49:39 by vmarchau          #+#    #+#             */
-/*   Updated: 2016/03/30 14:40:58 by vmarchau         ###   ########.fr       */
+/*   Updated: 2016/04/01 14:36:08 by vmarchau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,25 @@ void		core(t_global *gbl)
 {
 	char	*line;
 	char	buff[21];
-	int		i;
 
 	while (42)
 	{
 		ft_putstr("$> ");
-		line = ft_strnew(1);
 		reset_cursor(gbl);
-		i = 0;
-		while (line[i] != 10 || line[i - 1] == 92)
+		gbl->submit_line = FALSE;
+		while (gbl->submit_line == FALSE)
 		{
 			ft_bzero(buff, 21);
 			read(0, buff, 20);
-			line = handle_input(gbl, buff, line);
-			i = ft_strlen(line) - 1;
+			gbl->lines->content  = handle_input(gbl, buff, gbl->lines->content);
 		}
-		line[i] = 0;
+		line = compact_lines(gbl);
 		evaluate_line(gbl, line);
 		gbl->history = reset_hist(gbl->history);
 		if (ft_strlen(line) > 0)
 			gbl->history = add_hist(gbl->history, new_hist(ft_strdup(line)));
 		free(line);
+		gbl->lines = reset_lines(gbl);
 	}
 }
 
@@ -73,6 +71,7 @@ t_global	*init(char **env)
 	if ((gbl->cursor = malloc(sizeof(t_cursor))) == NULL)
 		return (NULL);
 	gbl->clipboard = NULL;
+	gbl->lines = new_line(gbl);
 	return (gbl);
 }
 
