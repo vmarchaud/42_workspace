@@ -1,0 +1,145 @@
+
+.header {
+    background-color: #909090;
+    height: 140px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px;
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+    width: 1420px;
+    height: 135px;
+}
+
+.reload {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    padding: 10 10 0 0;
+    margin-left: 990px;
+}
+
+.loupe {
+    position: absolute;
+    margin-left: 732px;
+    padding-top: 15px;
+    height: 140px;
+    width: 225px;
+}
+
+.close {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    padding: 0 10 10 0;
+    margin-left: 990px;
+    margin-top: 110px;
+}
+
+
+.content {
+    margin: auto;
+    width: 1360px;
+    position: relative;
+    margin-top: 20;
+}
+
+
+.center {
+    background-color: #909090;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 30 0 30;
+    float: left;
+    border-radius: 10px;
+    width: 1020;
+    height: 600;
+    z-index: 1;
+    box-shadow: 10px 10px 10px;
+}
+
+.center img{
+    width: 1000;
+    height: 582;
+    margin: 10 10 10 10;
+    display: flex;
+}
+
+.side-left {
+    background-color: #909090;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 10px;
+    width: 140;
+    float: left;
+    height: 425;
+    box-shadow: 10px 10px 10px;
+}
+
+.side-left img{
+    display: flex;
+    margin: 10 30 0 30;
+    height: 70px;
+    display: inline-block;
+}
+
+.side-left img:hover{
+    border: 5px solid red;
+    border-radius: 5px;
+}
+
+.side-right {
+    background-color: #909090;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 10px;
+    width: 140;
+    height: 425;
+    box-shadow: 10px 10px 10px;
+}
+
+.side-right img {
+    margin: 10 30 0 30;
+}
+
+.wall img {
+    margin: 10 30 0 30;
+    display: inline-block;
+}
+
+.wall {
+    background-image: url("ressources/brick.jpg");
+    width: 120;
+    height: 78;
+    margin-top: 10;
+    margin-left: 10;
+}
+
+.box {
+    margin-left: -80px;
+    border-radius: 10px;
+    text-align: left;
+    width: 500;
+    z-index: 50;
+    position: absolute;
+    padding: 10 0 0 10px;
+    height: 170;
+    background-color: #88FF89;
+    box-shadow: 10px 10px 10px;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    margin-top: 85px;
+}
+
+.box span {
+    text-shadow:  5px 2px 5px red;
+}
+
+.box p {
+    margin: 0 0 0 0;
+}
+
+body {
+    background-color: #585858;
+}
+

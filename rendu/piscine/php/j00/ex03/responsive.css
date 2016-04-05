@@ -1,0 +1,66 @@
+table {
+    width: 100%;
+    height: 100%;
+}
+
+td:not(.empty){
+	border: 1px solid black;
+}
+
+td {
+    max-height: 80px;
+    max-width: 40px;
+}
+
+tr{
+	border-collapse: collapse;
+}
+h1 {
+    text-align: center;
+    font-size: 1vw;
+    margin: 0;
+}
+h2 {
+    text-align: right;
+    font-size: 0.8vw;
+    margin: 0;
+}
+h3 {
+    text-align: left;
+    font-size: 0.8vw;
+    margin: 0;
+}
+img{
+	display: flex;
+	width: 3vw;
+	height: 5vw;
+	margin: auto;
+	margin-bottom: 10px;
+}
+.terreux{
+	background-color: #F6AF95;
+}
+.poor{
+	background-color: #CBCACA;
+}
+.transition{
+	background-color: #FCCA6F;
+}
+.metalloide{
+	background-color: #A1CD8E;
+}
+.no{
+	background-color: #C3C77F;
+}
+.halogene{
+	background-color: #96ADD0;
+}
+.rare{
+	background-color: #F9C4AF;
+}
+.lanthanide{
+	background-color: #FFE4BA
+}
+.actinide{
+	background-color: #FED896;
+}
