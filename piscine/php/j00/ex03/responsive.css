@@ -32,7 +32,8 @@ h3 {
 }
 img{
 	display: flex;
-	width: 100px;
+	width: 3vw;
+	height: 5vw;
 	margin: auto;
 	margin-bottom: 10px;
 }
