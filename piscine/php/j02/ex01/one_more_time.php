@@ -40,7 +40,6 @@
 	$index = array_search(strtolower($tab[2]), $monthAvailable) + 1;
 	if ($index < 10)
 		$index = "0" . $index;
-echo ($tab[3] .":" . $index . ":" . $tab[1] . " " . $tab[4]) . "\n";
 
 echo strtotime($tab[3] .":" . $index  . ":" . $tab[1] . " " . $tab[4]) . "\n";
 
