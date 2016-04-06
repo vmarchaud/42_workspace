@@ -18,7 +18,7 @@
 	for($i = 0; $i < count($out); $i++) {
 		if (is_numeric($out[$i]))
 			array_push($number, $out[$i]);
-		else if (ctype_alpha($out[$i]))
+		else if (preg_match("/^[A-Za-z]+$/", $out[$i]))
 			array_push($alpha, $out[$i]);
 		else
 			array_push($other, $out[$i]);

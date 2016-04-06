@@ -4,6 +4,7 @@
 	$users = array();
 	while ($line = fread($fd, 628)) {
 		$line = unpack("a256user/a4id/a32line/ipid/itype/I2time", $line);
+		print_r($line);
 		if (strcmp($line['type'], "7") == 0)
 			array_push($users, $line);
 	}
