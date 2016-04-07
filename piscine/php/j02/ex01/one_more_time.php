@@ -32,7 +32,7 @@
 	if (is_numeric($tab[3]) == FALSE || mystrlen($tab[3]) != 4) {
 		echo "Wrong Format\n"; return ;
 	}	
-	if (preg_match("/([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])/", $tab[4]) == FALSE) {
+	if (preg_match("/([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])/", $tab[4]) == FALSE) {
 		echo "Wrong Format\n"; return ; 
 	}
 	date_default_timezone_set("Europe/Paris");
