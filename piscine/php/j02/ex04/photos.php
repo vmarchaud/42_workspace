@@ -11,7 +11,7 @@
 	
 	$content = get_data_from_url($argv[1]);
 	$images = array();
-	$target = preg_replace('((https?)\:\/\/)?', '', $argv[1]);
+	$target = preg_replace('#^https?://#', '', $argv[1]);
 	$target = explode('/', $target)[0];
 	mkdir($target);
 	preg_match_all('/<img(.*?)src="(.*?)"/', $content, $images);
