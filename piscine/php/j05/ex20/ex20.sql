@@ -1,0 +1,1 @@
+SELECT film.id_genre, distrib.nom AS 'nom distrib', `titre` as 'titre film' FROM `film` LEFT JOIN distrib ON distrib.id_distrib = film.id_distrib UNION ALL SELECT genre.nom AS 'nom genre' FROM `film` LEFT JOIN genre ON genre.id = film.id_genre;
