@@ -1,0 +1,15 @@
+
+<- Vertex ---------------------------------------------------------------------
+The Vertex class implement the Vector concept.
+
+An instance can be contructed following this line:
+new Vertex( array(x => x_pos, y => y_pos, z => z_pos [, w => w (default 1.0)][, color => Color (default white)]));
+
+Where arg in [] are optional with default value.
+
+You can turn on logging of construction/destruction of any Vertex instance by turning to true the verbose attribute.
+
+The class provides the following methods :
+
+- Getter and Setter for all of his attributes (color, x, y, z and w);
+--------------------------------------------------------------------- Vertex ->
