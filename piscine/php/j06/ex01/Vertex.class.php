@@ -12,7 +12,10 @@ class Vertex {
 
 	static $verbose = false;
 	function __toString() {
-		return	sprintf("Vertex ( x: %d, y: %d, z: %d, w: %d, %s )", $this->_x, $this->_y, $this->_z, $this->_w, $this->_color);	
+		$value = sprintf("Vertex( x: %.2f, y: %.2f, z:%.2f, w:%.2f", $this->_x, $this->_y, $this->_z, $this->_w);
+		if (Vertex::$verbose)
+			$value = $value . ", " . $this->_color;
+		return $value . " )";
 	}
 
 	function __construct( $kwargs ) {
