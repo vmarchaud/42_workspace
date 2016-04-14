@@ -28,20 +28,12 @@
       			mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
 		}						
     
-		public function get_id() {
+		public function getId() {
 			return $this->_id;
 		}
 		
-		public function set_id($_id) {
-			$this->_id = $_id;
-		}
-		
-		public function get_players() {
+		public function getPlayers() {
 			return $this->_players;
-		}
-		
-		public function set_players($_players) {
-			$this->_players = $_players;
 		}
 	}
 ?>

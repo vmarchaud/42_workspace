@@ -6,8 +6,7 @@
 	
 		function __construct () {
 			$this->_name = "Imperial Fregate";
-			$this->_size_x = 4;
-			$this->_size_y = 1;
+			$this->_size = new array(4, 1);
 			$this->_power = 10;
 			$this->_resistance = 5;
 			$this->_weight = 4;

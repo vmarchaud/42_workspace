@@ -6,8 +6,8 @@
 	
 		function __construct () {
 			$this->_name = "Imperial Destroyer";
-			$this->_size_x = 3;
-			$this->_size_y = 1;
+			$this->_sprite = "ImperialDestroyer.png")
+			$this->_size = new array(3, 1);
 			$this->_power = 10;
 			$this->_resistance = 4;
 			$this->_weight = 4;

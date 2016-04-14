@@ -2,10 +2,18 @@
 
 class Player {
 	protected $_ships = array ();
-	protected $_turn = false;
+	protected $_color = "red";
 
-	public function addship($ship) {
+	public function addShip($ship) {
 		array_push($this->_ships, $ship);
+	}
+	
+	public function getShips() {
+		return $this->_ships;
+	}
+	
+	public function getColor() {
+		return $this->_color;
 	}
 }
 ?>
