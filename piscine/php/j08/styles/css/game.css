@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+	padding: 0;
+	width: 100%;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
+	color: #aaa;
+	font-size: 18px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td {
+	width: 0.8vw;
+	height: 0.8vw;
+}
+
+td:hover {
+	background-color: red;
+}
