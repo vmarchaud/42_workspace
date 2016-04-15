@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<script>
+
+		window.onload = function () {
+			var calc = document.getElementById("calc");
+
+			window.setInterval(function(){
+					alert("Please, use me...");
+			}, 30000);
+			
+			var isWhole_re  = /^\s*\d+\s*$/;
+			function isNumber(s) {
+				   return String(s).search (isWhole_re) != -1;
+			   }
+
+			calc.addEventListener("click", function () {
+				var left = document.getElementById("left").value;
+				var ope = document.getElementById("ope").value;
+				var right = document.getElementById("right").value;
+
+				if (right === "0" && (ope === "/" || ope === "%") ) {
+					alert("It's over 9000 !");
+					return ;
+				}
+				if (isNumber(left) && isNumber(right)) {
+					result = eval(parseInt(left) + ope + parseInt(right));
+					alert(result);
+					console.log(result);
+				}
+				else {
+					alert("Error :(");
+				}
+			});
+		};
+		</script>
+
+	</head>
+	<body>
+		<input id="left" type="text"/>
+		<select id="ope">
+			  <option value="*">*</option>
+			  <option value="-">-</option>
+			  <option value="+">+</option>
+			  <option value="/">/</option>
+			  <option value="%">%</option>
+		 </select>
+		<input id="right" type="text"/>
+		<input id="calc" type="button" value="Try me!"/>
+			</body>
+</html>
