@@ -1,6 +1,6 @@
 <?PHP
-
 class Player {
+	
 	protected $_ships = array ();
 	protected $_color = "red";
 
@@ -15,5 +15,10 @@ class Player {
 	public function getColor() {
 		return $this->_color;
 	}
+
+	public function setColor($color) {
+		return $this->_color = $color;
+	}
+    
 }
 ?>

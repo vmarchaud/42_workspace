@@ -13,7 +13,7 @@
 				$case_id = 0;
 				for($y = 0; $y < 100; $y++) {
 					echo '<tr id="row' . $y .'">';
-					for($i = 0; $i < 150; $i++) {
+					for($i = 0; $i < 100; $i++) {
 						echo '<td id="case' . $case_id .'"></td>';
 						$case_id++;
 					}

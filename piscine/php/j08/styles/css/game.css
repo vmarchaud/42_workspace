@@ -10,7 +10,8 @@ body {
 
 table {
 	border-collapse: collapse;
-	width: 100%;
+	width: 80%;
+	height: 80%;
 }
 
 td {
@@ -19,5 +20,5 @@ td {
 }
 
 td:hover {
-	background-color: red;
+	background-color: black;
 }

@@ -1,8 +1,7 @@
 <?PHP
-	require_once '../Weapon.class.php';
-	
+
 	class MultipleLaser extends Weapon {
-			
+
 		function __construct () {
 			$this->_charge = 0;
 			$this->_distance = array (10, 20, 30);
@@ -12,6 +11,6 @@
 
 		static function doc() {
 			return file_get_contents("docs/WeaponImpl.doc.txt");
-		}	
+		}
 	}
 ?>

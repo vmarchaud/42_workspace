@@ -1,6 +1,4 @@
 <?PHP
-	require_once '../Weapon.class.php';
-	
 	class HeavySpear extends Weapon {
 
 		function __construct () {
@@ -12,6 +10,6 @@
 
 		static function doc() {
 			return file_get_contents("docs/WeaponImpl.doc.txt");
-		}	
+		}
 	}
 ?>

@@ -3,7 +3,7 @@
 	require_once '../class/Game.class.php';
 	header("Content-Type: application/json");
 	
-	if ($_SESSION['party_id']) {
+	if (isset($_SESSION['party_id'])) {
 		$party = Game::load($_SESSION['party_id']);
 		$ships = array();
 		foreach ($party->getPlayers() as $player) {

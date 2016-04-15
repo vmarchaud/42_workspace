@@ -1,13 +1,10 @@
 <?PHP
-	require_once '../Weapon.class.php';
-	require_once '../SpaceShip.class.php';
-
 	class OrkDestructor extends SpaceShip {
 	
 		function __construct () {
 			$this->_name = "Ork Destructor";
-			$this->_sprite = "OrkDestructor.png")
-			$this->_size = new array(2, 1);
+			$this->_sprite = "OrkDestructor.png";
+			$this->_size = array(2, 1);
 			$this->_power = 10;
 			$this->_resistance = 4;
 			$this->_weight = 3;

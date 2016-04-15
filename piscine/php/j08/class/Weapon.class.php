@@ -25,5 +25,15 @@
 	static function doc() {
 		return file_get_contents("docs/Weapon.doc.txt");
 	}	
+    
+    public function getCharge() {          return $this->_charge;      }
+    
+    public function setCharge($_charge) {          $this->_charge = $_charge;      }
+    
+    public function getDistance() {          return $this->_distance;      }
+    
+    public function getEffect() {          return $this->_effect;      }
+    
+    public function getRayon() {          return $this->_rayon;      }
 }
 ?>
