@@ -31,7 +31,7 @@ abstract class SpaceShip {
 	}
 
 	static function doc() {
-		return file_get_contents("docs/SpaceShip.doc.txt");
+		return file_get_contents("impls/docs/SpaceShip.doc.txt");
 	}
 
     public function getName() {          return $this->_name;      }

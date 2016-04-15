@@ -12,5 +12,9 @@
 			$this->_speed = 15;
 			$this->_weapons = array( new MultipleLaser() );
 		}
+
+		static function doc() {
+			return file_get_contents("docs/SpaceShipImpl.doc.txt");
+		}
 	}
 ?>

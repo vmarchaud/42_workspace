@@ -1,6 +1,6 @@
 <?PHP
 	class OrkDestructor extends SpaceShip {
-	
+
 		function __construct () {
 			$this->_name = "Ork Destructor";
 			$this->_sprite = "OrkDestructor.png";
@@ -10,6 +10,10 @@
 			$this->_weight = 3;
 			$this->_speed = 19;
 			$this->_weapons = array( new MultipleLaser() );
-		}	
+		}
+
+		static function doc() {
+			return file_get_contents("docs/SpaceShipImpl.doc.txt");
+		}
 	}
 ?>
