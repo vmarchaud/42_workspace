@@ -8,7 +8,7 @@
 			var valid = confirm("Sure ?");
 			if (valid) {
 				$(obj.currentTarget).remove();
-				$.post("ex03/delete.php", { todo: obj.currentTarget.innerHTML });
+				$.post("delete.php", { todo: obj.currentTarget.innerHTML });
 			}
 		});
 		todos.prepend(todo);
@@ -16,8 +16,7 @@
 
 	$(document).ready(function() {
 		
-		$.get("ex03/select.php", function(data, status) {
-			console.log(data);
+		$.get("select.php", function(data, status) {
 			if (data) {
 				data = data.split('\n');
 				for(var i = 0; i < data.length - 1; i++) {
@@ -33,5 +32,5 @@
 		if (input.length == 0)
 			return ;
 		insert_todo(input, true);
-		$.post("ex03/insert.php", { todo: input});
+		$.post("insert.php", { todo: input});
 	});
