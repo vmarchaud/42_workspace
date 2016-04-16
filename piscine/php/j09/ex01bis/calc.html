@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script> 
+		</head>
+	<body>
+		<input id="left" type="text"/>
+		<select id="ope">
+			  <option value="*">*</option>
+			  <option value="-">-</option>
+			  <option value="+">+</option>
+			  <option value="/">/</option>
+			  <option value="%">%</option>
+		 </select>
+		<input id="right" type="text"/>
+		<input id="calc" type="button" value="Try me!"/>
+		<script>
+			window.setInterval(function(){
+					alert("Please, use me...");
+			}, 30000);
+		
+
+			$("#calc").click(function() {
+				var left = $("#left").val();
+				var ope = $("#ope").val();
+				var right = $("#right").val();
+
+				if (right === "0" && (ope === "/" || ope === "%") ) {
+					alert("It's over 9000 !");
+					console.log("It's over 9000 !");
+					return ;
+				}
+				if ($.isNumeric(left) && $.isNumeric(right)) {
+					var result = eval(parseInt(left) + ope + parseInt(right));
+					alert(result);
+					console.log(result);
+				}
+				else
+					alert("Error :(");
+
+			});
+		</script>
+
+	</body>
+</html>

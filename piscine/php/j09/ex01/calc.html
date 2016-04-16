@@ -8,7 +8,7 @@
 			window.setInterval(function(){
 					alert("Please, use me...");
 			}, 30000);
-			
+		
 			var isWhole_re  = /^\s*\d+\s*$/;
 			function isNumber(s) {
 				   return String(s).search (isWhole_re) != -1;
@@ -21,10 +21,11 @@
 
 				if (right === "0" && (ope === "/" || ope === "%") ) {
 					alert("It's over 9000 !");
+					console.log("It's over 9000 !");
 					return ;
 				}
 				if (isNumber(left) && isNumber(right)) {
-					result = eval(parseInt(left) + ope + parseInt(right));
+					var result = eval(parseInt(left) + ope + parseInt(right));
 					alert(result);
 					console.log(result);
 				}

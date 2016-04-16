@@ -16,7 +16,6 @@ window.onload = function() {
 		for(var i = 0; i < todos.childNodes.length; i++) {
 			values.push(todos.childNodes[i].innerHTML);
 		}
-		console.log(values);
 		var value = values.join("%%%");
 		document.cookie = name + "=" + value + ";expires=Thu, 18 Dec 2017 12:00:00 UTC";
 	}
@@ -46,10 +45,10 @@ window.onload = function() {
 		var input = prompt("Please input the name of todo", "");
 		if (input.length == 0)
 		return ;
-	var todo = document.createElement('div');
-	todo.innerHTML = input;
-	var todos = document.getElementById("ft_list");
-	todo.addEventListener("click", function(obj) {
+		var todo = document.createElement('div');
+		todo.innerHTML = input;
+		var todos = document.getElementById("ft_list");
+		todo.addEventListener("click", function(obj) {
 		var valid = confirm("Sure ?");
 		if (valid) {
 			todos.removeChild(obj.target);
