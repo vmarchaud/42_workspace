@@ -1,7 +1,7 @@
-<?PHP 
-	session_start();
-	if ($_SESSION['id'])
-		header("Location: public/index.html");
-	else
-		header("Location: public/login.html");
-?>
+<?php require_once 'header.php'; ?>
+
+		<div class="content">
+			aaa
+		</div>
+	</body>
+</html>

@@ -18,20 +18,24 @@
 			}
 			// verify if user is not already logged
 			if ($_SESSION['user']) {
-				header("Location: public/index.html");
+				header("Location: index.php");
 				return ;
 			}
 			// get the hashed password to compare it
 			$pwd = hash("whirpool", $mail . $pwd);
-			
+
 			// get db instance and make the request
 			$db = Database::getInstance();
 			$stmt = $db->prepare("SELECT * FROM users WHERE mail=$mail AND pwd=$pwd");
 
-			// if it return an user, loggin else return not found	
-			if ($stmt->execute()) 
+			// if it return an user, loggin else return not found
+			if ($stmt->execute()) {
+				$user = $stmt->fetch();
+				$_SESSION['user'] = $user['id'];
+				$_SESSION['user_name'] = $user['name'];
 				header("42", true, 200);
-			else 
+			}
+			else
 				header("42", true, 404);
 			break ;
 		}
@@ -39,8 +43,9 @@
 			// if there is an id in his session is logged so unset it
 			if ($_SESSION['user']) {
 				unset($_SESSION['user']);
+				unset($_SESSION['user_name']);
 				header("42", true, 200);
-			} 
+			}
 			// else just sent him bad request cause is not logged
 			else
 				header("42", true, 401);
@@ -55,7 +60,7 @@
 			$mail = $_POST['mail'];
 			$name = $_POST['name'];
 			$pwd = $_POST['pwd'];
-			
+
 			// Verify validity of params
 			if (!$mail || !$name || !$pwd) {
 				header("42", true, 400);
