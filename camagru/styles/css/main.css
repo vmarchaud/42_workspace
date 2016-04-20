@@ -121,7 +121,7 @@ nav a:hover {
     background-color: #fefefe;
     margin: 5% auto;
     min-width: 300px;
-	width: 50%;
+	width: 30%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     animation-name: animatetop;
     animation-duration: 0.4s
@@ -341,4 +341,14 @@ footer a {
 
 footer a:hover {
 	color: rgba(236, 240, 241, 0.5);
+}
+
+.errorbox {
+	padding: 10px;
+    width: 80%;
+    margin: auto;
+    border-radius: 5px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-left: 5px solid #D4B8BC;
 }

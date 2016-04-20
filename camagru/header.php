@@ -7,6 +7,7 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="styles/css/main.css" charset="utf-8">
 		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/ft_ajax.js"></script>
 		<title>Instagrumme</title>
 	</head>
 	<body>
@@ -16,15 +17,15 @@
 			    <span class="close">×</span>
 			    <h2>Login Modal</h2>
 			  </div>
-			  <div class="modal-body">
+			  <div id="login_modal" class="modal-body">
   					<label for="mail">Email</label>
-  					<input type="email" name="mail" placeholder="email" /><br />
+  					<input type="email" name="login_mail" placeholder="email" /><br />
   					<label for="password">Password</label>
-  					<input type="password" name="password" placeholder="password"/><br />
+  					<input type="password" name="login_password" placeholder="password"/><br />
 			  </div>
 			  <div class="modal-footer">
-			  		<button>Login</button>
-	  				<button>Register</button/>
+			  		<button id="login_button">Login</button>
+	  				<button id="open_register">Register</button/>
 			  </div>
 			</div>
 		</div>
@@ -34,18 +35,18 @@
 			    <span class="close">×</span>
 			    <h2>Register Modal</h2>
 			  </div>
-			  <div class="modal-body">
+			  <div id="register_modal" class="modal-body">
   					<label for="mail">Email</label>
   					<input type="email" name="mail" placeholder="email" /><br />
 	    			<label for="name">Name</label>
 	    			<input type="text" name="name" placeholder="name" /><br />
   					<label for="password">Password</label>
   					<input type="password" name="password" placeholder="password"/><br />
-  					<label for="password">Confirmation</label>
+  					<label for="password">Confirm</label>
   					<input type="password" name="passwordConfirm" placeholder="password"/><br />
 			  </div>
 			  <div class="modal-footer">
-			  		<button>Register me !</button>
+			  		<button id="register_button">Register me !</button>
 			  </div>
 			</div>
 		</div>

@@ -5,6 +5,7 @@
 	}
 	session_start();
 	require_once '../class/Database.class.php';
+	require_once '../class/User.class.php';
 	switch($_GET['action']) {
 		case "login" : {
 			// get post informations

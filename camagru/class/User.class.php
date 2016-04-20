@@ -1,10 +1,10 @@
-<?PHP 
+<?PHP
 
 require_once 'Utils.class.php';
 require_once 'Database.class.php';
 
 class User {
-	
+
 	const USER = "USER";
 	const ADMIN = "ADMIN";
 	const MODERATOR = "MODERATOR";
