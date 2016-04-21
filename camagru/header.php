@@ -22,7 +22,7 @@
   					<input type="email" name="login_mail" placeholder="email" /><br />
   					<label for="password">Password</label>
   					<input type="password" name="login_password" placeholder="password"/><br />
-			  </div>
+			  </div>	
 			  <div class="modal-footer">
 			  		<button id="login_button">Login</button>
 	  				<button id="open_register">Register</button/>

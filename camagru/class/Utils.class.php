@@ -11,16 +11,35 @@ class Utils {
 			mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff));
 	}
 
+	// Function used to verify that an string is a valid uuid
+	public static function is_uuid( $uuid ) {
+		if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1) || strlen($uuid) != 36)
+		    return false;
+		else
+			return true;
+	}
+
 	// function used to send a mail to an user
 	public static function sendMail($type, $user) {
 		switch($type) {
-			case VALID_TYPE : {
-				// send valid type
+			case Utils::VALID_TYPE : {
+				// generate a token and save it
+				$token = Utils::gen_uuid();
+				$db = Database::getInstance();
+				$stmt = $db->prepare("INSERT INTO tokens (id, user, type) VALUES (?, ?, ?)");
+				$stmt->execute(array($token, $user->id, "REGISTER"));
+
+				// get template and replace variable
+				$content = file_get_contents('./mail_template/register.html');
+				$content = preg_replace("/%name%/", $user->name, $content);
+				$content = preg_replace("/%url%/", "http://" . $_SERVER['HTTP_HOST'] . "/api/mail.php?type=valid&code=" . $token, $content);
+				// send mail
+				mail($user->mail, "[Instagrume] Valid your account to use our site !", $content, "From: register@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
 				break ;
 			}
-			case FORGOT_TYPE : {
+			case Utils::FORGOT_TYPE : {
 				// send forgot type
-				break ; 
+				break ;
 			}
 		}
 	}

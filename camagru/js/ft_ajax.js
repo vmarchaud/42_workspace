@@ -6,13 +6,19 @@ ajax.new = function () {
 
 ajax.send = function (url, sucesscallback, errorCallback, method, data) {
     var x = ajax.new();
+	console.log("Request " + method + " on " + url);
     x.open(method, url, true);
     x.onreadystatechange = function () {
         if (x.readyState == 4) {
-            sucesscallback(x.responseText)
-        } else {
-			errorCallback(x);
-		}
+			if (x.status < 300) {
+				console.log("Response " + x.responseText);
+				sucesscallback(x.responseText)
+			} else {
+				console.log("Response " + x.status);
+				errorCallback(x);
+			}
+
+        }
     };
     if (method == 'POST') {
         x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');

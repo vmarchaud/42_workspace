@@ -6,6 +6,7 @@
 	session_start();
 	require_once '../class/Database.class.php';
 	require_once '../class/User.class.php';
+
 	switch($_GET['action']) {
 		case "login" : {
 			// get post informations
@@ -18,8 +19,8 @@
 				return ;
 			}
 			// verify if user is not already logged
-			if ($_SESSION['user']) {
-				header("Location: index.php");
+			if (isset($_SESSION['user'])) {
+				header("Location: index.php", true, 200);
 				return ;
 			}
 			// get the hashed password to compare it
@@ -32,6 +33,10 @@
 			// if it return an user, loggin else return not found
 			if ($stmt->execute()) {
 				$user = $stmt->fetch();
+				if ($user["state"] === User::NEED_VALID || $user["state"] === User::DELTD) {
+					header("42", true, 403);
+					return ;
+				}
 				$_SESSION['user'] = $user['id'];
 				$_SESSION['user_name'] = $user['name'];
 				header("42", true, 200);
@@ -42,8 +47,8 @@
 		}
 		case "logout" : {
 			// if there is an id in his session is logged so unset it
-			if ($_SESSION['user']) {
-				unset($_SESSION['user']);
+			if (isset($_SESSION["user"])) {
+				unset($_SESSION["user"]);
 				unset($_SESSION['user_name']);
 				header("42", true, 200);
 			}
@@ -54,7 +59,7 @@
 		}
 		case "register" : {
 			// Already logged
-			if ($_SESSION['user']) {
+			if (isset($_SESSION["user"])) {
 				header("42", true, 401);
 				return ;
 			}
@@ -67,13 +72,22 @@
 				header("42", true, 400);
 				return ;
 			}
+
+			// verify that the mail isnt already used
+			$db = Database::getInstance();
+			$stmt = $db->prepare("SELECT * FROM users WHERE mail=?");
+			$stmt->execute(array($mail));
+			if ($stmt->rowCount() > 0) {
+				header("42", true, 409);
+				return ;
+			}
+
 			// Create the user
-			$user = new User(array(mail => $mail, name => $name, password => $pwd));
+			$user = new User(array('mail' => $mail, 'name' => $name, 'password' => $pwd));
 			try {
 				$user->create();
 			} catch (Exception $e) {
-				header("42", true, 409);
-				echo $e->getMessage();
+				header("42", true, 500);
 				return ;
 			}
 			// if everything is ok
