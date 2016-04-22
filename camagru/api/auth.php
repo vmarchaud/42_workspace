@@ -24,21 +24,23 @@
 				return ;
 			}
 			// get the hashed password to compare it
-			$pwd = hash("whirpool", $mail . $pwd);
+			$pwd = hash('whirlpool', $mail . $pwd);
 
 			// get db instance and make the request
 			$db = Database::getInstance();
-			$stmt = $db->prepare("SELECT * FROM users WHERE mail=$mail AND pwd=$pwd");
+			$stmt = $db->prepare("SELECT * FROM users WHERE mail=? AND password=?");
+			$stmt->setFetchMode(PDO::FETCH_INTO, new User(null));
+			$stmt->execute(array($mail, $pwd));
 
 			// if it return an user, loggin else return not found
-			if ($stmt->execute()) {
+			if ($stmt->rowCount() == 1) {
 				$user = $stmt->fetch();
-				if ($user["state"] === User::NEED_VALID || $user["state"] === User::DELTD) {
+				if ($user->state === User::NEED_VALID || $user->state === User::DELTD) {
 					header("42", true, 403);
 					return ;
 				}
-				$_SESSION['user'] = $user['id'];
-				$_SESSION['user_name'] = $user['name'];
+				$_SESSION['user'] = $user->id;
+				$_SESSION['user_name'] = $user->name;
 				header("42", true, 200);
 			}
 			else
@@ -47,8 +49,8 @@
 		}
 		case "logout" : {
 			// if there is an id in his session is logged so unset it
-			if (isset($_SESSION["user"])) {
-				unset($_SESSION["user"]);
+			if (isset($_SESSION['user']) || strlen($_SESSION['user']) == 0) {
+				unset($_SESSION['user']);
 				unset($_SESSION['user_name']);
 				header("42", true, 200);
 			}

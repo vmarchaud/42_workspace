@@ -19,8 +19,14 @@ class Utils {
 			return true;
 	}
 
+	// Function is used to generate a random string of X length
+	public static function random_string( $length ) {
+    	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    	return substr(str_shuffle($chars), 0, $length);
+	}
+
 	// function used to send a mail to an user
-	public static function sendMail($type, $user) {
+	public static function sendMail($type, $user, $other = null) {
 		switch($type) {
 			case Utils::VALID_TYPE : {
 				// generate a token and save it
@@ -34,11 +40,16 @@ class Utils {
 				$content = preg_replace("/%name%/", $user->name, $content);
 				$content = preg_replace("/%url%/", "http://" . $_SERVER['HTTP_HOST'] . "/api/mail.php?type=valid&code=" . $token, $content);
 				// send mail
-				mail($user->mail, "[Instagrume] Valid your account to use our site !", $content, "From: register@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
+				mail($user->mail, "[Instagrume] Valid your account to use our site !", $content, "From: noreply@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
 				break ;
 			}
 			case Utils::FORGOT_TYPE : {
-				// send forgot type
+				// get template and replace variable
+				$content = file_get_contents('./mail_template/forgot.html');
+				$content = preg_replace("/%name%/", $user->name, $content);
+				$content = preg_replace("/%password%/", $other, $content);
+				// send mail
+				mail($user->mail, "[Instagrume] Your new password is here !", $content, "From: noreply@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
 				break ;
 			}
 		}

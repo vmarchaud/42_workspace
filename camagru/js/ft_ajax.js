@@ -14,7 +14,7 @@ ajax.send = function (url, sucesscallback, errorCallback, method, data) {
 				console.log("Response " + x.responseText);
 				sucesscallback(x.responseText)
 			} else {
-				console.log("Response " + x.status);
+				console.log("Response " + x.responseText + " with code " + x.status);
 				errorCallback(x);
 			}
 

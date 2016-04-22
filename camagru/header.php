@@ -1,12 +1,11 @@
 <?PHP
 	session_start();
 ?>
-
 <html>
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="styles/css/main.css" charset="utf-8">
-		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/header.js"></script>
 		<script type="text/javascript" src="js/ft_ajax.js"></script>
 		<title>Instagrumme</title>
 	</head>
@@ -22,8 +21,11 @@
   					<input type="email" name="login_mail" placeholder="email" /><br />
   					<label for="password">Password</label>
   					<input type="password" name="login_password" placeholder="password"/><br />
-			  </div>	
+			  </div>
 			  <div class="modal-footer">
+				  	<div class="left">
+			  			<button id="forgot_button">Forgot your password ?</button>
+					</div>
 			  		<button id="login_button">Login</button>
 	  				<button id="open_register">Register</button/>
 			  </div>
@@ -53,16 +55,16 @@
 		<div class="header">
 			<div class="container">
 				<div class="left">
-					<?php if ($_SESSION['user']) { echo '<span>Bonjour, '. $_SESSION['user_name'] .'</span>'; } ?></span>
+					<?php if (isset($_SESSION['user'])) { echo '<span>Hello, '. $_SESSION['user_name'] .'</span>'; } ?></span>
 				</div>
 				<div class="right">
 				<?php
-					if (!$_SESSION['user']) {
+					if (!isset($_SESSION['user'])) {
 						echo '<a onclick="document.getElementById(\'login\').style.display = \'block\';" href="#">Login</a>';
 						echo '<a onclick="document.getElementById(\'register\').style.display = \'block\';" href="#">Register</a>';
 					} else {
 						echo '<a href="user.php">Account</a>';
-						echo '<a href="#">Logout</a>';
+						echo '<a id="logout_link" href="#">Logout</a>';
 					}
 				?>
 				</div>
