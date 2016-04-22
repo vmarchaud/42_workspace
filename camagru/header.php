@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="styles/css/main.css" charset="utf-8">
-		<script type="text/javascript" src="js/header.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/ft_ajax.js"></script>
 		<title>Instagrumme</title>
 	</head>
@@ -54,10 +54,7 @@
 		</div>
 		<div class="header">
 			<div class="container">
-				<div class="left">
-					<?php if (isset($_SESSION['user'])) { echo '<span>Hello, '. $_SESSION['user_name'] .'</span>'; } ?></span>
-				</div>
-				<div class="right">
+				<div class="right" style="padding-right: 50px;">
 				<?php
 					if (!isset($_SESSION['user'])) {
 						echo '<a onclick="document.getElementById(\'login\').style.display = \'block\';" href="#">Login</a>';

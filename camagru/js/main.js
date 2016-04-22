@@ -1,3 +1,8 @@
+////////////////////////////////////////////////////////////////////////
+////							HEADER								////
+////////////////////////////////////////////////////////////////////////
+
+
 function resetBox(modal) {
 	// reset all error
 	var errors = document.getElementsByClassName("errorbox");
@@ -11,7 +16,8 @@ function resetBox(modal) {
 	}
 }
 
-window.onload = function() {
+var trigger_header = function() {
+
 	// Trigger code for modal url
     if (window.location.hash.indexOf('#login') != -1)
         document.getElementById("login").style.display = "block";
@@ -199,4 +205,63 @@ window.onload = function() {
 			modal.insertBefore(msg, modal.firstChild);
 		});
 	});
+};
+
+
+////////////////////////////////////////////////////////////////////////
+////							CREATE								////
+////////////////////////////////////////////////////////////////////////
+
+
+
+
+var trigger_create = function () {
+	var video = document.getElementById("cameraIn");
+  	var canvas = document.getElementById("canvas");
+  	var takescreen = document.getElementById("takeScreen");
+  	var ctx = canvas.getContext('2d');
+  	var localMediaStream = null;
+
+	// function used to get the data stream from camera and attach it to a video tag
+	function handleCamera(stream) {
+		video.src = window.URL.createObjectURL(stream);
+		localMediaStream = stream;
+	}
+
+	// function used in case of fail
+	function handleNoCamera(error) {
+		console.log("refuse");
+	}
+
+	// get all method to get user camera
+	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+	// if we get the video
+	if (navigator.getUserMedia) {
+		navigator.getUserMedia({video: true}, handleCamera, handleNoCamera);
+	}
+
+
+	function snapshot() {
+	    if (localMediaStream) {
+	      ctx.drawImage(video, 0, 0);
+	      document.getElementById('cameraOut').src = canvas.toDataURL('image/webp');
+		  document.getElementById('cameraOut').style.display = "block";
+	    }
+  	}
+	takescreen.addEventListener("action", function() {
+		snapshot();
+	});
+
+};
+
+
+
+////////////////////////////////////////////////////////////////////////
+////							MASTER								////
+////////////////////////////////////////////////////////////////////////
+
+window.onload = function () {
+	// trigger all function that are register on load
+	trigger_create();
+	trigger_header();
 };
