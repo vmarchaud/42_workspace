@@ -242,6 +242,7 @@ var trigger_create = function () {
 					currentMask.style.border = "";
 				currentMask = event.target;
 				currentMask.style.border = "1px solid red";
+				applyMask();
 			})
 
 			li.appendChild(img);
@@ -282,7 +283,7 @@ var trigger_create = function () {
 	    canvas.height = height;
 	    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
 	    var data = canvas.toDataURL('image/png');
-	    out.setAttribute('src', data);
+		// send photo to the backend
 	});
 
 	//

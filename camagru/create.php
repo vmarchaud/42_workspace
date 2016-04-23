@@ -11,10 +11,10 @@
 			<div id="maskList">
 			   <ul></ul>
 		   </div>
-		   	<div>
+		   	<center style="position: relative;">
 				<video class="camera" autoplay="true" id="cameraIn"></video>
 				<img id="mask" style="display: none;">
-			</div>
+			</center>
 			<canvas id="canvas" style="display: none;"></canvas>
 			<button id="takeScreen">Take picture</button>
 			<img id="cameraOut">

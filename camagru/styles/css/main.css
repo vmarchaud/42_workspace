@@ -162,7 +162,7 @@ nav a:hover {
 	margin: 20px auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
-	height: 80%;
+	height: 100%;
 }
 
 .content title {
@@ -176,17 +176,19 @@ nav a:hover {
 /* CAPTURE */
 
 .camera {
-	width: 40%;
-	height: 40%;
-	text-align: center;
-	position: relative;
-	margin: auto;
+    width: 30%;
+    top: 10%;
+    left: 45%;
+	z-index: 15;
 }
 
 #maskList ul {
     list-style-type:none;
 	white-space:nowrap;
 	overflow-x:auto;
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 20px;
 }
 
 #maskList li{
@@ -195,13 +197,16 @@ nav a:hover {
 
 #maskList img{
     display:inline;
-	width: 100px;
+	width: 10%;
 }
 
 #mask {
 	position: absolute;
-	width: 100px;
-	cursor: move;
+    width: 10%;
+    cursor: move;
+    top: 10%;
+    left: 45%;
+	z-index: 16;
 }
 
 
