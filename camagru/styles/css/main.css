@@ -157,7 +157,7 @@ nav a:hover {
 /* BODY */
 
 .content {
-	width: 50%;
+	width: 60%;
 	background: white;
 	margin: 20px auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -176,9 +176,34 @@ nav a:hover {
 /* CAPTURE */
 
 .camera {
-	width: 80%;
+	width: 40%;
+	height: 40%;
 	text-align: center;
+	position: relative;
+	margin: auto;
 }
+
+#maskList ul {
+    list-style-type:none;
+	white-space:nowrap;
+	overflow-x:auto;
+}
+
+#maskList li{
+    display:inline;
+}
+
+#maskList img{
+    display:inline;
+	width: 100px;
+}
+
+#mask {
+	position: absolute;
+	width: 100px;
+	cursor: move;
+}
+
 
 
 /* FOOTER */

@@ -219,13 +219,41 @@ var trigger_create = function () {
 	var video = document.getElementById("cameraIn");
   	var canvas = document.getElementById("canvas");
   	var takescreen = document.getElementById("takeScreen");
-  	var ctx = canvas.getContext('2d');
-  	var localMediaStream = null;
+	var out = document.getElementById("cameraOut");
+  	var streaming = false;
+
+	var currentMask = null;
+
+	var height = 0;
+	var width = 320;
+
+	// load all mask
+	var lists = document.getElementById("maskList").childNodes[1];
+	ajax.get("/api/masks.php", { "action": "retrieve" }, function (response) {
+		var data = JSON.parse(response);
+		for(var i = 0; i < data.length; i++) {
+			var li = document.createElement("li");
+			var img = document.createElement("img");
+			img.src = data[i].path;
+			img.title = data[i].name;
+
+			img.addEventListener("click", function(event) {
+				if (currentMask != null)
+					currentMask.style.border = "";
+				currentMask = event.target;
+				currentMask.style.border = "1px solid red";
+			})
+
+			li.appendChild(img);
+			lists.appendChild(li);
+		}
+	}, function (error) {
+		// ignore
+	});
 
 	// function used to get the data stream from camera and attach it to a video tag
 	function handleCamera(stream) {
 		video.src = window.URL.createObjectURL(stream);
-		localMediaStream = stream;
 	}
 
 	// function used in case of fail
@@ -240,17 +268,32 @@ var trigger_create = function () {
 		navigator.getUserMedia({video: true}, handleCamera, handleNoCamera);
 	}
 
-
-	function snapshot() {
-	    if (localMediaStream) {
-	      ctx.drawImage(video, 0, 0);
-	      document.getElementById('cameraOut').src = canvas.toDataURL('image/webp');
-		  document.getElementById('cameraOut').style.display = "block";
+	video.addEventListener('canplay', function(ev){
+	    if (!streaming) {
+	      height = video.videoHeight / (video.videoWidth/ width);
+	      canvas.setAttribute('width', width);
+	      canvas.setAttribute('height', height);
+	      streaming = true;
 	    }
-  	}
-	takescreen.addEventListener("action", function() {
-		snapshot();
+  	}, false);
+
+	takescreen.addEventListener("click", function() {
+		canvas.width = width;
+	    canvas.height = height;
+	    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+	    var data = canvas.toDataURL('image/png');
+	    out.setAttribute('src', data);
 	});
+
+	//
+	function applyMask() {
+		if (currentMask == null)
+			return ;
+		var mask = document.getElementById("mask");
+		mask.src = currentMask.src;
+		mask.style.display = "block";
+	}
+
 
 };
 
@@ -262,6 +305,7 @@ var trigger_create = function () {
 
 window.onload = function () {
 	// trigger all function that are register on load
-	trigger_create();
+	if (window.location.href.indexOf('create') != -1)
+		trigger_create();
 	trigger_header();
 };

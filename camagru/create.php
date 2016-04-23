@@ -8,8 +8,14 @@
 ?>
 	<div class="content">
 		<div class="capture">
-			<video class="camera" autoplay="true" id="cameraIn"></video>
-			<canvas id="canvas" style="display:none;"></canvas>
+			<div id="maskList">
+			   <ul></ul>
+		   </div>
+		   	<div>
+				<video class="camera" autoplay="true" id="cameraIn"></video>
+				<img id="mask" style="display: none;">
+			</div>
+			<canvas id="canvas" style="display: none;"></canvas>
 			<button id="takeScreen">Take picture</button>
 			<img id="cameraOut">
 		</div>
