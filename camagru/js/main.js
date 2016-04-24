@@ -213,8 +213,6 @@ var trigger_header = function() {
 ////////////////////////////////////////////////////////////////////////
 
 
-
-
 var trigger_create = function () {
 	var video = document.getElementById("cameraIn");
   	var canvas = document.getElementById("canvas");
@@ -252,41 +250,45 @@ var trigger_create = function () {
 		// ignore
 	});
 
-	// function used to get the data stream from camera and attach it to a video tag
-	function handleCamera(stream) {
-		video.src = window.URL.createObjectURL(stream);
-	}
-
-	// function used in case of fail
-	function handleNoCamera(error) {
-		console.log("refuse");
-	}
-
 	// get all method to get user camera
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 	// if we get the video
 	if (navigator.getUserMedia) {
-		navigator.getUserMedia({video: true}, handleCamera, handleNoCamera);
+		navigator.getUserMedia({video: true},  function (stream) {
+			video.src = window.URL.createObjectURL(stream);
+		}, function (error) {
+			var fileinput = document.getElementById("fileinput");
+			fileinput.style.display = "block";
+		});
 	}
 
+	// trigger code when camera is on
 	video.addEventListener('canplay', function(ev){
 	    if (!streaming) {
 	      height = video.videoHeight / (video.videoWidth/ width);
 	      canvas.setAttribute('width', width);
 	      canvas.setAttribute('height', height);
 	      streaming = true;
+		  video.play();
 	    }
   	}, false);
 
+	// Trigger code when clicking on upload
 	takescreen.addEventListener("click", function() {
+		video.pause();
 		canvas.width = width;
 	    canvas.height = height;
 	    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
 	    var data = canvas.toDataURL('image/png');
 		// send photo to the backend
+
+		// play video after one second
+		setTimeout(function() {
+			video.play();
+		}, 1000);
 	});
 
-	//
+	// Update the currrent mask
 	function applyMask() {
 		if (currentMask == null)
 			return ;
@@ -294,6 +296,17 @@ var trigger_create = function () {
 		mask.src = currentMask.src;
 		mask.style.display = "block";
 	}
+
+	document.getElementById('fileinput').addEventListener('change', function(event) {
+		var file = event.target.files[0];
+		console.log(event.target.files[0]);
+		var reader = new FileReader();
+		reader.addEventListener("load", function (event) {
+			video.setAttribute("poster", reader.result);
+		});
+		if (file)
+			reader.readAsDataURL(file);
+	}, false);
 
 
 };

@@ -180,6 +180,7 @@ nav a:hover {
     top: 10%;
     left: 45%;
 	z-index: 15;
+	max-height: 40%;
 }
 
 #maskList ul {

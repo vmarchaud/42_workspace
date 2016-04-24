@@ -12,11 +12,12 @@
 			   <ul></ul>
 		   </div>
 		   	<center style="position: relative;">
-				<video class="camera" autoplay="true" id="cameraIn"></video>
+				<video class="camera" id="cameraIn"></video>
 				<img id="mask" style="display: none;">
 			</center>
+			<input id="fileinput" type="file" name="pic" accept="image/*" style="display: none;">
 			<canvas id="canvas" style="display: none;"></canvas>
-			<button id="takeScreen">Take picture</button>
+			<button id="takeScreen">Upload</button>
 			<img id="cameraOut">
 		</div>
 	</div>

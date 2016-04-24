@@ -10,9 +10,9 @@
 
 	switch($_GET['action']) {
 		case "retrieve" : {
+			header("Content-Type: application/json", true, 200);
 			$content = file_get_contents("../config/masks.json");
 			echo $content;
-			header("Content-Type: application/json", true, 200);
 			break ;
 		}
 		default : {
