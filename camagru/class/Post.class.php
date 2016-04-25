@@ -43,6 +43,16 @@ class Post {
 			return null;
 	}
 
+	// This function is used to query an post from his author and return an array
+	public static function fromAuthor( $id ) {
+		$db = Database::getInstance();
+		$stmt = $db->prepare("SELECT * FROM posts WHERE author = '$id' ORDER BY date ASC");
+		if ($stmt->execute())
+			return $stmt->fetchAll(PDO::FETCH_OBJ);
+		else
+			return array();
+	}
+
 	// This function is used to "delete" an post
 	public function delete() {
 		$db = Database::getInstance();

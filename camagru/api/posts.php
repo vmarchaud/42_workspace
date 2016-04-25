@@ -42,6 +42,18 @@
 			header("42", true, 201);
 			break ;
 		}
+		case "retrieve" : {
+			// get post from the user
+			$posts = Post::fromAuthor($_SESSION['user']);
+			// if he want, we can send him only few
+			if (isset($_GET['offset']) && isset($_GET['length'])) {
+				$posts = array_slice($posts, $_GET['offset'], $_GET['length']);
+			}
+			// send it
+			header("Content-Type: application/json", true, 200);
+			echo json_encode($posts);
+			break ;
+		}
 		default : {
 			header("42", true, 400);
 		}

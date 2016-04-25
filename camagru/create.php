@@ -20,8 +20,12 @@
 			<button id="takeScreen">Upload</button>
 			<img id="cameraOut">
 		</div>
+		<div class="sidebar">
+			<div  id="postsList">
+			   <ul></ul>
+		   </div>
+		</div>
 	</div>
-	<div class="sidebar">
-	</div>
+
 </body>
 </html>

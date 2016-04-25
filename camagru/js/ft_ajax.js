@@ -11,7 +11,7 @@ ajax.send = function (url, sucesscallback, errorCallback, method, data) {
     x.onreadystatechange = function () {
         if (x.readyState == 4) {
 			if (x.status < 300) {
-				console.log("Response " + x.responseText);
+				console.log("Response code " + x.status);
 				sucesscallback(x.responseText)
 			} else {
 				console.log("Response " + x.responseText + " with code " + x.status);

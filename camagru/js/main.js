@@ -251,6 +251,28 @@ var trigger_create = function () {
 		// ignore
 	});
 
+
+	var posts = document.getElementById("postsList").childNodes[1];
+
+	function add_post(post) {
+		var li = document.createElement("li");
+		var img = document.createElement("img");
+		img.src = "data:image/png;base64," + post.img;
+
+		li.appendChild(img);
+		posts.insertBefore(li, posts.firstChild);
+	}
+
+	// load all mask
+	ajax.get("/api/posts.php", { "action": "retrieve" }, function (response) {
+		var posts = JSON.parse(response);
+		for(var i = 0; i < posts.length; i++) {
+			add_post(posts[i]);
+		}
+	}, function (error) {
+		// ignore
+	});
+
 	// get all method to get user camera
 	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 	// if we get the video
@@ -297,11 +319,13 @@ var trigger_create = function () {
 			return ;
 		}
 		// send photo to the backend
-		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {
+		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {}, function(error) {});
 
-		}, function(error) {
-
-		});
+		ajax.get("/api/posts.php", { "action": "retrieve", "offset" : -1, "length" : 1 }, function (response) {
+			response = JSON.parse(response);
+			if (response.length > 0)
+				add_post(response[0]);
+		}, function (error) {});
 
 		// play video after one second if the input is camera
 		if (streaming) {

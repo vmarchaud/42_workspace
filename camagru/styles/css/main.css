@@ -157,7 +157,7 @@ nav a:hover {
 /* BODY */
 
 .content {
-
+	margin: 20px 10% 0 10%;
 }
 
 .content title {
@@ -188,7 +188,7 @@ nav a:hover {
 	margin-bottom: 20px;
 }
 
-#maskList li{
+#maskList  li{
     display:inline;
 }
 
@@ -206,19 +206,33 @@ nav a:hover {
 	z-index: 16;
 }
 
+#postsList ul {
+	padding: 0;
+	white-space:nowrap;
+	margin-top: 0;
+	margin-bottom: 20px;
+	white-space:nowrap;
+}
+
+#postsList img {
+	width: 100%;
+}
+
 .sidebar {
-	width: 20%;
+	overflow: auto;
+	width: 15%;
+	display: inline-block;
 	background: white;
-	margin: 20px auto;
+	float: right;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
 	height: 80%;
 }
 
 .capture {
-	width: 60%;
+	width: 80%;
+	float: left;
 	background: white;
-	margin: 20px auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
 	height: 80%;
