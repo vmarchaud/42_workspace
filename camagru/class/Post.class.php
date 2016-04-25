@@ -8,7 +8,8 @@ class Post {
 
 	public $id;
 	public $author;
-	public $like;
+	public $liike;
+	public $img;
 
 	// The constructor should only be used when creating a new post
 	public function __construct ( $kwargs ) {
@@ -16,18 +17,19 @@ class Post {
 		if ($kwargs == null)
 			return ;
 		// If we got all required field, create the post
-		if (array_key_exists("author", $kwargs) ) {
+		if (array_key_exists("author", $kwargs) && array_key_exists("img", $kwargs) ) {
 			$this->id = Utils::gen_uuid();
 			$this->author = $kwargs['author'];
-			$this->like = 0;
+			$this->liike = 0;
+			$this->img = $kwargs['img'];
 		}
 	}
 
 	// This function is used to insert a new post into the database from the current instance
 	public function create() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("INSERT INTO posts (id, author, like) VALUES (?, ?, ?)");
-		$stmt->execute(array($this->id, $this->$author, $this->like);
+		$stmt = $db->prepare("INSERT INTO posts (id, author, liike, img) VALUES (?, ?, ?, ?)");
+		$stmt->execute(array($this->id, $this->author, $this->liike, $this->img));
 	}
 
 	// This function is used to query an post from his id and return an post instance
@@ -51,8 +53,8 @@ class Post {
 	// This function is used to update data of an post
 	public function update() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("UPDATE posts SET like=? WHERE id = '$this->id'");
-		$stmt->execute(array($this->like));
+		$stmt = $db->prepare("UPDATE posts SET liike=? WHERE id = '$this->id'");
+		$stmt->execute(array($this->liike));
 	}
 }
 ?>

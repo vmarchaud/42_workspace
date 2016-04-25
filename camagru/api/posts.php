@@ -20,13 +20,26 @@
 			}
 			$img = explode(',', $vars['img'])[1];
 			// if the img is not base64
-			if (preg_match('/[^-A-Za-z0-9+/=]|=[^=]|={3,}$/', $img) === false) {
+			if (false) {
 				header("42", true, 400);
 				return ;
 			}
+			// get the user input and the mask
 			$img = base64_decode($img);
-			// todo
+			$mask = file_get_contents('../styles/img/' . $vars['mask'] . '.png');
 
+			// merge image and encode the result
+			$output = base64_encode(Utils::mergeImage($img, $mask));
+			// create the post
+			$post = new Post(array('author' => $_SESSION['user'], 'img' => $output));
+			try {
+				$post->create();
+			} catch (Exception $e) {
+				header("42", true, 409);
+				return ;
+			}
+
+			header("42", true, 201);
 			break ;
 		}
 		default : {

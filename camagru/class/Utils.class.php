@@ -55,5 +55,32 @@ class Utils {
 		}
 	}
 
+	public static function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct) {
+		$cut = imagecreatetruecolor($src_w, $src_h);
+		imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
+		imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
+		imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+	}
+
+	// This functions is used to merge two image
+	public static function mergeImage($src_a, $src_b) {
+		$a = $src_a;
+		$b = $src_b;
+		$a = imagecreatefromstring($a);
+		$b = imagecreatefromstring($b);
+		$b = imagescale($b, imagesx($a) / 4);
+		Utils::imagecopymerge_alpha($a, $b, imagesx($a) / 2 - imagesx($b) / 2, imagesy($a) / 100 * 10, 0, 0, imagesx($b), imagesy($b), 100);
+		imagesavealpha($a, true);
+		// php u fuckng suck
+		ob_start();
+		imagepng($a);
+		$contents =  ob_get_contents();
+		ob_end_clean();
+		//
+		imagedestroy($a);
+		imagedestroy($b);
+		return $contents;
+	}
+
 }
 ?>

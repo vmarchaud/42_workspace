@@ -21,5 +21,7 @@
 			<img id="cameraOut">
 		</div>
 	</div>
+	<div class="sidebar">
+	</div>
 </body>
 </html>

@@ -221,6 +221,7 @@ var trigger_create = function () {
   	var streaming = false;
 
 	var currentMask = null;
+	var data = null;
 
 	var height = 0;
 	var width = 320;
@@ -275,17 +276,40 @@ var trigger_create = function () {
 
 	// Trigger code when clicking on upload
 	takescreen.addEventListener("click", function() {
-		video.pause();
-		canvas.width = width;
-	    canvas.height = height;
-	    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-	    var data = canvas.toDataURL('image/png');
-		// send photo to the backend
+		// the mask must be set
+		if (currentMask == null) {
+			alert("You must choose a mask to upload a new montage");
+			return ;
+		}
 
-		// play video after one second
-		setTimeout(function() {
-			video.play();
-		}, 1000);
+		// if the input come from camera
+		if (streaming) {
+			video.style.border = "1px solid red";
+			video.pause();
+			canvas.width = width;
+		    canvas.height = height;
+		    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+		    data = canvas.toDataURL('image/png');
+		}
+		// else it must come from input file
+		if (data == null) {
+			alert("You must choose an image to upload it");
+			return ;
+		}
+		// send photo to the backend
+		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {
+
+		}, function(error) {
+
+		});
+
+		// play video after one second if the input is camera
+		if (streaming) {
+			setTimeout(function() {
+				video.play();
+				video.style.border = "0";
+			}, 1000);
+		}
 	});
 
 	// Update the currrent mask
@@ -303,6 +327,7 @@ var trigger_create = function () {
 		var reader = new FileReader();
 		reader.addEventListener("load", function (event) {
 			video.setAttribute("poster", reader.result);
+			data = reader.result;
 		});
 		if (file)
 			reader.readAsDataURL(file);
@@ -319,7 +344,7 @@ var trigger_create = function () {
 
 window.onload = function () {
 	// trigger all function that are register on load
-	if (window.location.href.indexOf('create') != -1)
+	if (window.location.href.indexOf('create.php') != -1)
 		trigger_create();
 	trigger_header();
 };
