@@ -53,6 +53,17 @@ class Post {
 			return array();
 	}
 
+	// This function is used to query all post
+	public static function queryPage ( $page ) {
+		$db = Database::getInstance();
+		$offset = $page * 10;
+		$stmt = $db->prepare("SELECT * FROM posts ORDER BY date ASC LIMIT 10 OFFSET $offset");
+		if ($stmt->execute())
+			return $stmt->fetchAll(PDO::FETCH_OBJ);
+		else
+			return array();
+	}
+
 	// This function is used to "delete" an post
 	public function delete() {
 		$db = Database::getInstance();

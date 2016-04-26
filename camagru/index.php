@@ -2,7 +2,9 @@
 	require_once 'header.php';
  ?>
 		<div class="content">
-			<?php phpinfo(); ?>
+			<div id="allposts" class="posts">
+				   <ul></ul>
+			</div>
 		</div>
 	</body>
 </html>

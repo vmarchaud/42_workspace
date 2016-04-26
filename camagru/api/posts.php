@@ -50,12 +50,18 @@
 			break ;
 		}
 		case "retrieve" : {
-			// get post from the user
-			$posts = Post::fromAuthor($_SESSION['user']);
-			// if he want, we can send him only few
-			if (isset($_GET['offset']) && isset($_GET['length'])) {
-				$posts = array_slice($posts, $_GET['offset'], $_GET['length']);
+			// get post from the user if asked
+			if (!isset($_GET['author'])) {
+				$posts = Post::fromAuthor($_SESSION['user']);
+				// if he want, we can send him only few
+				if (isset($_GET['offset']) && isset($_GET['length'])) {
+					$posts = array_slice($posts, $_GET['offset'], $_GET['length']);
+				}
 			}
+			else if ($_GET['author'] === "all" && isset($_GET['page'])) {
+				$posts = Post::queryPage($_GET['page']);
+			}
+
 			// send it
 			header("Content-Type: application/json", true, 200);
 			echo json_encode($posts);

@@ -212,7 +212,6 @@ nav a:hover {
 	white-space:nowrap;
 	margin-top: 0;
 	margin-bottom: 20px;
-	white-space:nowrap;
 }
 
 #postsList li {
@@ -251,6 +250,42 @@ nav a:hover {
 	height: 80%;
 }
 
+/* INDEX */
+.posts {
+	width: 100%;
+	background: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	padding: 10px;
+	height: 80%;
+}
+
+
+.posts ul {
+	padding: 0;
+	list-style-type:none;
+	white-space:nowrap;
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+
+.posts li {
+	width: 5%;
+	display:inline;
+	list-style-type:none;
+	position: relative;
+}
+
+.posts li button {
+	width: 50%;
+    bottom: 4%;
+    left: 3%;
+	padding: 5px;
+	position: absolute;
+}
+
+.posts img {
+	width: 100%;
+}
 
 
 /* FOOTER */

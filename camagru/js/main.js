@@ -280,7 +280,7 @@ var trigger_create = function () {
 		posts.insertBefore(li, posts.firstChild);
 	}
 
-	// load all mask
+	// load all posts
 	ajax.get("/api/posts.php", { "action": "retrieve" }, function (response) {
 		var posts = JSON.parse(response);
 		for(var i = 0; i < posts.length; i++) {
@@ -377,15 +377,50 @@ var trigger_create = function () {
 
 };
 
+////////////////////////////////////////////////////////////////////////
+////							INDEX								////
+////////////////////////////////////////////////////////////////////////
 
+var trigger_index = function () {
+	var currentPage = 0;
+	var posts = document.getElementById("allposts").childNodes[1];
+
+	function add_post(post) {
+		var li = document.createElement("li");
+		var img = document.createElement("img");
+		var del = document.createElement("button");
+
+		li.id = post.id;
+		img.src = "data:image/png;base64," + post.img;
+		del.innerHTML = "See";
+
+		li.appendChild(img);
+		li.appendChild(del);
+		posts.insertBefore(li, posts.firstChild);
+	}
+
+	// load all posts
+	ajax.get("/api/posts.php", { "action": "retrieve", "author" : "all", "page" : currentPage }, function (response) {
+		var list = JSON.parse(response);
+		for(var i = 0; i < list.length; i++) {
+			add_post(list[i]);
+		}
+	}, function (error) {
+		alert("Error while trying to retrieve the masks. (Error " + error.status + ")");
+	});
+
+}
 
 ////////////////////////////////////////////////////////////////////////
 ////							MASTER								////
 ////////////////////////////////////////////////////////////////////////
 
 window.onload = function () {
+	var location = window.location.href;
 	// trigger all function that are register on load
-	if (window.location.href.indexOf('create.php') != -1)
+	if (location.indexOf('create') != -1)
 		trigger_create();
+	if (location.indexOf('index') != -1 || location.substring(location.length - 1) === "/")
+		trigger_index();
 	trigger_header();
 };
