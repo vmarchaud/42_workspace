@@ -20,13 +20,20 @@
 			}
 			$img = explode(',', $vars['img'])[1];
 			// if the img is not base64
-			if (false) {
+			if (!Utils::is_base64($img)) {
 				header("42", true, 400);
 				return ;
 			}
+
 			// get the user input and the mask
 			$img = base64_decode($img);
 			$mask = file_get_contents('../styles/img/' . $vars['mask'] . '.png');
+
+			// verify that is an image
+			if (!imagecreatefromstring($img)) {
+				header("42", true, 400);
+				return ;
+			}
 
 			// merge image and encode the result
 			$output = base64_encode(Utils::mergeImage($img, $mask));
@@ -52,6 +59,28 @@
 			// send it
 			header("Content-Type: application/json", true, 200);
 			echo json_encode($posts);
+			break ;
+		}
+		case "delete" : {
+			// verify the input
+			if (!isset($_GET['post'])) {
+				header("42", true, 400);
+				return ;
+			}
+			// query that post
+			$post = Post::query($_GET['post']);
+			// if null, return a 404 not found
+			if ($post == null) {
+				header("42", true, 404);
+				return ;
+			}
+			// if its not him the author of the post
+			if ($post->author !== $_SESSION['user']) {
+				header("42", true, 401);
+				return ;
+			}
+			// else delete the post
+			$post->delete();
 			break ;
 		}
 		default : {

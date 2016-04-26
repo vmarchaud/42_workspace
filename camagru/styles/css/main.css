@@ -177,6 +177,7 @@ nav a:hover {
     left: 45%;
 	z-index: 15;
 	max-height: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 #maskList ul {
@@ -212,6 +213,18 @@ nav a:hover {
 	margin-top: 0;
 	margin-bottom: 20px;
 	white-space:nowrap;
+}
+
+#postsList li {
+	position: relative;
+}
+
+#postsList li button {
+	width: 50%;
+    bottom: 4%;
+    left: 3%;
+	padding: 5px;
+	position: absolute;
 }
 
 #postsList img {

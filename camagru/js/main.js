@@ -257,9 +257,26 @@ var trigger_create = function () {
 	function add_post(post) {
 		var li = document.createElement("li");
 		var img = document.createElement("img");
+		var del = document.createElement("button");
+
+		li.id = post.id;
 		img.src = "data:image/png;base64," + post.img;
+		del.innerHTML = "Delete";
+		// If the user want to delete it
+		del.addEventListener("click", function (event) {
+			var valid = confirm("Sure ?");
+			if (!valid) return ;
+
+			// make the request, if it all good, remove the li balise
+			ajax.get("/api/posts.php", { "action": "delete", "post": event.target.parentElement.id }, function (response) {
+				event.target.parentElement.parentElement.removeChild(event.target.parentElement);
+			}, function (error) {
+				alert("Error while trying to delete a post. (Error " + error.status + ")");
+			});
+		});
 
 		li.appendChild(img);
+		li.appendChild(del);
 		posts.insertBefore(li, posts.firstChild);
 	}
 
@@ -270,7 +287,7 @@ var trigger_create = function () {
 			add_post(posts[i]);
 		}
 	}, function (error) {
-		// ignore
+		alert("Error while trying to retrieve the masks. (Error " + error.status + ")");
 	});
 
 	// get all method to get user camera
