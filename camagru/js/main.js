@@ -137,6 +137,7 @@ var trigger_header = function() {
 			pwd.value = "";
 			name.value = "";
 			pwdConfirm.value = "";
+			window.location.hash = "";
 		}, function (error) {
 			// create the error
 			msg.className  = "errorbox";
@@ -186,6 +187,7 @@ var trigger_header = function() {
 			// reset form
 			mail.value="";
 			pwd.value="";
+			window.location.hash = "";
 			// reload page after 1 sec
 			setTimeout(function() {
 				location.reload(true);
@@ -254,7 +256,7 @@ var trigger_create = function () {
 
 	var posts = document.getElementById("postsList").childNodes[1];
 
-	function add_post(post) {
+	function add_post(post, appendFirst) {
 		var li = document.createElement("li");
 		var img = document.createElement("img");
 		var del = document.createElement("button");
@@ -277,14 +279,17 @@ var trigger_create = function () {
 
 		li.appendChild(img);
 		li.appendChild(del);
-		posts.insertBefore(li, posts.firstChild);
+		if (appendFirst)
+			posts.insertBefore(li, posts.firstChild);
+		else
+			posts.appendChild(li);
 	}
 
 	// load all posts
 	ajax.get("/api/posts.php", { "action": "retrieve" }, function (response) {
 		var posts = JSON.parse(response);
 		for(var i = 0; i < posts.length; i++) {
-			add_post(posts[i]);
+			add_post(posts[i], false);
 		}
 	}, function (error) {
 		alert("Error while trying to retrieve the masks. (Error " + error.status + ")");
@@ -338,10 +343,10 @@ var trigger_create = function () {
 		// send photo to the backend
 		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {}, function(error) {});
 
-		ajax.get("/api/posts.php", { "action": "retrieve", "offset" : -1, "length" : 1 }, function (response) {
+		ajax.get("/api/posts.php", { "action": "retrieve", "offset" : 0, "length" : 1 }, function (response) {
 			response = JSON.parse(response);
 			if (response.length > 0)
-				add_post(response[0]);
+				add_post(response[0], true);
 		}, function (error) {});
 
 		// play video after one second if the input is camera
@@ -388,27 +393,121 @@ var trigger_index = function () {
 	function add_post(post) {
 		var li = document.createElement("li");
 		var img = document.createElement("img");
-		var del = document.createElement("button");
 
 		li.id = post.id;
+		li.addEventListener("click", function(event) {
+			window.location.replace("/post.php#" + post.id);
+		});
 		img.src = "data:image/png;base64," + post.img;
-		del.innerHTML = "See";
 
 		li.appendChild(img);
-		li.appendChild(del);
-		posts.insertBefore(li, posts.firstChild);
+		posts.appendChild(li);
+	}
+
+	function queryPage(page) {
+		// remove all child
+		while (posts.firstChild) posts.removeChild(posts.firstChild);
+
+		ajax.get("/api/posts.php", { "action": "retrieve", "author" : "all", "page" : currentPage }, function (response) {
+			var list = JSON.parse(response);
+			for(var i = 0; i < list.length; i++) {
+				add_post(list[i]);
+			}
+			posts.appendChild(document.createElement("br"));
+
+			if (page > 0) {
+				var prev = document.createElement("button");
+				prev.innerHTML = "Previous";
+				prev.style.width = "40%";
+				prev.addEventListener("click", function (event) {
+					currentPage--;
+					queryPage(currentPage);
+				});
+				posts.appendChild(prev);
+			}
+
+			if (list.length == 10) {
+				var next = document.createElement("button");
+				next.innerHTML = "Next";
+				next.style.width = "40%";
+				next.addEventListener("click", function (event) {
+					currentPage++;
+					queryPage(currentPage);
+				});
+				posts.appendChild(next);
+			}
+		}, function (error) {
+			alert("Error while trying to retrieve the posts. (Error " + error.status + ")");
+		});
 	}
 
 	// load all posts
-	ajax.get("/api/posts.php", { "action": "retrieve", "author" : "all", "page" : currentPage }, function (response) {
-		var list = JSON.parse(response);
-		for(var i = 0; i < list.length; i++) {
-			add_post(list[i]);
-		}
-	}, function (error) {
-		alert("Error while trying to retrieve the masks. (Error " + error.status + ")");
-	});
+	queryPage(currentPage);
 
+}
+
+////////////////////////////////////////////////////////////////////////
+////							POST								////
+////////////////////////////////////////////////////////////////////////
+
+var trigger_post = function () {
+	var post = document.getElementById("post");
+	var id = window.location.hash.substring(1, window.location.hash.length);
+
+	ajax.get("/api/posts.php", { "action": "retrieve", "id": id}, function (response) {
+		var elem = JSON.parse(response);
+		// show image
+		var img = document.createElement("img");
+		img.src = "data:image/png;base64," + elem.img;
+		post.appendChild(img);
+		post.appendChild(document.createElement("br"));
+
+		// get the nbr of like
+		var like = document.createElement("div");
+		ajax.get("/api/likes.php", { "action": "retrieve", "id": elem.id}, function (response) {
+			var count = JSON.parse(response).count;
+			like.innerHTML = count + " LIKE";
+		}, function (error) {
+			var count = 0;
+			like.innerHTML = count + " LIKE";
+			alert("Error while trying to retrieve the post like. (Error " + error.status + ")");
+		});
+
+		// show div
+		like.className = "like";
+		post.appendChild(like);
+
+		// if the user click on it, send the request and update the number
+		like.addEventListener("click", function () {
+			ajax.get("/api/posts.php", { "action": "like", "id": elem.id}, function (response) {
+				var state = JSON.parse(response).state;
+				if (state === "ADDED") {
+					var count = parseInt(like.innerHTML);
+					count++;
+					like.innerHTML = count + " LIKE";
+				} else if (state === "DELETED") {
+					var count = parseInt(like.innerHTML);
+					count--;
+					like.innerHTML = count + " LIKE";
+				}
+			}, function (error) {
+				alert("Error while trying to like/unlike the post. (Error " + error.status + ")");
+			});
+		});
+
+		// show user and date
+		ajax.get("/api/users.php", { "action": "getname", "id": elem.author}, function (response) {
+			var user = JSON.parse(response);
+			var text = document.createElement("p");
+			text.innerHTML = "created by " + user.name + " at " + elem.date;
+			post.appendChild(text);
+		}, function (error) {
+			alert("Error while trying to retrieve the post author. (Error " + error.status + ")");
+		});
+
+	}, function (error) {
+		alert("Error while trying to retrieve the post. (Error " + error.status + ")");
+	});
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -420,7 +519,9 @@ window.onload = function () {
 	// trigger all function that are register on load
 	if (location.indexOf('create') != -1)
 		trigger_create();
-	if (location.indexOf('index') != -1 || location.substring(location.length - 1) === "/")
+	if (location.indexOf('index') != -1 || location.substring(location.length - 1) === "/" || location.substring(location.length - 2) === "/#")
 		trigger_index();
+	if (location.indexOf('post') != -1)
+		trigger_post();
 	trigger_header();
 };

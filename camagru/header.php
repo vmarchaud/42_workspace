@@ -54,13 +54,17 @@
 		</div>
 		<div class="header">
 			<div class="container">
-				<div class="right" style="padding-right: 50px;">
+				<div class "left" style="display: inline;">
+					<a href="/index.php" style="margin-right: 10%; font-size: xx-large;">Instagrumme</a>
+					<a href="/index.php">Home</a>
+					<a href="/create.php">Create</a>
+				</div>
+				<div class="right" style="padding-right: 50px; margin-top: 10px; display: inline;">
 				<?php
 					if (!isset($_SESSION['user'])) {
 						echo '<a onclick="document.getElementById(\'login\').style.display = \'block\';" href="#">Login</a>';
 						echo '<a onclick="document.getElementById(\'register\').style.display = \'block\';" href="#">Register</a>';
 					} else {
-						echo '<a href="user.php">Account</a>';
 						echo '<a id="logout_link" href="#">Logout</a>';
 					}
 				?>

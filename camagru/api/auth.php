@@ -20,7 +20,7 @@
 			}
 			// verify if user is not already logged
 			if (isset($_SESSION['user'])) {
-				header("Location: index.php", true, 200);
+				header("Location: /index.php", true, 200);
 				return ;
 			}
 			// get the hashed password to compare it

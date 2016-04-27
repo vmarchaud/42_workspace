@@ -84,11 +84,11 @@ nav a:hover {
 }
 
 .header a {
-	vertical-align: center;
+	vertical-align: middle;
 	text-decoration: none;
 	color: rgba(236, 240, 241, 0.8);
-	font-size: 15px;
 	margin-left: 10px;
+    font-size: larger;
 }
 
 .header a:hover {
@@ -157,7 +157,7 @@ nav a:hover {
 /* BODY */
 
 .content {
-	margin: 20px 10% 0 10%;
+	margin: 20px 5% 0 5%;
 }
 
 .content title {
@@ -172,7 +172,8 @@ nav a:hover {
 /* CAPTURE */
 
 .camera {
-    width: 30%;
+    width: 100%;
+	max-width: 500px;
     top: 10%;
     left: 45%;
 	z-index: 15;
@@ -200,7 +201,8 @@ nav a:hover {
 
 #mask {
 	position: absolute;
-    width: 10%;
+	width: 100%;
+	max-width: 150px;
     cursor: move;
     top: 10%;
     left: 45%;
@@ -232,62 +234,86 @@ nav a:hover {
 
 .sidebar {
 	overflow: auto;
-	width: 15%;
+	max-width: 20%;
 	display: inline-block;
 	background: white;
+	max-height: 80%;
 	float: right;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
-	height: 80%;
 }
 
 .capture {
-	width: 80%;
+	width: 70%;
 	float: left;
 	background: white;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
-	height: 80%;
 }
 
 /* INDEX */
+#post {
+	width: 100%;
+	background: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	padding: 10px;
+}
+
+#post img{
+	width: 100%;
+	max-width: 500px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#post .like {
+	display: inline-block;
+	margin-right: 20px;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 5px;
+}
+
+#post p {
+	display: inline-block;
+}
+
+
 .posts {
 	width: 100%;
 	background: white;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
-	height: 80%;
 }
-
 
 .posts ul {
 	padding: 0;
 	list-style-type:none;
-	white-space:nowrap;
 	margin-top: 0;
 	margin-bottom: 20px;
 }
 
 .posts li {
 	width: 5%;
-	display:inline;
-	list-style-type:none;
-	position: relative;
+	display:inline-table;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	margin-right: 2%;
+	margin-bottom: 2%;
+	margin-top: 1%;
+	margin-left: 1%;
 }
-
-.posts li button {
-	width: 50%;
-    bottom: 4%;
-    left: 3%;
-	padding: 5px;
-	position: absolute;
-}
-
 .posts img {
-	width: 100%;
+	max-width: 320px;
+	max-height: 240px;
 }
 
+/* POST */
 
+.post {
+	width: 100%;
+	background: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	padding: 10px;
+}
 /* FOOTER */
 
 .footer {
