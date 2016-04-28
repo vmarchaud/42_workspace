@@ -48,11 +48,11 @@ class Comment {
 	// This function is used to query an post from the original post and return an array of post
 	public static function fromPost( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM comments WHERE post = '$id' ORDER BY date DESC");
+		$stmt = $db->prepare("SELECT * FROM comments WHERE post = '$id' ORDER BY date ASC");
 		if ($stmt->execute())
 			return $stmt->fetchAll(PDO::FETCH_OBJ);
 		else
-			return null;
+			return array();
 	}
 
 	// This function is used to "delete" an comment

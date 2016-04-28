@@ -62,6 +62,10 @@
 						isset($_GET['page']) && is_numeric($_GET['page'])) {
 				// return the page that the user is asking for
 				$posts = Post::queryPage($_GET['page']);
+				if (count($posts) == 0) {
+					header("42", true, 404);
+					return ;
+				}
 			}
 			else if (isset($_GET['id']) && Utils::is_uuid($_GET['id'])) {
 				// query this post

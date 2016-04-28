@@ -6,9 +6,10 @@
 				<div id="post">
 				</div>
 				<div id="comments">
-					<ul></ul>
 					<div id="newcomment">
-						
+						<h3>Post a new comment</h3>
+						<textarea id="comment-content"></textarea>
+						<button id="post-comment">Post comment</button>
 					</div>
 			   </div>
 			</center>

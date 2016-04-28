@@ -3,16 +3,16 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-function resetBox(modal) {
+function resetBox() {
 	// reset all error
 	var errors = document.getElementsByClassName("errorbox");
 	for(var i = 0; i < errors.length; i++) {
-		modal.removeChild(errors[i]);
+		errors[i].parentElement.removeChild(errors[i]);
 	}
 	// reset all success
 	var goodbox = document.getElementsByClassName("goodbox");
 	for(var i = 0; i < goodbox.length; i++) {
-		modal.removeChild(goodbox[i]);
+		errors[i].parentElement.removeChild(goodbox[i]);
 	}
 }
 
@@ -53,7 +53,7 @@ var trigger_header = function() {
 	document.getElementById("forgot_button").addEventListener("click", function() {
 		// reset all box (error/success)
 		var modal = document.getElementById("login_modal");
-		resetBox(modal);
+		resetBox();
 
 		// create the div that will be displayed if error or success
 		var msg = document.createElement("div");
@@ -100,7 +100,7 @@ var trigger_header = function() {
 		var modal = document.getElementById("register_modal");
 
 		// reset all box (error/success)
-		resetBox(modal);
+		resetBox();
 
 		// create the div that will be displayed if error or success
 		var msg = document.createElement("div");
@@ -439,6 +439,11 @@ var trigger_index = function () {
 				posts.appendChild(next);
 			}
 		}, function (error) {
+			if (error.status == 404) {
+				currentPage--;
+				queryPage(currentPage);
+				return ;
+			}
 			alert("Error while trying to retrieve the posts. (Error " + error.status + ")");
 		});
 	}
@@ -515,15 +520,65 @@ var trigger_post = function () {
 	});
 
 	// request the comment
-	var commentbox = document.getElementById("post");
-	
-	ajax.get("/api/comments.php", { "action": "retrieve", "post": id}, function (response) {
+	var commentbox = document.getElementById("comments");
+
+	ajax.get("/api/comments.php", { "action": "retrieve", "post": id }, function (response) {
 		var comments = JSON.parse(response);
 		for(var i = 0; i < comments.length; i++) {
+			// add the comment
+			var comment = document.createElement("div");
+			comment.className = "comment";
+			comment.innerHTML = comments[i].content;
+			comment.id = comments[i].id;
+
+			console.log(document.getElementById("newcomment"));
+			commentbox.insertBefore(comment, document.getElementById("newcomment"));
+
+			// get user name and show it
+			ajax.get("/api/users.php", { "action": "getname", "id": comments[i].author}, function (response) {
+				var user = JSON.parse(response);
+				var text = document.createElement("p");
+				text.className = "author";
+				text.innerHTML = "posted by " + user.name;
+				comment.appendChild(text);
+			}, function (error) {
+				alert("Error while trying to retrieve the comment author. (Error " + error.status + ")");
+			}, false);
 
 		}
 	}, function (error) {
 		alert("Error while trying to retrieve the post author. (Error " + error.status + ")");
+	});
+
+	// add a new comment
+
+	var newcomment = document.getElementById("post-comment");
+	var content = document.getElementById("comment-content");
+	var msgBox = document.createElement("div");
+
+	newcomment.addEventListener("click", function (event) {
+		// reset all box (error/success)
+		resetBox();
+
+		// if msg is empty
+		if (content.value.length === 0) {
+			msgBox.className  = "errorbox";
+			msgBox.innerHTML = "You must write something to post the a new comment.";
+			content.parentElement.insertBefore(msgBox, content);
+			return ;
+		}
+		// make the request
+		ajax.put("/api/comments.php?action=create", { "content": content.value, "post": id}, function(response) {
+			msgBox.className  = "goodbox";
+			msgBox.innerHTML = "You comment has been succesfuly created.";
+			content.parentElement.insertBefore(msgBox, content);
+			content.value = "";
+			setTimeout(function() {
+				location.reload(true);
+			}, 1000);
+		}, function(error) {
+			alert("Error while trying to post a new comment. (Error " + error.status + ")");
+		});
 	});
 }
 
