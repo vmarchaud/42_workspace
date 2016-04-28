@@ -314,6 +314,23 @@ nav a:hover {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 	padding: 10px;
 }
+
+#comments ul {
+    list-style-type:none;
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+
+#comments  li{
+	background: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	padding: 10px;
+}
+
+#comments .author {
+	width: 10%;
+}
 /* FOOTER */
 
 .footer {

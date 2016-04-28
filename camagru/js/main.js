@@ -137,7 +137,8 @@ var trigger_header = function() {
 			pwd.value = "";
 			name.value = "";
 			pwdConfirm.value = "";
-			window.location.hash = "";
+			if (window.location.hash.indexOf("register") != -1)
+				window.location.hash = "";
 		}, function (error) {
 			// create the error
 			msg.className  = "errorbox";
@@ -187,7 +188,8 @@ var trigger_header = function() {
 			// reset form
 			mail.value="";
 			pwd.value="";
-			window.location.hash = "";
+			if (window.location.hash.indexOf("login") != -1)
+				window.location.hash = "";
 			// reload page after 1 sec
 			setTimeout(function() {
 				location.reload(true);
@@ -491,7 +493,10 @@ var trigger_post = function () {
 					like.innerHTML = count + " LIKE";
 				}
 			}, function (error) {
-				alert("Error while trying to like/unlike the post. (Error " + error.status + ")");
+				if (error.status == 401)
+					document.getElementById("login").style.display = "block";
+				else
+					alert("Error while trying to like/unlike the post. (Error " + error.status + ")");
 			});
 		});
 
@@ -507,6 +512,18 @@ var trigger_post = function () {
 
 	}, function (error) {
 		alert("Error while trying to retrieve the post. (Error " + error.status + ")");
+	});
+
+	// request the comment
+	var commentbox = document.getElementById("post");
+	
+	ajax.get("/api/comments.php", { "action": "retrieve", "post": id}, function (response) {
+		var comments = JSON.parse(response);
+		for(var i = 0; i < comments.length; i++) {
+
+		}
+	}, function (error) {
+		alert("Error while trying to retrieve the post author. (Error " + error.status + ")");
 	});
 }
 

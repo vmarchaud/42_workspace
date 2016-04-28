@@ -111,6 +111,10 @@
 				header("42", true, 400);
 				return ;
 			}
+			if (!isset($_SESSION['user'])) {
+				header("Location : /index.php#login", true, 401);
+				return ;
+			}
 			// already like ?
 			$db = Database::getInstance();
 			$stmt = $db->prepare("SELECT * FROM likes WHERE post=? AND user=?");
