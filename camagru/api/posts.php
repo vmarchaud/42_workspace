@@ -29,7 +29,7 @@
 			$img = base64_decode($img);
 			$mask = file_get_contents('../styles/img/' . $vars['mask'] . '.png');
 
-			// verify that is an image
+			// verify that is an image fuck the warning
 			if (imagecreatefromstring($img) == FALSE) {
 				header("42", true, 400);
 				return ;
@@ -37,6 +37,7 @@
 
 			// merge image and encode the result
 			$output = base64_encode(Utils::mergeImage($img, $mask));
+			
 			// create the post
 			$post = new Post(array('author' => $_SESSION['user'], 'img' => $output));
 			try {

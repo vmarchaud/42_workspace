@@ -12,11 +12,11 @@ function resetBox() {
 	// reset all success
 	var goodbox = document.getElementsByClassName("goodbox");
 	for(var i = 0; i < goodbox.length; i++) {
-		errors[i].parentElement.removeChild(goodbox[i]);
+		goodbox[i].parentElement.removeChild(goodbox[i]);
 	}
 }
 
-var trigger_header = function() {
+var onload_header = function() {
 
 	// Trigger code for modal url
     if (window.location.hash.indexOf('#login') != -1)
@@ -43,8 +43,7 @@ var trigger_header = function() {
 				// reload the page if success
 				location.reload(true);
 			}, function (error) {
-				console.log(error);
-				alert("A wild error appear !");
+				alert("Error while trying to delete a post. (Error " + error.status + ")");
 			});
 		});
 	}
@@ -217,7 +216,7 @@ var trigger_header = function() {
 ////////////////////////////////////////////////////////////////////////
 
 
-var trigger_create = function () {
+function onload_create() {
 	var video = document.getElementById("cameraIn");
   	var canvas = document.getElementById("canvas");
   	var takescreen = document.getElementById("takeScreen");
@@ -298,18 +297,43 @@ var trigger_create = function () {
 	});
 
 	// get all method to get user camera
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+	navigator.getUserMedia =  navigator.getUserMedia ||  navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 	// if we get the video
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia({video: true},  function (stream) {
-			video.src = window.URL.createObjectURL(stream);
+			if (navigator.mozGetUserMedia) {
+				// cause mozilla est different
+			   	video.mozSrcObject = stream;
+
+				// play the video
+	  			 video.play();
+
+	  			 // coompute the size of the canvas after a demi second
+	  			 setTimeout(function() {
+	  				 if (!streaming) {
+	  				      height = video.videoHeight / (video.videoWidth/ width);
+	  				      canvas.setAttribute('width', width);
+	  				      canvas.setAttribute('height', height);
+	  				      streaming = true;
+	  			    }
+	  			}, 500);
+			 } else {
+			   var vendorURL = window.URL || window.webkitURL;
+			   video.src = vendorURL.createObjectURL(stream);
+			 }
+
+
+
 		}, function (error) {
 			var fileinput = document.getElementById("fileinput");
 			fileinput.style.display = "block";
 		});
+	} else {
+		var fileinput = document.getElementById("fileinput");
+		fileinput.style.display = "block";
 	}
 
-	// trigger code when camera is on
+	// trigger code for chrome
 	video.addEventListener('canplay', function(ev){
 	    if (!streaming) {
 	      height = video.videoHeight / (video.videoWidth/ width);
@@ -337,27 +361,41 @@ var trigger_create = function () {
 		    canvas.getContext('2d').drawImage(video, 0, 0, width, height);
 		    data = canvas.toDataURL('image/png');
 		}
+
 		// else it must come from input file
 		if (data == null) {
 			alert("You must choose an image to upload it");
 			return ;
 		}
+
 		// send photo to the backend
-		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {}, function(error) {});
+		ajax.put("/api/posts.php?action=create", { "mask": currentMask.title, "img": data}, function(response) {
 
-		ajax.get("/api/posts.php", { "action": "retrieve", "offset" : 0, "length" : 1 }, function (response) {
-			response = JSON.parse(response);
-			if (response.length > 0)
-				add_post(response[0], true);
-		}, function (error) {});
+			ajax.get("/api/posts.php", { "action": "retrieve", "offset" : 0, "length" : 1 }, function (response) {
+				response = JSON.parse(response);
+				if (response.length > 0)
+					add_post(response[0], true);
+			}, function (error) {});
 
-		// play video after one second if the input is camera
-		if (streaming) {
-			setTimeout(function() {
-				video.play();
-				video.style.border = "0";
-			}, 1000);
-		}
+			// play video after one second if the input is camera
+			if (streaming) {
+				setTimeout(function() {
+					video.play();
+					video.style.border = "0";
+				}, 1000);
+			}
+		}, function(error) {
+			alert("Error while trying to post a new image. (Error " + error.status + ")");
+			// play video after one second if the input is camera
+			if (streaming) {
+				setTimeout(function() {
+					video.play();
+					video.style.border = "0";
+				}, 500);
+			}
+		});
+
+
 	});
 
 	// Update the currrent mask
@@ -371,7 +409,6 @@ var trigger_create = function () {
 
 	document.getElementById('fileinput').addEventListener('change', function(event) {
 		var file = event.target.files[0];
-		console.log(event.target.files[0]);
 		var reader = new FileReader();
 		reader.addEventListener("load", function (event) {
 			video.setAttribute("poster", reader.result);
@@ -388,7 +425,7 @@ var trigger_create = function () {
 ////							INDEX								////
 ////////////////////////////////////////////////////////////////////////
 
-var trigger_index = function () {
+var onload_index = function () {
 	var currentPage = 0;
 	var posts = document.getElementById("allposts").childNodes[1];
 
@@ -457,7 +494,7 @@ var trigger_index = function () {
 ////							POST								////
 ////////////////////////////////////////////////////////////////////////
 
-var trigger_post = function () {
+var onload_post = function () {
 	var post = document.getElementById("post");
 	var id = window.location.hash.substring(1, window.location.hash.length);
 
@@ -531,7 +568,6 @@ var trigger_post = function () {
 			comment.innerHTML = comments[i].content;
 			comment.id = comments[i].id;
 
-			console.log(document.getElementById("newcomment"));
 			commentbox.insertBefore(comment, document.getElementById("newcomment"));
 
 			// get user name and show it
@@ -577,23 +613,11 @@ var trigger_post = function () {
 				location.reload(true);
 			}, 1000);
 		}, function(error) {
+			if (error.status == 401) {
+			    document.getElementById("login").style.display = "block";
+				return ;
+			}
 			alert("Error while trying to post a new comment. (Error " + error.status + ")");
 		});
 	});
 }
-
-////////////////////////////////////////////////////////////////////////
-////							MASTER								////
-////////////////////////////////////////////////////////////////////////
-
-window.onload = function () {
-	var location = window.location.href;
-	// trigger all function that are register on load
-	if (location.indexOf('create') != -1)
-		trigger_create();
-	if (location.indexOf('index') != -1 || location.substring(location.length - 1) === "/" || location.substring(location.length - 2) === "/#")
-		trigger_index();
-	if (location.indexOf('post') != -1)
-		trigger_post();
-	trigger_header();
-};

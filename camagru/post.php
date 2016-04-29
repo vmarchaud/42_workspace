@@ -14,5 +14,7 @@
 			   </div>
 			</center>
 		</div>
-	</body>
-</html>
+	   	<script type="text/javascript">  onload_post(); </script>
+<?php
+	require_once 'footer.php';
+?>

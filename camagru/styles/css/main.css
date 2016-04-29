@@ -1,11 +1,14 @@
 /* ALL */
 
+* {margin:0;padding:0;}
+
 html, body {
 	padding: 0px;
 	margin: 0px;
 	background: url('/styles/img/background.png') fixed;
 	font-family: "lato", sans-serif;
     z-index: -999;
+	height: 100%;
 }
 
 a {
@@ -158,16 +161,16 @@ nav a:hover {
 
 .content {
 	margin: 20px 5% 0 5%;
+    position: relative;
+	min-height: 100%;
+	overflow:auto;
+	padding-bottom: 40px;
 }
 
-.content title {
-	font-size: 40px;
-	text-align: center;
-	color: #2c3e50;
-	border-bottom: 1px solid #2c3e50;
-	margin-bottom: 10px;
+.content:after {
+  content: "";
+  display: block;
 }
-
 
 /* CAPTURE */
 
@@ -211,7 +214,9 @@ nav a:hover {
 
 #postsList ul {
 	padding: 0;
+	max-height: 30vw;
 	white-space:nowrap;
+	list-style: none;
 	margin-top: 0;
 	margin-bottom: 20px;
 }
@@ -268,6 +273,7 @@ nav a:hover {
 #post .like {
 	display: inline-block;
 	margin-right: 20px;
+	margin-top: 20px;
 	border: 1px solid black;
 	border-radius: 3px;
 	padding: 5px;
@@ -349,24 +355,18 @@ nav a:hover {
 /* FOOTER */
 
 .footer {
-	padding-top: 10px;
-	padding-left: 5px;
-	padding-right: 5px;
-	margin: 0px auto;
-	width: 990px;
-	height: 30px;
+	position: relative;
+	margin-top: -40px; /* negative value of footer height */
+	height: 40px;
+	clear:both;
+	width: 100%;
 	background: #2c3e50;
 	color: rgba(236, 240, 241, 0.8);
 	font-size: 15px;
 }
 
-.footer a {
-	text-decoration: none;
-	color: rgba(236, 240, 241, 0.8);
-}
-
-.footer a:hover {
-	color: rgba(236, 240, 241, 0.5);
+.footer .right {
+    margin-top: 10px;
 }
 
 .errorbox {

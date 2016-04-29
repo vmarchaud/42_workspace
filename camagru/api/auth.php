@@ -14,7 +14,7 @@
 			$pwd = $_POST['pwd'];
 
 			// verify if there are correct
-			if (!$pwd || !$mail) {
+			if (!$pwd || !$mail || !filter_var($mail, FILTER_VALIDATE_EMAIL)) {
 				header("42", true, 400);
 				return ;
 			}
@@ -70,7 +70,7 @@
 			$pwd = $_POST['pwd'];
 
 			// Verify validity of params
-			if (!$mail || !$name || !$pwd) {
+			if (!$mail || !$name || !$pwd || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 				header("42", true, 400);
 				return ;
 			}
@@ -83,6 +83,9 @@
 				header("42", true, 409);
 				return ;
 			}
+
+			// get out of any html balise
+			$name = preg_replace('/<[^>]*>/', '', $name);
 
 			// Create the user
 			$user = new User(array('mail' => $mail, 'name' => $name, 'password' => $pwd));

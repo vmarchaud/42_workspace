@@ -6,5 +6,7 @@
 				   <center><ul></ul></center>
 			</div>
 		</div>
-	</body>
-</html>
+	   	 <script type="text/javascript">  onload_index(); </script>
+<?php
+	require_once 'footer.php';
+?>

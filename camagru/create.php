@@ -6,7 +6,7 @@
 		return ;
 	}
 ?>
-	<div class="content">
+	<div class="content" >
 		<div class="capture">
 			<div id="maskList">
 			   <ul></ul>
@@ -26,6 +26,7 @@
 		   </div>
 		</div>
 	</div>
-
-</body>
-</html>
+	<script type="text/javascript">  onload_create(); </script>
+<?php
+	require_once 'footer.php';
+?>

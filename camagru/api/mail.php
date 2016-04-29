@@ -68,6 +68,9 @@
 			}
 			break ;
 		}
+		default : {
+			header("42", true, 400);
+		}
 	}
 
  ?>

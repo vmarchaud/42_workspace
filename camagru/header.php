@@ -71,3 +71,5 @@
 				</div>
 			</div>
 		</div>
+
+		<script type="text/javascript">  onload_header(); </script>

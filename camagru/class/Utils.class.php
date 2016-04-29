@@ -2,6 +2,7 @@
 class Utils {
 	const VALID_TYPE = 0;
 	const FORGOT_TYPE = 1;
+	const NEW_COMMENT = 2;
 
 	// Function used to generate a pseudo random id (type uuid)
 	public static function gen_uuid() {
@@ -51,6 +52,18 @@ class Utils {
 				// send mail
 				mail($user->mail, "[Instagrume] Your new password is here !", $content, "From: noreply@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
 				break ;
+			}
+			case Utils::NEW_COMMENT : {
+				// get template and replace variable
+				$content = file_get_contents('./mail_template/new_comment.html');
+				$content = preg_replace("/%name%/", $user->name, $content);
+				$user = User::query($other->author);
+				$content = preg_replace("/%user_name%/", $user->name, $content);
+				$content = preg_replace("/%user_comment%/", $other->content, $content);
+				$content = preg_replace("/%url%/", "http://" . $_SERVER['HTTP_HOST'] . "/post.php#" . $other->post, $content);
+
+				// send mail
+				mail($user->mail, "[Instagrume] A user has commented your post, check it out !", $content, "From: noreply@instagrume.com\r\nContent-type:text/html;charset=UTF-8\r\n");
 			}
 		}
 	}
