@@ -1,10 +1,13 @@
 <?php
-	require_once 'header.php';
+	session_start();
 
 	if (!isset($_SESSION['user'])) {
 		header("Location: /index.php#login");
 		return ;
 	}
+
+	require_once 'header.php';
+
 ?>
 	<div class="content" >
 		<div class="capture">
@@ -17,7 +20,7 @@
 			</center>
 			<input id="fileinput" type="file" name="pic" accept="image/*" style="display: none;">
 			<canvas id="canvas" style="display: none;"></canvas>
-			<button id="takeScreen">Upload</button>
+			<button id="takeScreen" disabled="true">Upload</button>
 			<img id="cameraOut">
 		</div>
 		<div class="sidebar">
@@ -27,6 +30,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">  onload_create(); </script>
+
 <?php
 	require_once 'footer.php';
 ?>

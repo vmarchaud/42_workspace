@@ -242,6 +242,7 @@ function onload_create() {
 			img.addEventListener("click", function(event) {
 				if (currentMask != null)
 					currentMask.style.border = "";
+				takescreen.disabled = false;
 				currentMask = event.target;
 				currentMask.style.border = "1px solid red";
 				applyMask();
@@ -288,9 +289,14 @@ function onload_create() {
 
 	// load all posts
 	ajax.get("/api/posts.php", { "action": "retrieve" }, function (response) {
-		var posts = JSON.parse(response);
-		for(var i = 0; i < posts.length; i++) {
-			add_post(posts[i], false);
+		var list = JSON.parse(response);
+		for(var i = 0; i < list.length; i++) {
+			add_post(list[i], false);
+		}
+		if (list.length == 0) {
+			var li = document.createElement("div");
+			li.innerHTML = "No post here atm ..";
+			posts.parentElement.parentElement.appendChild(li);
 		}
 	}, function (error) {
 		alert("Error while trying to retrieve the masks. (Error " + error.status + ")");
@@ -452,6 +458,13 @@ var onload_index = function () {
 			for(var i = 0; i < list.length; i++) {
 				add_post(list[i]);
 			}
+
+			if (list.length == 0) {
+				var li = document.createElement("div");
+				li.innerHTML = "Its appear that there is no post here ..";
+				document.getElementById("allposts").appendChild(li);
+			}
+
 			posts.appendChild(document.createElement("br"));
 
 			if (page > 0) {

@@ -70,7 +70,7 @@
 			$pwd = $_POST['pwd'];
 
 			// Verify validity of params
-			if (!$mail || !$name || !$pwd || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			if (!$mail || !$name || !$pwd || !filter_var($mail, FILTER_VALIDATE_EMAIL)) {
 				header("42", true, 400);
 				return ;
 			}

@@ -37,7 +37,7 @@
 
 			// merge image and encode the result
 			$output = base64_encode(Utils::mergeImage($img, $mask));
-			
+
 			// create the post
 			$post = new Post(array('author' => $_SESSION['user'], 'img' => $output));
 			try {
@@ -63,7 +63,7 @@
 						isset($_GET['page']) && is_numeric($_GET['page'])) {
 				// return the page that the user is asking for
 				$posts = Post::queryPage($_GET['page']);
-				if (count($posts) == 0) {
+				if (count($posts) == 0 && $_GET['page'] != 0) {
 					header("42", true, 404);
 					return ;
 				}
