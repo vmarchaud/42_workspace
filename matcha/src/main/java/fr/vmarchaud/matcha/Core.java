@@ -17,5 +17,17 @@ public class Core {
 		
 		// setup mode
 		port(4242);
+		
+		after((request, response) -> {
+		    response.header("Content-Encoding", "gzip");
+		});
+		
+		before((request, response) -> {
+		    boolean authenticated = false;
+		    // ... check if authenticated
+		    if (!authenticated) {
+		        halt(401, "You are not welcome here");
+		    }
+		});
 	}
 }

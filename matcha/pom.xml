@@ -24,7 +24,7 @@
 		<!-- Templating -->
 		<dependency>
 		    <groupId>com.sparkjava</groupId>
-		    <artifactId>spark-template-mustache</artifactId>
+		    <artifactId>spark-template-freemarker</artifactId>
 		    <version>2.3</version>
 		</dependency>
 		<!-- MySQL Lib -->
