@@ -2,6 +2,10 @@ package fr.vmarchaud.matcha;
 
 import static spark.Spark.*;
 
+import org.sql2o.Sql2o;
+
+import lombok.Getter;
+
 public class Core {
 
 	// Entry point for this program
@@ -9,25 +13,22 @@ public class Core {
 		new Core(args);
 	}
 	
-	// Class access
+	@Getter
 	public static Core instance;
+	
+	@Getter
+	public static Sql2o database;
+	
 
 	public Core(String[] args) {
 		instance = this;
+		database = new Sql2o("jdbc:mysql://5.196.95.224:3306/matcha", "matcha", "");
 		
-		// setup mode
 		port(4242);
 		
 		after((request, response) -> {
 		    response.header("Content-Encoding", "gzip");
 		});
 		
-		before((request, response) -> {
-		    boolean authenticated = false;
-		    // ... check if authenticated
-		    if (!authenticated) {
-		        halt(401, "You are not welcome here");
-		    }
-		});
 	}
 }

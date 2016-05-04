@@ -82,7 +82,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fr.thisismac.negmergitur.Core</mainClass>
+							<mainClass>fr.vmarchaud.matcha.Core</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

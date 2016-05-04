@@ -45,3 +45,4 @@ bin/
 *.class
 .settings/
 target/
+.recommenders/
