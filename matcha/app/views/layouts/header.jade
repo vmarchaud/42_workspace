@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title!= title
+    
+    link(href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+    link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css', rel='stylesheet')
+    link(href='/css/style.css', rel='stylesheet')
+
+  body
+    div#login.modal
+      div.modal-content
+        h4 Modal Header
+        p A bunch of text
+      div.modal-footer
+        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Agree
+    nav.light-blue
+      div.nav-wrapper.container
+        a#logo-container.brand-logo Logo
+        ul.right.hide-on-med-and-down
+         li 
+            a.btn.modal-trigger(href="#login") Login
+        ul#nav-mobile.side-nav
+          li 
+            a.btn.modal-trigger(href="#login") Login
+        a.button-collapse(href="#", data-activates="nav-mobile", style="color:white")
+          i.material-icons menu
+        
+
+        if (flashMessage && flashMessage.length)
+          div.row
+            div.col-md-4.col-md-offset-4
+              div.alert.alert-danger.text-center= flashMessage
