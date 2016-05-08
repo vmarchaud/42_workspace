@@ -10,19 +10,28 @@ html
   body
     div#login.modal
       div.modal-content
-        h4 Modal Header
-        p A bunch of text
+        h4.center Login
+        br
+        form
+          div.input-field.row
+            i.material-icons.prefix email
+            input#email.validate(type="email")
+            label(for="email") Email
+          div.input-field.row
+            i.material-icons.prefix lock
+            input#password.validate(type="password")
+            label(for="password") Password
       div.modal-footer
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Agree
+        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href="#!") Connect
     nav.light-blue
       div.nav-wrapper.container
         a#logo-container.brand-logo Logo
         ul.right.hide-on-med-and-down
          li 
-            a.btn.modal-trigger(href="#login") Login
+            a(onclick="$('#login').openModal();") Login
         ul#nav-mobile.side-nav
           li 
-            a.btn.modal-trigger(href="#login") Login
+            a(onclick="$('.button-collapse').sideNav('hide'); $('#login').openModal();") Login
         a.button-collapse(href="#", data-activates="nav-mobile", style="color:white")
           i.material-icons menu
         
