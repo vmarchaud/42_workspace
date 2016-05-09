@@ -1,6 +1,4 @@
 const express       = require('express');
-const passport      = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const flash         = require('connect-flash');
 const app           = express();
 

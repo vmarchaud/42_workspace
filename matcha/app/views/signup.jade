@@ -1,13 +1,23 @@
 include ./layouts/header.jade
-div.container-fluid.page-wrap
+
+main
   div.row
-    div.col-md-6.col-md-offset-3
-      div.Signup-Form
-        h3.Title!= message
-        form(id="signup", name="signup", action="signup", method="post")
-          input( type="text", name="username",  placeholder="Username" ).form-control
-          input( type="email", name="email", placeholder="Email address" ).form-control
-          input( type="password", name="password", placeholder="Password" ).form-control
-          input( type="submit", class="btn btn-primary form-control", value="Sign up" )
+      div.container
+        h3.center You want to join us ?
+        br
+        form.col.s12(id="signup", name="signup", action="signup", method="post")
+          row
+            div.input-field.col.s12
+              i.material-icons.prefix email
+              input#email.validate(type="email")
+              label(for="email") Email
+            div.input-field.col.s6
+              i.material-icons.prefix lock
+              input#password.validate(type="password")
+              label(for="password") Password
+            div.input-field.col.s6
+              i.material-icons.prefix lock
+              input#passwordConfirm.validate(type="password")
+              label(for="password") Password confirmation
           
 include ./layouts/footer.jade
