@@ -16,24 +16,26 @@ html
             form.col.s6(name="forgot", action="forgot", method="post")
               row
                 div.input-field.row
-                  input#email.validate(type="email")
-                  label(for="email") Email
+                  input#email_forgot.validate(type="email")
+                  label(for="email_forgot") Email
                 div#login-button-panel.center
                   button.btn(submit="") Send
     div#login.modal
       div.modal-content
         row.section
           h4.center Login
-          form.col.s6(name="signin", action="signin", method="post")
+          form#loginform.col
             row
               div.input-field.row
-                input#email.validate(type="email")
-                label(for="email") Email
+                input#email_login.validate(type="email")
+                label(for="email_login") Email
               div.input-field.row
-                input#password.validate(type="password")
-                label(for="password") Password
+                input#password_login.validate(type="password")
+                label(for="password_login") Password
+              div#progress_login.progress(style="display: none")
+                div.indeterminate
               div#login-button-panel.center
-                button.btn(submit="") Login
+                button#login_btn.btn Login
               div.section.center
                 a(onclick="$('#forgot').openModal();") Forgot your password ?
     nav.light-blue
@@ -49,9 +51,3 @@ html
             a(href="/signup") Signup
         a.button-collapse(href="#", data-activates="nav-mobile", style="color:white")
           i.material-icons menu
-        
-
-        if (flashMessage && flashMessage.length)
-          div.row
-            div.col-md-4.col-md-offset-4
-              div.alert.alert-danger.text-center= flashMessage

@@ -1,22 +1,22 @@
-const passport = require('passport');
+var pool = require('../config/connection.js');
 
 module.exports = function(app) {
   /**
    * Receive Signin Form Data
   **/
   app.post('/signin', function(req, res) {
-      res.redirect('/');
+      res.sendStatus(401);
   });
 
   /**
    * Display Signup Form
   **/
   app.get('/signup', function(req, res) {
+    console.log('signup');
     res.render('signup', {
       title: 'Your title',
       message: 'Your Message',
-      userName: (req.user) ? req.user.username : undefined,
-      flashMessage: req.flash('flashMessage')
+      userName: (req.user) ? req.user.username : undefined
     });
   });
 
@@ -26,7 +26,8 @@ module.exports = function(app) {
       pool.getConnection(function(err, connection) {
         connection.query("SELECT * FROM users WHERE username = ?", [username],  function(err, rows) {
           if (err) {
-            connection.release(); return done(err);
+            connection.release(); 
+            return done(err);
           }
 
           if (rows.length) {

@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, pool) {
   /**
    * Display Home Page
   **/
@@ -6,8 +6,7 @@ module.exports = function(app) {
     res.render('index', {
       title: 'Your page title',
       message: 'Your header message',
-      userName: (req.user) ? req.user.username : undefined,
-      flashMessage: req.flash('flashMessage')
+      userName: (req.user) ? req.user.username : undefined
     });
   });
 }
