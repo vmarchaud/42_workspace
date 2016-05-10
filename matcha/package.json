@@ -1,7 +1,7 @@
 {
-  "name": "hammer-starter",
-  "version": "0.1.0",
-  "description": "A Node.js, Express, MySQL, Passport, Jade starter kit.",
+  "name": "matcha",
+  "version": "0.0.1",
+  "description": "A dating webiste with some cool features",
   "main": "app/server.js",
   "scripts": {
     "start": "node app/server.js"
@@ -9,11 +9,11 @@
   "dependencies": {
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.14.1",
-    "connect-flash": "^0.1.1",
-    "cookie-parser": "^1.4.0",
+    "compression": "^1.6.1",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "jade": "^1.11.0",
+    "morgan": "^1.7.0",
     "mysql": "^2.10.2"
   }
 }
