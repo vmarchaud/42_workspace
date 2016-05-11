@@ -1,13 +1,13 @@
 var express      	= require('express');
-var session			= require('express-session');
+var session 		= require('express-session')
 var utils			= require('./config/utils');
 var morgan 			= require('morgan');
 var compression 	= require('compression');
 var app         	= express();
 
 // Include all routes
-var index = require('./routes/index');
-var auths = require('./routes/auth');
+var index = require('./controllers/index');
+var auths = require('./controllers/auth');
 
 // Setup view engine
 app.set('view engine', 'jade');
@@ -27,11 +27,11 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 
 // Setup session
 app.use(session({
+  secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  secret: 'keyboard cat',
-  cookie: { maxAge: 60000 }
-}));
+  cookie: { secure: true, maxAge: 60000 }
+}))
 
 // Register routes
 app.use('/', index);

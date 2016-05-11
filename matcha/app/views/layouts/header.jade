@@ -1,53 +1,62 @@
 doctype html
 html
-  head
-    title!= title
-    
-    link(href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
-    link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css', rel='stylesheet')
-    link(href='/css/style.css', rel='stylesheet')
-
-  body
-    div#forgot.modal
-        div.modal-content
-          row.section
-            h4.center Password reset
-            p We will send you a link to reset your password properly !
-            form.col.s6(name="forgot", action="forgot", method="post")
-              row
-                div.input-field.row
-                  input#email_forgot.validate(type="email")
-                  label(for="email_forgot") Email
-                div#login-button-panel.center
-                  button.btn(submit="") Send
-    div#login.modal
-      div.modal-content
-        row.section
-          h4.center Login
-          form#loginform.col
-            row
-              div.input-field.row
-                input#email_login.validate(type="email")
-                label(for="email_login") Email
-              div.input-field.row
-                input#password_login.validate(type="password")
-                label(for="password_login") Password
-              div#progress_login.progress(style="display: none")
-                div.indeterminate
-              div#login-button-panel.center
-                button#login_btn.btn Login
-              div.section.center
-                a(onclick="$('#forgot').openModal();") Forgot your password ?
-    nav.light-blue
-      div.nav-wrapper.container
-        a#logo-container.brand-logo(href="/") Matcha
-        ul.right.hide-on-med-and-down
-         li 
-            a(onclick="$('#login').openModal();") Login
-            a(href="/signup") Signup
-        ul#nav-mobile.side-nav
-          li 
-            a(onclick="$('.button-collapse').sideNav('hide'); $('#login').openModal();") Login
-            a(href="/signup") Signup
-        a.button-collapse(href="#", data-activates="nav-mobile", style="color:white")
-          i.material-icons menu
+	head
+		title!= title
+	
+		link(href="https://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+		link(href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css', rel='stylesheet')
+		link(href='/css/style.css', rel='stylesheet')
+body
+	div#forgot.modal
+		div.modal-content
+			row.section
+				h4.center Password reset
+				p We will send you a link to reset your password properly !
+				form#forgotform.col(name="forgot", action="forgot", method="post")
+					row
+						div.input-field.row
+							input#email_forgot.validate(type="email")
+							label(for="email_forgot") Email
+						div#login-button-panel.center
+							button.btn(submit="") Send
+	div#login.modal
+		div.modal-content
+			row.section
+				h4.center Login
+				form#loginform.col
+					row
+						div.input-field.row
+							input#email_login.validate(type="email")
+							label(for="email_login") Email
+						div.input-field.row
+							input#password_login.validate(type="password")
+							label(for="password_login") Password
+						div#progress_login.progress(style="display: none")
+							div.indeterminate
+						div#login-button-panel.center
+							button#login_btn.btn Login
+						div.section.center
+							a(onclick="$('#forgot').openModal();") Forgot your password ?
+	nav.light-blue
+		div.nav-wrapper.container
+			a#logo-container.brand-logo(href="/") Matcha
+			ul.right.hide-on-med-and-down
+				if connected
+					li
+						a(href="/me") My Account
+				else
+					li
+						a(onclick="$('#login').openModal();") Login
+					li
+						a(href="/signup") Signup
+			ul#nav-mobile.side-nav
+				if connected
+					li
+						a(href="/me") My Account
+				else
+					li
+						a(onclick="$('.button-collapse').sideNav('hide'); $('#login').openModal();") Login
+					li
+						a(href="/signup") Signup
+			a.button-collapse(href="#", data-activates="nav-mobile", style="color:white")
+				i.material-icons menu
