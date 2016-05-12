@@ -1,0 +1,49 @@
+include ./layouts/header.jade
+
+main
+	div.row
+		div.container
+			if user.picture
+				img.circle.responsive-img.profilepic.center-block(src=user.picture)
+			else
+				img.circle.responsive-img.profilepic.center-block(src="/img/default_avatar.jpg")
+			form.col.s12(id="profile_form")
+				row
+					div.input-field.col.s12
+						i.material-icons.prefix email
+						input#email_profile.validate(type="email", value=user.mail)
+						label(for="email_profile") Email
+					div.input-field.col.s6
+						i.material-icons.prefix lock
+						input#password_profile.validate(type="password")
+						label(for="password_profile") Old Password
+					div.input-field.col.s6
+						i.material-icons.prefix lock
+						input#passwordConfirm_profile.validate(type="password")
+						label New Password
+					div.input-field.col.s6
+						i.material-icons.prefix assignment_ind
+						input#firstname_profile.validate(type="text", value=user.firstname)
+						label Firstname
+					div.input-field.col.s6
+						i.material-icons.prefix assignment_ind
+						input#lastname_profile.validate(type="text", value=user.name)
+						label Lastname
+					div.input-field.col.s6
+						i.material-icons.prefix face
+						select#gender_profile.multiple
+							if (user.gender == "MEN")
+								option.selected(value="MEN") MEN
+								option(value="WOMEN") WOMEN
+							else if user.gender == "WOMEN"
+								option.selected(value="WOMEN") WOMEN
+								option(value="MEN") MEN
+							else
+								option.disabled.selected(value="NULL") Choose gender
+								option(value="MEN") MEN
+								option(value="WOMEN") WOMEN
+						label Gender
+					div#progress_profile.progress(style="display: none")
+						div.indeterminate
+
+include ./layouts/footer.jade

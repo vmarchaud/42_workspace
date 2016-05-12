@@ -1,10 +1,20 @@
 body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
 }
 
 main {
-  flex: 1 0 auto;
+ 	flex: 1 0 auto;
+}
+
+footer.page-footer {
+	margin-top : 0;
+}
+
+.profilepic {
+	width: 150px;
+	margin-left: 45%;
+	margin-top: 20px;
 }
       

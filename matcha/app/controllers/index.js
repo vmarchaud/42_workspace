@@ -6,7 +6,7 @@ var router = express.Router();
   **/
   router.get('/', function(req, res) {
 	res.render('index', {
-	  title: 'Your page title',
+	  title: 'Home | Matcha',
 	  message: 'Your header message',
 	  connected: req.session.user !== undefined,
 	  userName: (req.user) ? req.user.username : undefined

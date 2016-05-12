@@ -17,9 +17,7 @@ var router 	= express.Router();
 	 	// get connection from the pool
 	 	pool.getConnection(function(err, connection) {
 			if (err) {
-				res.sendStatus(500); 
-				connection.release();
-				return ;
+				res.sendStatus(500); return ;
 			}
 		
 			// Make the request to verify that the data are good
@@ -46,7 +44,7 @@ var router 	= express.Router();
 					connection.release();
 				}
 			});
-	});
+		});
   });
   
   /**
@@ -62,7 +60,8 @@ var router 	= express.Router();
   **/
   router.get('/signup', function(req, res) {
 	res.render('signup', {
-	  connected: req.session.user !== undefined
+		title: "Signup | Matcha",
+		connected: req.session.user !== undefined
 	});
   });
   
@@ -79,9 +78,7 @@ var router 	= express.Router();
 	 // get connection from the pool
 	 pool.getConnection(function(err, connection) {
 	   if (err) {
-		  res.sendStatus(500);
-		  connection.release(); 
-		  return ;
+		  res.sendStatus(500); return ;
 	   }
 	   // Make the request to verify that the mail already exist or not
 	   connection.query("SELECT * FROM users WHERE mail = ?",  [mail],  function(err, rows) {

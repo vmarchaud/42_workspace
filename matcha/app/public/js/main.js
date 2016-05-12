@@ -76,4 +76,7 @@ $(document).ready(function(){
 			}
 			event.preventDefault();
 	});
+	
+	
+    $('#gender_profile').material_select();
 });

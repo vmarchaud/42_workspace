@@ -35,7 +35,12 @@ app.use(session({
 // Register routes
 app.use('/', index);
 app.use('/auth', auth);
-app.use('/me', account);
+app.use('/me', function(req, res, next) {
+	if (req.session.user == undefined) 
+		res.redirect("/");
+	else
+		next();
+}, account);
 
 // Start the server
 const server = app.listen(3000, function () {
