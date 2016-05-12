@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
   /**
-   * Display Home Page
+   * Display Account page
   **/
   router.get('/', function(req, res) {
 	res.render('index', {

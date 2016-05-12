@@ -20,7 +20,7 @@ $(document).ready(function(){
 				// show progress bar
 				$('#progress_login').show();
 				
-				$.post("/signin", { mail: mail, pwd: pwd})
+				$.post("/auth/signin", { mail: mail, pwd: pwd})
 				.done(function(data) {
 					Materialize.toast("Yeah ! You are now connected !", 2500, 'green lighten-1');
 					$('#progress_login').hide();
@@ -60,9 +60,11 @@ $(document).ready(function(){
 				// show progress bar
 				$('#progress_signup').show();
 				
-				$.post("/signup", { 'mail': mail, 'pwd': pwd, 'firstname': firstname, 'lastname': lastname})
+				$.post("/auth/signup", { 'mail': mail, 'pwd': pwd, 'firstname': firstname, 'lastname': lastname})
 				.done(function(data) {
-					Materialize.toast("Yeah ! We just send you an email to valided your account", 5000, 'green lighten-1');
+					Materialize.toast("Welcome ! You have been registered successfuly", 3000, 'green lighten-1');
+					$('#progress_signup').hide();
+					
 				})
 				.fail(function( error ) {
 					if (error.status == 404)

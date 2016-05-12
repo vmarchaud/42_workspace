@@ -7,30 +7,54 @@ var router 	= express.Router();
   /**
    * Receive Signin Form Data
   **/
-  router.post('/signin', function(req, res) {
-	 var mail = req.body.mail, pwd = req.body.pwd;
+	router.post('/signin', function(req, res) {
+		var mail = req.body.mail, pwd = req.body.pwd;
 	 
-	 // is requested correctly formed
-	 if (mail == undefined || pwd == undefined) {
-	 	res.sendStatus(400); return ;
-	 }
-	 // get connection from the pool
-	 pool.getConnection(function(err, connection) {
-	   if (err) {
-		  res.sendStatus(500); return ;
-	   }
-	   // Make the request to verify that the data are good
-	   connection.query("SELECT * FROM users WHERE mail = ? AND password = ?", [mail, bcrypt.hashSync(pwd, salt)],  function(err, rows) {
-		  // If not found return a 404
-		  if (err || rows.length == 0)
-			res.sendStatus(404);
-		  // Else send a success and save it in session
-		  else {
-		  	res.sendStatus(200);
-			req.session.user = rows[0].id;
-		  }
-		})
-	  });
+		// is requested correctly formed
+		if (mail == undefined || pwd == undefined) {
+	 		res.sendStatus(400); return ;
+	 	}
+	 	// get connection from the pool
+	 	pool.getConnection(function(err, connection) {
+			if (err) {
+				res.sendStatus(500); 
+				connection.release();
+				return ;
+			}
+		
+			// Make the request to verify that the data are good
+			connection.query("SELECT * FROM users WHERE mail = ?", [ mail ],  function(err, rows) {
+				// If not found return a 404
+				if (err || rows.length == 0) {
+					res.sendStatus(404);
+					connection.release();
+					return ;			
+				}
+				
+				// verify that the hash match
+				var state = pwd = bcrypt.compareSync( pwd, rows[0].password );
+				
+				// if match, send a success and save it in session
+				if (state) {
+					req.session.user = rows[0].id;
+					connection.release();
+					res.sendStatus(200);
+				} 
+				// Else just send a 401 error 
+				else {
+					res.sendStatus(401);
+					connection.release();
+				}
+			});
+	});
+  });
+  
+  /**
+   * Receive logout request
+  **/
+  router.get('/signout', function(req, res) {
+		req.session.destroy(function(err) {});
+		res.redirect('/');
   });
 
   /**
@@ -38,10 +62,7 @@ var router 	= express.Router();
   **/
   router.get('/signup', function(req, res) {
 	res.render('signup', {
-	  title: 'Your title',
-	  message: 'Your Message',
-	  connected: req.session.user !== undefined,
-	  userName: (req.user) ? req.user.username : undefined
+	  connected: req.session.user !== undefined
 	});
   });
   
@@ -58,14 +79,19 @@ var router 	= express.Router();
 	 // get connection from the pool
 	 pool.getConnection(function(err, connection) {
 	   if (err) {
-		  res.sendStatus(500); return ;
+		  res.sendStatus(500);
+		  connection.release(); 
+		  return ;
 	   }
 	   // Make the request to verify that the mail already exist or not
-	   connection.query("SELECT * FROM users WHERE mail = ?", 
-	   		[mail],  function(err, rows) {
+	   connection.query("SELECT * FROM users WHERE mail = ?",  [mail],  function(err, rows) {
 		  // If found return a conflict
-		  if (err || rows.length > 0)
-			res.sendStatus(409);
+		  if (err || rows.length > 0) {
+				res.sendStatus(409);
+				connection.release();
+				return ;
+		  }
+		  
 		  // Else create the account
 		  else {
 			// Generate an uuid
@@ -75,17 +101,18 @@ var router 	= express.Router();
 			});
 			// make the request
 			connection.query("INSERT INTO users (id, mail, password, firstname, name, state) VALUES (?, ?, ?, ?, ?, ?)", 
-				[uuid, mail, bcrypt.hashSync(pwd, salt), firstname, lastname, 'NOT_ACTIVATED'], function (err, rows) {
+				[uuid, mail, bcrypt.hashSync(pwd, salt), firstname, lastname, 'REGISTERED'], function (err, rows) {
 					// maybe ?
 					if (err) {
 						res.sendStatus(500);
+						connection.release();
 						return ;
 					}
 				});
 			// Else its good
+			req.session.user = uuid;
+			connection.release();
 		  	res.sendStatus(200);
-			res.session.user = uuid;
-			console.log(res.session.user);
 		  }
 		})
 	  });
