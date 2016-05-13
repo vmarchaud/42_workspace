@@ -1,6 +1,20 @@
 include ./layouts/header.jade
 
 main
+	div#add_tags_modal.modal
+		div.modal-content
+			row.section
+				h4.center You want to have a new #tag ?
+				p Search for a tags and we will add it to you !
+				form.col
+					row
+						div.input-field.row
+							input#new_tag.validate(type="text")
+							label Tag
+						div#progress_new_tag.progress(style="display: none")
+							div.indeterminate
+						div.center
+							button#submit_new_tags.btn Add
 	div.row
 		div.container
 			if user.picture
@@ -19,7 +33,7 @@ main
 						label(for="password_profile") Old Password
 					div.input-field.col.s6
 						i.material-icons.prefix lock
-						input#passwordConfirm_profile.validate(type="password")
+						input#oldpassword_profile.validate(type="password")
 						label New Password
 					div.input-field.col.s6
 						i.material-icons.prefix assignment_ind
@@ -27,23 +41,46 @@ main
 						label Firstname
 					div.input-field.col.s6
 						i.material-icons.prefix assignment_ind
-						input#lastname_profile.validate(type="text", value=user.name)
+						input#lastname_profile.validate(type="text", value=user.lastname)
 						label Lastname
 					div.input-field.col.s6
 						i.material-icons.prefix face
 						select#gender_profile.multiple
 							if (user.gender == "MEN")
-								option.selected(value="MEN") MEN
-								option(value="WOMEN") WOMEN
+								option.selected MEN
+								option WOMEN
 							else if user.gender == "WOMEN"
-								option.selected(value="WOMEN") WOMEN
-								option(value="MEN") MEN
+								option.selected WOMEN
+								option MEN
 							else
-								option.disabled.selected(value="NULL") Choose gender
-								option(value="MEN") MEN
-								option(value="WOMEN") WOMEN
+								option.disabled.selected Choose
+								option MEN
+								option WOMEN
 						label Gender
-					div#progress_profile.progress(style="display: none")
-						div.indeterminate
+					div.input-field.col.s6
+						i.material-icons.prefix accessibility
+						select#orientation_profile.multiple
+							if (user.orientation == "HOMOSEXUAL")
+								option.selected HOMOSEXUAL
+								option BISEXUAL
+								option HETEROSEXUAL
+							else if user.orientation == "HETEROSEXUAL"
+								option.selected HETEROSEXUAL
+								option BISEXUAL
+								option HOMOSEXUAL
+							else if user.orientation == "BISEXUAL"
+								option.selected BISEXUAL
+								option HOMOSEXUAL
+								option HETEROSEXUAL
+						label Orientation
+					div.input-field.col.s12
+						div#tags_list.card
+							unless tags.length > 0
+								p Choose your interest by picking tags
+							each val in tags
+								div.chip(id=val.id) #{val.name}
+									i.material-icons add
+							a#add_tags.btn-floating.waves-effect.waves-light.red.blue.right
+								i.material-icons add
 
 include ./layouts/footer.jade

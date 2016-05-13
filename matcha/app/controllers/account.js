@@ -1,54 +1,180 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 var pool 	= require('../config/connection.js');
 
   /**
    * Display Account page
   **/
-router.get('/', function(req, res) {
+router.get('/', function( req, res ) {
 	
-	var user = {};
-	
-	// get connection from the pool
-	pool.getConnection(function(err, connection) {
-		if (err) {
-			res.sendStatus(500); return ;
-		}
+	// make paralel request to get tags AND get user data + profile picture
+	async.parallel([
 		
-		// Get user information to build the profile
-		connection.query("SELECT * FROM users WHERE id = ?", [ req.session.user ],  function(err, rows) {
-			// Maybe ?
-			if (err) {
-				res.sendStatus(500); return ;
-			}
-			
-			if (rows[0].picture !== undefined) {
-				connection.query("SELECT * FROM images WHERE id = ?", [ rows[0].picture ],  function(error, rows2) {
-					// Verify that a picture is found
-					if (!error && rows2.length > 0) {
-						rows[0].picture = rows2[0].img;
-					}
+		function( callback ) {
+			pool.getConnection(function( err, connection ) {
+				if ( err ) { 	callback( true ); return ; }
+				
+				// Get information to build the user data
+				connection.query("SELECT * FROM users WHERE id = ?", [ req.session.user ],  function( err, rows ) {
+					if (err) { connection.release(); callback( true ); return ; }
 					
-					// Render now
-					res.render('account', {
-						title: 'Account | Matcha',
-						user: rows[0],
-						connected: req.session.user !== undefined
-					});
+					if (rows[0].picture !== undefined) {
+						// if he has a profile picture
+						connection.query("SELECT * FROM images WHERE id = ?", [ rows[0].picture ],  function( error, rows2 ) {
+							// Verify that the picture is found
+							if (!error && rows2.length > 0) {
+								rows[0].picture = rows2[0].img;
+								
+								// we have the image, this call is finish
+								connection.release();
+								callback( false, rows[0] );
+							}
+						});
+					}
+					else {
+						// he doesnt have image so the call is finish here
+						connection.release();
+						callback( false, rows[0] );
+					}
 				});
-			} else {
-				// Render the page
-				res.render('account', {
-					title: 'Account | Matcha',
-					user: rows[0],
-					connected: req.session.user !== undefined
+			});
+		},
+		
+		function( callback ) {
+			pool.getConnection(function( err, connection ) {
+				if ( err ) { callback( true ); return ; }
+				
+				// Get user tag 
+				connection.query("SELECT * FROM user_tags WHERE user = ?", [ req.session.user ],  function( err, rows ) {
+					if (err) { connection.release(); callback( true ); return ; }
+					
+					var tags = [];
+					
+					if ( rows.length > 0 ) {
+						// if he has some tags, get them
+						async.each(rows, function (item, callback) {
+							connection.query("SELECT * FROM tags WHERE id = ?", [ item.tag ],  function( err, rows2 ) {
+								if (err) { console.log(err); connection.release(); callback( true ); return ; }
+								
+								// if the tag is found on the list
+								if ( rows2.length > 0 ) {
+									// push it into the global array
+									tags.push( { id: rows2[0].id, name: rows2[0].name } );
+									callback();
+								}
+							});
+						}, function (err) {
+							// release conenction
+							connection.release();
+							
+							if ( err )
+								callback( true );
+							else
+								callback( false, tags );
+						});
+					}
+					else {
+						// this call is finish here cause the user doesnt have any tag
+						connection.release();
+						callback( false, tags );
+					}
 				});
-			}
-			
-			
-			
-			// Release connection
+			});
+		}
+	],
+ 	// the callback function that will be called when both request has been done
+  	function( err, results ) {
+		// if there is an error
+    	if( err ) { res.send(500); return; }
+		
+		// else render the page
+		res.render('account', {
+			title: 'Account | Matcha',
+			user: results[0],
+			tags: results[1],
+			connected: req.session.user !== undefined
+		});
+  	}
+  );
+});
+
+// Register update route
+router.post('/update', function( req, res ) {
+	 var type = req.body.type, data = req.body.data;
+	 
+	 // is request correctly formed
+	 if (type == undefined || data == undefined) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+	   if (err) {
+		  res.sendStatus( 500 ); return ;
+	   }
+	   // Make the request to update the data
+	   connection.query("UPDATE users SET ??=? WHERE id = ?",  [ type, data, req.session.user ],  function(err, rows) {
+		  // If there is an error (ex : attribute doesnt not exist)
+		  if (err) {
+				res.sendStatus( 400 );
+				connection.release();
+				return ;
+		  }
+		  // Else its good
+		  else {
 			connection.release();
+		  	res.sendStatus( 200 );
+		  }
+		})
+	  });
+});
+
+// Register any tag update
+router.post('/tag/add', function( req, res ) {
+	 var tag = req.body.tag;
+	 
+	 // is request correctly formed
+	 if ( tag == undefined ) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+	   
+	  	// tag name already exist ?
+		connection.query("SELECT * from tags WHERE name LIKE ?",  [ tag ],  function( err, rows ) {
+			var id = null;
+			
+			// if not
+			if (rows.length == 0) {
+				// Generate an uuid
+				id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+					var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+					return v.toString(16);
+				});
+				
+				// Create it
+				connection.query("INSERT INTO tags (id, name) VALUES( ?, ? )", [ id, tag ], function ( err, rows ) {});
+			} 
+			// else just get the id 
+			else 
+				id = rows[0].id;
+			
+			// verify that the doesnt have the tag already
+			connection.query("SELECT * FROM user_tags WHERE user = ? AND tag = ?", [ req.session.user, id ], function ( err, rows ) {
+				if (rows.length == 0) {
+					// now register it to the user
+					connection.query("INSERT INTO user_tags (user, tag) VALUES( ?, ? )", [ req.session.user , id ], function ( err, rows ) {});
+					connection.release();
+		  			res.sendStatus( 201 );
+				}
+				// else tell him that he already has this one 
+				else {
+					connection.release();
+		  			res.sendStatus( 409 );
+				}
+			});
 		});
 	});
 });

@@ -79,4 +79,122 @@ $(document).ready(function(){
 	
 	
     $('#gender_profile').material_select();
+	
+	// Update gender
+	$( "#gender_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#gender_profile" ).find(":selected").text();
+		// If he didnt select
+		if (selected === "Choose") {
+			Materialize.toast("You need to choose MEN or WOMEN to update your gender.", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "gender", 'data': selected}).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
+	// Update the mail
+	$( "#email_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#email_profile" ).val();
+		// If he put an invalid data
+		if (selected.length == 0 || !selected.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
+			Materialize.toast("You need to put a valid email to change it.", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "mail", 'data': selected}).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
+	// Update the name
+	$( "#firstname_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#firstname_profile" ).val();
+		// If he put an invalid data
+		if (selected.length == 0) {
+			Materialize.toast("You need to put a valid name to change it.", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "firstname", 'data': selected}).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
+	// Update the name
+	$( "#lastname_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#lastname_profile" ).val();
+		// If he put an invalid data
+		if (selected.length == 0) {
+			Materialize.toast("You need to put a valid name to change it.", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "lastname", 'data': selected}).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
+	
+	$('#orientation_profile').material_select();
+	
+	// Update orientation
+	$( "#orientation_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#orientation_profile" ).find(":selected").text();
+		
+		$.post("/me/update", { 'type': "orientation", 'data': selected}).done(function(data) {
+			Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+		}).fail(function( error ) {
+			Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+		});
+		
+	});
+	
+	// Login form
+	$("#add_tags").click(function (event) {
+		$('#add_tags_modal').openModal();
+	});
+	
+	$("#submit_new_tags").click(function (event) {
+		var value = $("#new_tag").val();
+		
+		if (value.length <= 1 || value.length > 30) {
+			Materialize.toast("A valid tag must have between 2 and 30 chars", 2000, 'red lighten-1');
+		} else {
+			$('#progress_new_tag').show();
+			$.post("/me/tag/add", { 'tag': value }).done(function(data) {
+				Materialize.toast("Tag has been successfuly added !", 2000, 'green lighten-1');
+				$('#progress_new_tag').hide();
+			}).fail(function( error ) {
+				if (error.status)
+					Materialize.toast("You already have this tag set in your profile", 2000, 'red lighten-1');
+				else
+					Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+				$('#progress_new_tag').hide();
+			});
+		}
+		event.preventDefault();
+	});
 });
+
+function onClickShip() {
+	
+}

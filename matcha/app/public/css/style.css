@@ -17,4 +17,16 @@ footer.page-footer {
 	margin-left: 45%;
 	margin-top: 20px;
 }
-      
+
+.chip {
+	margin: 10px;
+}
+
+#add_tags {
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+#tags_list {
+	height: 50px;
+}
