@@ -74,12 +74,13 @@ main
 								option HETEROSEXUAL
 						label Orientation
 					div.input-field.col.s12
+						h6 Tags
 						div#tags_list.card
 							unless tags.length > 0
 								p Choose your interest by picking tags
 							each val in tags
 								div.chip(id=val.id) #{val.name}
-									i.material-icons add
+									i.material-icons(onclick="delete_chip(this);") close
 							a#add_tags.btn-floating.waves-effect.waves-light.red.blue.right
 								i.material-icons add
 

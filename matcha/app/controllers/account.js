@@ -179,4 +179,30 @@ router.post('/tag/add', function( req, res ) {
 	});
 });
 
+// Register any tag update
+router.post('/tag/delete', function( req, res ) {
+	 var id = req.body.tag;
+	 
+	 // is request correctly formed
+	 if ( id == undefined ) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+	   
+	  	// delete the tag from the user
+		connection.query("DELETE FROM user_tags WHERE tag = ? AND user = ?",  [ id, req.session.user ],  function( err, rows ) {
+			if ( err ) {
+				connection.release();
+				res.sendStatus( 400 );
+			}
+		});
+		
+		connection.release();
+		res.sendStatus( 200 );
+	});
+});
+
 module.exports = router;

@@ -168,11 +168,12 @@ $(document).ready(function(){
 		
 	});
 	
-	// Login form
+	// Open new tags modal
 	$("#add_tags").click(function (event) {
 		$('#add_tags_modal').openModal();
 	});
 	
+	// submit a new tag
 	$("#submit_new_tags").click(function (event) {
 		var value = $("#new_tag").val();
 		
@@ -183,8 +184,11 @@ $(document).ready(function(){
 			$.post("/me/tag/add", { 'tag': value }).done(function(data) {
 				Materialize.toast("Tag has been successfuly added !", 2000, 'green lighten-1');
 				$('#progress_new_tag').hide();
+				setTimeout(function() {
+					location.reload(true);
+				}, 1000);
 			}).fail(function( error ) {
-				if (error.status)
+				if (error.status == 409)
 					Materialize.toast("You already have this tag set in your profile", 2000, 'red lighten-1');
 				else
 					Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
@@ -193,8 +197,27 @@ $(document).ready(function(){
 		}
 		event.preventDefault();
 	});
+	
+	
 });
 
-function onClickShip() {
+function delete_chip(obj) {
+	var chip = $(obj).closest(".chip");
+	var id = chip.attr("id");
 	
+	var state = confirm("Are you sure that you want to delete this tag ?");
+	
+	if (!state)
+		return ;
+		
+	$.post("/me/tag/delete", { 'tag': id }).done(function(data) {
+			Materialize.toast("Tag has been successfuly deleted !", 2000, 'green lighten-1');
+			chip.remove();
+		}).fail(function( error ) {
+			if (error.status)
+				Materialize.toast("You already have this tag set in your profile", 2000, 'red lighten-1');
+			else
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_new_tag').hide();
+		});
 }
