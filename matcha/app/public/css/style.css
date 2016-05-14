@@ -28,5 +28,17 @@ footer.page-footer {
 }
 
 #tags_list {
-	height: 50px;
+	min-height: 50px;
+}
+
+#map {
+	margin: auto;
+    width: 100%;
+    height: 150px;
+}
+
+#update_loc {
+    position: absolute;
+    right: 20px;
+    top: 40px;
 }

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var async = require('async');
 var pool 	= require('../config/connection.js');
+var http = require('http');
 
   /**
    * Display Account page
@@ -107,6 +108,14 @@ router.post('/update', function( req, res ) {
 	 if (type == undefined || data == undefined) {
 	 	res.sendStatus( 400 ); return ;
 	 }
+	 
+	 // for the location we will need to check if he refused
+	 if (type === "location" && data === "refused") {
+		 http.get('http://ipinfo.io/' + req.ip + "/loc", function(res) {
+			data = res;
+		})
+	 }
+	 
 	 // get connection from the pool
 	 pool.getConnection(function( err, connection ) {
 	   if (err) {
@@ -127,6 +136,33 @@ router.post('/update', function( req, res ) {
 		  }
 		})
 	  });
+});
+
+// Register retreive route
+router.post('/retrieve', function( req, res ) {
+	 var type = req.body.type;
+	 
+	 // is request correctly formed
+	 if (type == undefined) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+	   if (err) {
+		  res.sendStatus( 500 ); return ;
+	   }
+	   // Make the request to update the data
+	   connection.query("SELECT ?? FROM users WHERE id = ?",  [ type, req.session.user ],  function(err, rows) {
+		  // If there is an error (ex : attribute doesnt not exist)
+			if (err) 
+				res.sendStatus( 400 );
+		  	else if (rows[0][type].length == 0) 
+				res.sendStatus( 400 );
+		  	else 
+				res.send( rows[0] );
+		 	connection.release();
+		});
+	});
 });
 
 // Register any tag update

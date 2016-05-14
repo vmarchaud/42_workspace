@@ -1,6 +1,8 @@
 /* global Materialize */
 /* global $ */
 
+var map;
+
 $(document).ready(function(){
 	$('.button-collapse').sideNav();
 	$('.parallax').parallax();
@@ -179,6 +181,8 @@ $(document).ready(function(){
 		
 		if (value.length <= 1 || value.length > 30) {
 			Materialize.toast("A valid tag must have between 2 and 30 chars", 2000, 'red lighten-1');
+		} else if (value.indexOf(' ') != -1) {
+			Materialize.toast("A valid tag doesnt have space in it", 2000, 'red lighten-1');
 		} else {
 			$('#progress_new_tag').show();
 			$.post("/me/tag/add", { 'tag': value }).done(function(data) {
@@ -198,7 +202,71 @@ $(document).ready(function(){
 		event.preventDefault();
 	});
 	
+	// Update the bio
+	$( "#bio_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#bio_profile" ).val();
+		// If he put an invalid data
+		if (selected.length > 242) {
+			Materialize.toast("Your bio must have maximum 242 chars.", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "bio", 'data': selected }).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
 	
+	$( "#update_loc" ).click(function() {
+		GMaps.geolocate({
+			success: function(position) {
+				map.setCenter(position.coords.latitude, position.coords.longitude);
+				$.post("/me/update", { 'type': "location", "data": position.coords.latitude + "," + position.coords.longitude }).done(function(data) {
+					Materialize.toast("Your location has been successfuly updated", 2000, 'green lighten-1');
+				});
+			},
+			error: function(error){
+				$.post("/me/update", { 'type': "location", "data": "refused" }).done(function(data) {});
+			}
+		});
+	});
+	
+});
+
+$( "#map_profile" ).ready(function() {
+	if ($( "#map_profile" ) == undefined)
+		return ;
+		
+	$.post("/me/retrieve", { "type": "location" }).done(function(data) {
+		var loc = data.location.split(",");
+		map = new GMaps({
+			el: '#map',
+			lat: loc[0],
+			lng: loc[1]
+		});
+	}).fail(function( error ) {
+	 	map = new GMaps({
+			el: '#map',
+			lat: 48.866667,
+			lng: 2.333333
+		});
+		Materialize.toast("Please accept the localization demand", 2000, 'green lighten-1');
+		GMaps.geolocate({
+			success: function(position) {
+				map.setCenter(position.coords.latitude, position.coords.longitude);
+				$.post("/me/update", { 'type': "location", "data": position.coords.latitude + "," + position.coords.longitude }).done(function(data) {
+					Materialize.toast("Your location has been successfuly updated", 2000, 'green lighten-1');
+				});
+			},
+			error: function(error) {
+				$.post("/me/update", { 'type': "location", "data": "refused" }).done(function(data) {});
+			}
+		});
+		
+	});
 });
 
 function delete_chip(obj) {
