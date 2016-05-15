@@ -84,10 +84,22 @@ main
 							each val in tags
 								div.chip(id=val.id) #{val.name}
 									i.material-icons(onclick="delete_chip(this);") close
-							a#add_tags.btn-floating.waves-effect.waves-light.red.blue.right
+							a#add_tags.btn-floating.waves-effect.waves-light.blue.right
 								i.material-icons add
 					div#map_profile.input-field.col.s12
 						h6 Localisation
 						div#map.card
-						a#update_loc.btn.waves-effect.waves-light.red.blue Update
+						a#update_loc.btn.waves-effect.waves-light.blue Update
+					div.input-field.col.s12
+						h6 Images
+						div#images_card.center
+							ul
+								each val in images
+									li#image.card.small
+										div.card-image
+											img(src=val.img)
+										div.card-action
+											p.blue-text
+												a#delete_image.waves-effect.waves-light(img=val.id) Delete
+												a#love_image.waves-effect.waves-light(img=val.id) Pick as avatar
 include ./layouts/footer.jade

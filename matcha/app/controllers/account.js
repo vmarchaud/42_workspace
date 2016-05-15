@@ -9,7 +9,7 @@ var http = require('http');
   **/
 router.get('/', function( req, res ) {
 	
-	// make paralel request to get tags AND get user data + profile picture
+	// make paralel request to get tags AND get user data + profile picture + all image
 	async.parallel([
 		
 		function( callback ) {
@@ -82,6 +82,20 @@ router.get('/', function( req, res ) {
 					}
 				});
 			});
+		},
+		// Get the user image's
+		function( callback ) {
+			pool.getConnection(function( err, connection ) {
+				if ( err ) { 	callback( true ); return ; }
+				
+				// Get information to build the user data
+				connection.query("SELECT * FROM images WHERE user = ?", [ req.session.user ],  function( err, rows ) {
+					if (err) { connection.release(); callback( true ); return ; }
+					
+					connection.release();
+					callback( false, rows );
+				});
+			});
 		}
 	],
  	// the callback function that will be called when both request has been done
@@ -94,6 +108,7 @@ router.get('/', function( req, res ) {
 			title: 'Account | Matcha',
 			user: results[0],
 			tags: results[1],
+			images: results[2],
 			connected: req.session.user !== undefined
 		});
   	}
@@ -109,33 +124,51 @@ router.post('/update', function( req, res ) {
 	 	res.sendStatus( 400 ); return ;
 	 }
 	 
-	 // for the location we will need to check if he refused
-	 if (type === "location" && data === "refused") {
-		 http.get('http://ipinfo.io/' + req.ip + "/loc", function(res) {
-			data = res;
-		})
-	 }
 	 
-	 // get connection from the pool
-	 pool.getConnection(function( err, connection ) {
-	   if (err) {
-		  res.sendStatus( 500 ); return ;
-	   }
-	   // Make the request to update the data
-	   connection.query("UPDATE users SET ??=? WHERE id = ?",  [ type, data, req.session.user ],  function(err, rows) {
-		  // If there is an error (ex : attribute doesnt not exist)
-		  if (err) {
-				res.sendStatus( 400 );
-				connection.release();
-				return ;
-		  }
-		  // Else its good
-		  else {
-			connection.release();
-		  	res.sendStatus( 200 );
-		  }
-		})
-	  });
+	 async.series([
+		function(callback) { 
+			// for the location we will need to check if he refused
+			if (type === "location" && data === "refused" && req.ip != "::1" && req.ip != "127.0.0.1") {
+				var request = http.get("http://ipinfo.io/" + req.ip + "/loc", function(res) {
+					// Buffer the body entirely for processing as a whole.
+					var bodyChunks = [];
+					res.on('data', function(chunk) {
+						bodyChunks.push(chunk);
+					}).on('end', function() {
+						var body = Buffer.concat(bodyChunks);
+						data = body;
+						callback(null, 1);
+					})
+				});
+			} 
+			else
+				callback(null, 1);
+			
+		 },
+		function(callback) { 
+			// get connection from the pool
+			pool.getConnection(function( err, connection ) {
+				if (err) {
+					res.sendStatus( 500 ); callback(null, 2); return ;
+				}
+				// Make the request to update the data
+				connection.query("UPDATE users SET ??=? WHERE id = ?",  [ type, data, req.session.user ],  function(err, rows) {
+					// If there is an error (ex : attribute doesnt not exist)
+					if (err) {
+						res.sendStatus( 400 );
+						connection.release();
+					}
+					// Else its good
+					else {
+						connection.release();
+						res.sendStatus( 200 );
+					}
+					callback(null, 2);
+				})
+			});
+			
+		 }
+	]);
 });
 
 // Register retreive route

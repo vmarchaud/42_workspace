@@ -42,3 +42,36 @@ footer.page-footer {
     right: 20px;
     top: 40px;
 }
+
+#images_card {
+	min-height: 220px;
+}
+
+#images_card ul {
+	list-style-type:none;
+	white-space:nowrap;
+	overflow-x:auto;
+	margin: 0;
+}
+.card-image  {
+	max-height: 100%!important;
+	max-width: 100%!important;
+}
+
+.card-image img{
+	max-height: 300px;
+	max-width: 220px;
+}
+
+.card-action  {
+	padding-top: 10px!important;
+	padding-top: 10px!important;
+}
+
+
+#image {
+	margin: 5px;
+	display: inline-block;
+	min-height: 300px; 
+	min-width: 220px;
+}

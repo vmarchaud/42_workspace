@@ -237,7 +237,7 @@ $(document).ready(function(){
 });
 
 $( "#map_profile" ).ready(function() {
-	if ($( "#map_profile" ) == undefined)
+	if (!$( "#map_profile" ).is("div"))
 		return ;
 		
 	$.post("/me/retrieve", { "type": "location" }).done(function(data) {
