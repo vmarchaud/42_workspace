@@ -75,3 +75,15 @@ footer.page-footer {
 	min-height: 300px; 
 	min-width: 220px;
 }
+
+#add_image {
+	margin: 5px!important;
+	display: inline-block!important;
+	min-height: 300px!important; 
+	min-width: 220px!important;
+}
+
+#add_image i {
+	font-size: 50px;
+    margin-top: 75%;
+}

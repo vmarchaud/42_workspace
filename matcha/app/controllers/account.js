@@ -31,6 +31,10 @@ router.get('/', function( req, res ) {
 								connection.release();
 								callback( false, rows[0] );
 							}
+                            else {
+                                connection.release();
+						        callback( false, rows[0] );
+                            }
 						});
 					}
 					else {
@@ -129,7 +133,7 @@ router.post('/update', function( req, res ) {
 		function(callback) { 
 			// for the location we will need to check if he refused
 			if (type === "location" && data === "refused" && req.ip != "::1" && req.ip != "127.0.0.1") {
-				var request = http.get("http://ipinfo.io/" + req.ip + "/loc", function(res) {
+				http.get("http://ipinfo.io/" + req.ip + "/loc", function(res) {
 					// Buffer the body entirely for processing as a whole.
 					var bodyChunks = [];
 					res.on('data', function(chunk) {
@@ -271,6 +275,83 @@ router.post('/tag/delete', function( req, res ) {
 		
 		connection.release();
 		res.sendStatus( 200 );
+	});
+});
+
+// Register any new image
+router.put('/image/add', function( req, res ) {
+	 var img = req.body.img;
+     
+     var tab = img.split(',');
+	 
+	 // is request correctly formed
+	 if ( img == undefined || tab.length != 2 || !tab[1].match("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$")) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+        
+        // Generate an uuid
+		var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+			return v.toString(16);
+		});
+        
+		// put the image in the database
+		connection.query("INSERT INTO images (id, user, img) VALUES(?, ?, ?)", [ id, req.session.user, img ], function ( err, rows ) {
+			connection.release();
+		  	res.sendStatus( 201 );
+		});
+	});
+});
+
+// Register any image delete
+router.post('/image/delete', function( req, res ) {
+	 var id = req.body.img;
+	 
+	 // is request correctly formed
+	 if ( id == undefined ) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+	    
+	  	// delete image
+		connection.query("SELECT picture FROM users WHERE id = ?", [ req.session.user ], function ( err, rows ) {
+            // if its is profile picture, remove it
+			if (rows[0].picture === id) 
+				connection.query("UPDATE users SET picture='' WHERE id = ?", [ req.session.user ], function ( err, rows ) {});
+			
+			// and after delete the image
+            connection.query("DELETE FROM images WHERE user = ? AND id = ?", [ req.session.user , id ], function ( err, rows ) {});
+			connection.release();
+		  	res.sendStatus( 200 );
+		});
+	});
+});
+
+// Favorite a image
+router.post('/image/favorite', function( req, res ) {
+	 var id = req.body.img;
+	 
+	 // is request correctly formed
+	 if ( id == undefined ) {
+	 	res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+	    
+	  	// delete image
+		connection.query("UPDATE users SET picture = ? WHERE id = ?", [ id, req.session.user ], function ( err, rows ) {
+            connection.release();
+		  	res.sendStatus( 200 );
+		});
 	});
 });
 

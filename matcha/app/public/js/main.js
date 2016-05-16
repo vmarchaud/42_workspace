@@ -1,7 +1,9 @@
+/* global GMaps */
 /* global Materialize */
 /* global $ */
 
 var map;
+var image_upload = null;
 
 $(document).ready(function(){
 	$('.button-collapse').sideNav();
@@ -220,6 +222,7 @@ $(document).ready(function(){
 		}
 	});
 	
+    // Update the location of the user
 	$( "#update_loc" ).click(function() {
 		GMaps.geolocate({
 			success: function(position) {
@@ -232,6 +235,41 @@ $(document).ready(function(){
 				$.post("/me/update", { 'type': "location", "data": "refused" }).done(function(data) {});
 			}
 		});
+	});
+    
+    $( " #image_input ").change(function(event) {
+        var file = event.target.files[0];
+		var reader = new FileReader();
+		reader.addEventListener("load", function (event) {
+			image_upload = reader.result;
+		});
+	   reader.readAsDataURL(file);
+    });
+    
+    // add a image
+	$( "#submit_new_image" ).click(function(event) {
+        
+		// If he put an invalid data
+		if (image_upload == null) {
+			Materialize.toast("You must choose a image to upload", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+            $.ajax({
+               url:  "/me/image/add",
+               type: "PUT",
+               data: { 'img': image_upload }
+            }).done(function(data) {
+				Materialize.toast("Your image has been succesfuly added !", 2000, 'green lighten-1');
+			    setTimeout(function() {
+					location.reload(true);
+				}, 1000);
+            }).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+        
+        event.preventDefault();
 	});
 	
 });
@@ -269,6 +307,39 @@ $( "#map_profile" ).ready(function() {
 	});
 });
 
+function delete_image(obj) {
+    // if the user want to delete an image
+      var id =  $( obj ).attr("img");
+       
+        var state = confirm("Are you sure that you want to delete this image ?");
+        
+        if (!state)
+            return ;
+        
+        $.post("/me/image/delete", { 'img': id }).done(function(data) {
+			Materialize.toast("This image has been successfuly deleted !", 2000, 'green lighten-1');
+	       $( obj ).closest("li").remove();
+		}).fail(function( error ) {
+			Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+		});
+}
+
+function favorite_image(obj) {
+    // if the user want to delete an image
+      var id =  $( obj ).attr("img");
+       
+        var state = confirm("Are you sure that you want make this image your profile picture ?");
+        
+        if (!state)
+            return ;
+        
+        $.post("/me/image/favorite", { 'img': id }).done(function(data) {
+			Materialize.toast("This image is now your profile picture !", 2000, 'green lighten-1');
+		}).fail(function( error ) {
+			Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+		});
+}
+
 function delete_chip(obj) {
 	var chip = $(obj).closest(".chip");
 	var id = chip.attr("id");
@@ -282,7 +353,7 @@ function delete_chip(obj) {
 			Materialize.toast("Tag has been successfuly deleted !", 2000, 'green lighten-1');
 			chip.remove();
 		}).fail(function( error ) {
-			if (error.status)
+			if (error.status == 409)
 				Materialize.toast("You already have this tag set in your profile", 2000, 'red lighten-1');
 			else
 				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');

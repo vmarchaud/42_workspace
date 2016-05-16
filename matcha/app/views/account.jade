@@ -15,6 +15,24 @@ main
 							div.indeterminate
 						div.center
 							button#submit_new_tags.btn Add
+	div#add_image_modal.modal
+		div.modal-content
+			row.section
+				h4.center Upload a new image to your profile
+				p Choose the image to upload it
+				form.col
+					row
+						div.input-field.file-field.row
+							div.btn
+								span File
+								input#image_input.validate(type="file", accept="image/*")
+							div.file-path-wrapper
+								input.file-path.validate(type="text")
+						br
+						div#progress_new_image.progress(style="display: none")
+							div.indeterminate
+						div.center
+							button#submit_new_image.btn Upload
 	div.row
 		div.container
 			if user.picture
@@ -100,6 +118,11 @@ main
 											img(src=val.img)
 										div.card-action
 											p.blue-text
-												a#delete_image.waves-effect.waves-light(img=val.id) Delete
-												a#love_image.waves-effect.waves-light(img=val.id) Pick as avatar
+												a#delete_image.waves-effect.waves-light(img=val.id, onclick="delete_image(this);") Delete
+												a#love_image.waves-effect.waves-light(img=val.id, onclick="favorite_image(this);") Pick as avatar
+								unless images.length == 5
+									li#image
+										a#add_image.btn.blue.waves-effect.waves-light(onclick="$('#add_image_modal').openModal();")
+											i.material-icons add
+                                                            
 include ./layouts/footer.jade
