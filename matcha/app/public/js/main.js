@@ -272,6 +272,39 @@ $(document).ready(function(){
         event.preventDefault();
 	});
 	
+	// search user
+	$("#search_user").change(function(event) {
+		var input = $("#search_user").val();
+		
+		// reset already present
+		$('#collection_search').hide();
+		$("#collection_search").empty();
+		
+		if (input.length < 2) {
+			Materialize.toast("You must write at least 2 chars to search someome", 2000, 'red lighten-1');
+			return ;
+		}
+		
+		$('#progress_search_user').show();
+		
+		 $.post("/search/byName", { 'input': input } ).done(function(data) {
+			$('#collection_search').show();
+			for(var i = 0; i < data.length; i++) {
+				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
+				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_search");
+			}
+			$('#progress_search_user').hide();
+		}).fail(function( error ) {
+			if (error.status == 404) 
+				Materialize.toast("No user has been found with this name", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_search_user').hide();
+			$('#collection_search').hide();
+		});
+		
+		event.preventDefault();
+	});
 });
 
 $( "#map_profile" ).ready(function() {

@@ -87,3 +87,44 @@ footer.page-footer {
 	font-size: 50px;
     margin-top: 75%;
 }
+
+#search_user {
+	background-color: #03a9f4;
+	border: 0;
+	color: white;
+}
+
+#debug_search label.active {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+#debug_search label i {
+	color: white;
+}
+
+#debug_search label.active i {
+	color: white;
+}
+
+#debug_search i.active {
+	color: white;
+}
+
+#collection_search .collection-item {
+	padding: 0;
+	display: flex;
+	margin: 0px;
+}
+
+#collection_search .collection-item p {
+	margin-left: 20px;
+    padding-top: 5px;
+}
+
+a.collection-item img {
+	height: 100%;
+	max-height: 60px;
+	max-width: 60px;
+	border-radius: 2px;
+}

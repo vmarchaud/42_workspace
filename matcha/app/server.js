@@ -8,6 +8,7 @@ var app         	= express();
 var index = require('./controllers/index');
 var auth = require('./controllers/auth');
 var account = require('./controllers/account');
+var search = require('./controllers/search');
 
 // Setup view engine
 app.set('view engine', 'jade');
@@ -37,10 +38,17 @@ app.use('/', index);
 app.use('/auth', auth);
 app.use('/me', function(req, res, next) {
 	if (req.session.user == undefined) 
-		res.redirect("/");
+		res.redirect("/#login");
 	else
 		next();
 }, account);
+
+app.use('/search', function(req, res, next) {
+	if (req.session.user == undefined) 
+		res.redirect("/#login");
+	else
+		next();
+}, search);
 
 // Start the server
 const server = app.listen(3000, function () {
