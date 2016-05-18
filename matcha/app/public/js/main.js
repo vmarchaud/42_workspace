@@ -4,8 +4,13 @@
 
 var map;
 var image_upload = null;
-
 $(document).ready(function(){
+	
+
+// register socket io
+var socket = io();
+
+
 	$('.button-collapse').sideNav();
 	$('.parallax').parallax();
 	
@@ -311,6 +316,28 @@ $( "#map_profile" ).ready(function() {
 	if (!$( "#map_profile" ).is("div"))
 		return ;
 		
+	var loc = $( "#map" ).attr("loc");
+	if (loc !== undefined) {
+		if (loc.length == 0) {
+			Materialize.toast("This user didnt set his location", 2000, 'red lighten-1');
+			map = new GMaps({
+				el: '#map',
+				lat: 48.866667,
+				lng: 2.333333,
+				zoom: 0
+			});
+		}
+		else {
+			var loc = loc.split(",");
+			map = new GMaps({
+				el: '#map',
+				lat: loc[0],
+				lng: loc[1]
+			});
+		}
+		return ;
+	}
+		
 	$.post("/me/retrieve", { "type": "location" }).done(function(data) {
 		var loc = data.location.split(",");
 		map = new GMaps({
@@ -322,7 +349,8 @@ $( "#map_profile" ).ready(function() {
 	 	map = new GMaps({
 			el: '#map',
 			lat: 48.866667,
-			lng: 2.333333
+			lng: 2.333333,
+			zoom: 0
 		});
 		Materialize.toast("Please accept the localization demand", 2000, 'green lighten-1');
 		GMaps.geolocate({

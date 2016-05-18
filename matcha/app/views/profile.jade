@@ -1,0 +1,65 @@
+include ./layouts/header.jade
+
+main
+	div.row
+		div.container
+			if user.picture
+				img.circle.responsive-img.profile_pic.left(src=user.picture)
+			else
+				img.circle.responsive-img.profile_pic.left(src="/img/default_avatar.jpg")
+			div#btnprofile.right
+				a.waves-effect.waves-light.btn.profile_btn(style="width: 96%") SWAG
+					i.material-icons.left favorite
+				br
+				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Report
+					i.material-icons.left report_problem
+				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Block
+					i.material-icons.left block
+				if (user.last_visit == undefined)
+					p(style="color: red") Last seen : never
+				else if (user.last_visit == "0000-00-00 00:00:00")
+					p(style="color: green") Last seen : ONLINE
+				else
+					p Last seen #{user.last_visit}
+					
+				
+			form.col.s12()
+				row
+					div.input-field.col.s6
+						i.material-icons.prefix assignment_ind
+						input(type="text", value=user.firstname, disabled="true")
+						label Firstname
+					div.input-field.col.s6
+						i.material-icons.prefix assignment_ind
+						input(type="text", value=user.lastname, disabled="true")
+						label Lastname
+					div.input-field.col.s6
+						i.material-icons.prefix face
+						input(type="text", value=user.gender, disabled="true")
+						label Gender
+					div.input-field.col.s6
+						i.material-icons.prefix accessibility
+						input(type="text", value=user.orientation, disabled="true")
+						label Orientation
+					div.input-field.col.s12
+						textarea.materialize-textarea(length="242", disabled="true") #{user.bio}
+						label Bio
+					div.input-field.col.s12
+						h6 Interests
+						div#tags_list.card
+							unless tags.length > 0
+								p This user doesnt have any interest
+							each val in tags
+								div.chip(id=val.id) #{val.name}
+					div#map_profile.input-field.col.s12
+						h6 Localisation
+						div#map.card(loc=user.location)
+					div.input-field.col.s12
+						h6 Images
+						div#images_card.center
+							ul
+								each val in images
+									li#image_profile.card.small
+										img(src=val.img)
+                                                            
+include ./layouts/footer.jade

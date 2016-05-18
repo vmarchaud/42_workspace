@@ -45,7 +45,7 @@ body
 					li
 						a(href="/me/") My Account
 					li
-						a(href="/auth/logout") Signout
+						a(onclick="socket.disconnect();" href="/auth/logout") Signout
 				else
 					li
 						a(onclick="$('#login').openModal();") Signin
