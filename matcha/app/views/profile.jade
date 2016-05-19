@@ -30,8 +30,12 @@ main
 				br
 				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1(onclick="$('#report_modal').openModal();") Report
 					i.material-icons.left report_problem
-				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Block
-					i.material-icons.left block
+				if blocked
+					a#block_user.waves-effect.waves-light.btn.profile_btn.green.lighten-1 Unblock
+						i.material-icons.left block
+				else
+					a#block_user.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Block
+						i.material-icons.left block
 				if (user.last_visit == undefined)
 					p(style="color: red") Last seen : never
 				else if (user.last_visit == "Invalid date")

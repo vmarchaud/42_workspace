@@ -353,6 +353,26 @@ $(document).ready(function(){
 			}, 1000);
 		});
 	});
+	
+	// handle blocking
+	$('#block_user').click(function() {
+		// get user id in url
+		var path = window.location.pathname.split('/').clean('');
+		var user = path[path.length - 1];
+		
+		$.post("/user/block", { 'id': user } ).done(function(data) {
+			Materialize.toast("Operation successfull !", 2000, 'green lighten-1');
+			
+			setTimeout(function() {
+				location.reload(true);
+			}, 1000);
+		}).fail(function( error ) {
+			if (error.status == 400) 
+				Materialize.toast("Are you trying to block yourself ?", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+		});
+	});
 });
 
 $( "#map_profile" ).ready(function() {
