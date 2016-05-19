@@ -50,10 +50,18 @@ var router 	= express.Router();
   /**
    * Receive logout request
   **/
-  router.get('/signout', function(req, res) {
+  router.get('/signout', function(req, res) {  
+	// update his last visit date
+	pool.getConnection(function (err, connection) {
+		if ( !err ) {
+			connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ req.session.user ], function(err, rows) {});
+		 }
 		req.session.destroy(function(err) {});
-		res.redirect('/');
-  });
+		connection.release();
+	});
+	// redirect him
+	res.redirect('/');
+});
 
   /**
    * Display Signup Form
@@ -97,19 +105,20 @@ var router 	= express.Router();
 				return v.toString(16);
 			});
 			// make the request
-			connection.query("INSERT INTO users (id, mail, password, firstname, name, state) VALUES (?, ?, ?, ?, ?, ?)", 
+			connection.query("INSERT INTO users (id, mail, password, firstname, lastname, state) VALUES (?, ?, ?, ?, ?, ?)", 
 				[uuid, mail, bcrypt.hashSync(pwd, salt), firstname, lastname, 'REGISTERED'], function (err, rows) {
-					// maybe ?
-					if (err) {
-						res.sendStatus(500);
-						connection.release();
-						return ;
-					}
-				});
-			// Else its good
-			req.session.user = uuid;
-			connection.release();
-		  	res.sendStatus(200);
+				// maybe ?
+				if (err) {
+					console.log(err);
+					res.sendStatus(500);
+				} 
+				// Else its good
+				else {
+					req.session.user = uuid;
+					res.sendStatus(200);
+				}
+				connection.release();
+			});
 		  }
 		})
 	  });

@@ -28,11 +28,10 @@ router.post('/byName', function( req, res ) {
 		  		res.sendStatus( 404 );
 			} else {
 				var users = [];
-				console.log(rows);
 				async.each(rows, function (item, callback) {
 					// if the user has no picture, send it like this
 					if (item.picture == undefined || item.picture.length == 0) {
-						users.push( rows );
+						users.push( rows[0] );
 						callback();
 					}
 					// else query the image and send it with it

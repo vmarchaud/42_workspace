@@ -1,13 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var async = require('async');
-var pool 	= require('../config/connection.js');
-var http = require('http');
+var express 	= require('express');
+var router 		= express.Router();
+var async 		= require('async');
+var pool 		= require('../config/connection.js');
+var http 		= require('http');
+var moment 		= require('moment');
 
   /**
    * Display Account page
   **/
 router.get('/:id', function( req, res ) {
+	var user = req.params.id;
 	
 	// make paralel request to get tags AND get user data + profile picture + all image
 	async.parallel([
@@ -17,7 +19,7 @@ router.get('/:id', function( req, res ) {
 				if ( err ) { 	callback( true ); return ; }
 				
 				// Get information to build the user data
-				connection.query("SELECT * FROM users WHERE id = ?", [ req.session.user ],  function( err, rows ) {
+				connection.query("SELECT * FROM users WHERE id = ?", [ user ],  function( err, rows ) {
 					if (err || rows.length == 0) { connection.release(); callback( true ); return ; }
 					
 					if (rows[0].picture !== undefined) {
@@ -51,7 +53,7 @@ router.get('/:id', function( req, res ) {
 				if ( err ) { callback( true ); return ; }
 				
 				// Get user tag 
-				connection.query("SELECT * FROM user_tags WHERE user = ?", [ req.session.user ],  function( err, rows ) {
+				connection.query("SELECT * FROM user_tags WHERE user = ?", [ user ],  function( err, rows ) {
 					if (err) { connection.release(); callback( true ); return ; }
 					
 					var tags = [];
@@ -93,7 +95,7 @@ router.get('/:id', function( req, res ) {
 				if ( err ) { 	callback( true ); return ; }
 				
 				// Get information to build the user data
-				connection.query("SELECT * FROM images WHERE user = ?", [ req.session.user ],  function( err, rows ) {
+				connection.query("SELECT * FROM images WHERE user = ?", [ user ],  function( err, rows ) {
 					if (err) { connection.release(); callback( true ); return ; }
 					
 					connection.release();
@@ -106,6 +108,9 @@ router.get('/:id', function( req, res ) {
   	function( err, results ) {
 		// if there is an error
     	if( err ) { res.sendStatus(500); return; }
+		
+		// update the date for a cool render
+		results[0].last_visit = moment(results[0].last_visit).fromNow();
 		
 		// else render the page
 		res.render('profile', {

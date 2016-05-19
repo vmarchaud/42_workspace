@@ -4,13 +4,11 @@
 
 var map;
 var image_upload = null;
-$(document).ready(function(){
-	
-
 // register socket io
 var socket = io();
 
-
+$(document).ready(function(){
+	
 	$('.button-collapse').sideNav();
 	$('.parallax').parallax();
 	
@@ -294,7 +292,12 @@ var socket = io();
 		
 		 $.post("/search/byName", { 'input': input } ).done(function(data) {
 			$('#collection_search').show();
+				console.log(data);
 			for(var i = 0; i < data.length; i++) {
+				if (data[i].picture == undefined || data[i].picture.length == 0) {
+					data[i].picture = "/img/default_avatar.jpg";
+				}
+				
 				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
 				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_search");
 			}

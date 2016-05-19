@@ -80,13 +80,12 @@ io.on('connection', function (socket) {
 	
 	
   	socket.on('disconnect', function () {
-		console.log(socket.handshake.session.user + " disconnected");
     	if (socket.handshake.session.user != undefined) {
 			// get sql connection
 			pool.getConnection(function (err, connection) {
 				if ( err ) { return ; }
 				
-				connection.query("UPDATE users SET last_visit=? WHERE id = ?", [ 'NOW()', socket.handshake.session.user], 
+				connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ socket.handshake.session.user], 
 					function(err, rows) {
 						if (err)
 							console.log(err);
