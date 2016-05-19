@@ -1,6 +1,23 @@
 include ./layouts/header.jade
 
 main
+	div#report_modal.modal
+		div.modal-content(style="height: 300px")
+			row.section
+				h4.center Report an user
+				p Choose a reason and we will treat the report as soon as possible.
+				form.col
+					row
+						div.input-field.col.s6
+						select#report_cause.multiple
+								option FAKE
+								option AFK
+								option INSULTING
+						label Why ?
+						br
+						br
+						div.center
+							button#send_report.btn Report user
 	div.row
 		div.container
 			if user.picture
@@ -11,18 +28,16 @@ main
 				a.waves-effect.waves-light.btn.profile_btn(style="width: 96%") SWAG
 					i.material-icons.left favorite
 				br
-				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Report
+				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1(onclick="$('#report_modal').openModal();") Report
 					i.material-icons.left report_problem
 				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Block
 					i.material-icons.left block
 				if (user.last_visit == undefined)
 					p(style="color: red") Last seen : never
-				else if (user.last_visit == "0000-00-00 00:00:00")
+				else if (user.last_visit == "Invalid date")
 					p(style="color: green") Last seen : ONLINE
 				else
 					p Last seen : #{user.last_visit}
-					
-				
 			form.col.s12()
 				row
 					div.input-field.col.s6

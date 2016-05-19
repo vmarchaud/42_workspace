@@ -137,7 +137,7 @@ input[type=text]:disabled, textarea.materialize-textarea:disabled {
 
 #collection_search .collection-item p {
 	margin-left: 20px;
-    padding-top: 5px;
+	margin-bottom: 0;
 }
 
 a.collection-item img {
@@ -160,7 +160,7 @@ a.collection-item img {
 .profile_pic {
 	width: 150px;
 	margin-top: 20px;
-	margin-left: 20%;
+	margin-left: 10%;
 	margin-bottom: 20px;
 }
 

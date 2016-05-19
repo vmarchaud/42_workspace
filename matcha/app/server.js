@@ -8,11 +8,12 @@ var server 			= require('http').Server(app);
 var io 				= require('socket.io')(server);
 
 // Include all routes
-var index = require('./controllers/index');
-var auth = require('./controllers/auth');
+var index 	= require('./controllers/index');
+var auth 	= require('./controllers/auth');
 var account = require('./controllers/account');
-var search = require('./controllers/search');
+var search 	= require('./controllers/search');
 var profile = require('./controllers/profile');
+var user 	= require('./controllers/user');
 var pool 	= require('./config/connection.js');
 
 // Setup view engine
@@ -42,7 +43,12 @@ app.use(session_setup);
 
 // Register routes
 app.use('/', index);
-app.use('/profile', profile);
+app.use('/profile', function(req, res, next) {
+	if (req.session.user == undefined) 
+		res.redirect("/#login");
+	else
+		next();
+}, profile);
 app.use('/auth', auth);
 app.use('/me', function(req, res, next) {
 	if (req.session.user == undefined) 
@@ -57,6 +63,13 @@ app.use('/search', function(req, res, next) {
 	else
 		next();
 }, search);
+
+app.use('/user', function(req, res, next) {
+	if (req.session.user == undefined) 
+		res.redirect("/#login");
+	else
+		next();
+}, user);
 
 io.use(sharedsession(session_setup));
 

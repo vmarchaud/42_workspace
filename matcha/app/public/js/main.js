@@ -7,6 +7,17 @@ var image_upload = null;
 // register socket io
 var socket = io();
 
+// used to clear array
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
+
 $(document).ready(function(){
 	
 	$('.button-collapse').sideNav();
@@ -312,6 +323,35 @@ $(document).ready(function(){
 		});
 		
 		event.preventDefault();
+	});
+	
+	// handle reporting
+    $('#report_cause').material_select();
+	
+    $('#send_report').click(function(event) {
+		event.preventDefault();
+		
+		var cause = $("#report_cause").val();
+		// get user id in url
+		var path = window.location.pathname.split('/').clean('');
+		var user = path[path.length - 1];
+		 $.post("/user/report", { 'id': user, 'reason': cause } ).done(function(data) {
+			Materialize.toast("You have successfuly reported this user, thanks !", 2000, 'green lighten-1');
+			
+			setTimeout(function() {
+					$('#report_modal').closeModal();
+			}, 1000);
+		}).fail(function( error ) {
+			if (error.status == 404) 
+				Materialize.toast("You are trying to report an user that doesnt exist", 2000, 'red lighten-1');
+			else if (error.status == 400) 
+				Materialize.toast("Are you trying to report yourself ?", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			setTimeout(function() {
+					$('#report_modal').closeModal();
+			}, 1000);
+		});
 	});
 });
 
