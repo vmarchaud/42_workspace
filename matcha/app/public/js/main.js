@@ -7,6 +7,12 @@ var image_upload = null;
 // register socket io
 var socket = io();
 
+socket.on("handshake",function(event,data) {
+    console.log(event);
+    console.log(data);
+});
+
+
 // used to clear array
 Array.prototype.clean = function(deleteValue) {
   for (var i = 0; i < this.length; i++) {
@@ -369,6 +375,26 @@ $(document).ready(function(){
 		}).fail(function( error ) {
 			if (error.status == 400) 
 				Materialize.toast("Are you trying to block yourself ?", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+		});
+	});
+	
+	// handle matching
+	$('#match_user').click(function() {
+		// get user id in url
+		var path = window.location.pathname.split('/').clean('');
+		var user = path[path.length - 1];
+		
+		$.post("/user/match", { 'id': user } ).done(function(data) {
+			Materialize.toast("Operation successfull !", 2000, 'green lighten-1');
+			
+			setTimeout(function() {
+				location.reload(true);
+			}, 1000);
+		}).fail(function( error ) {
+			if (error.status == 400) 
+				Materialize.toast("Are you trying to match yourself ?", 2000, 'red lighten-1');
 			else 
 				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
 		});

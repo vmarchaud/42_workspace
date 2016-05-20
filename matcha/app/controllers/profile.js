@@ -93,6 +93,18 @@ router.get('/:id', function( req, res ) {
 						else
 							callback ( false, true );						
 					});
+				},
+				// Know if the user have match the profile
+				function( callback ) {
+					// Make the request to know if hes blocked
+					connection.query("SELECT * FROM user_matchs WHERE matched = ? AND user = ?", [ user, req.session.user ],  function( err, rows ) {
+						if (err) { console.log(err); callback( true ); return ; }
+						// return the result
+						if (rows.length == 0) 
+							callback( false, false );
+						else
+							callback ( false, true );						
+					});
 				}
 			],
 			// the callback function that will be called when both request has been done
@@ -110,8 +122,13 @@ router.get('/:id', function( req, res ) {
 					tags: results[1],
 					images: results[2],
 					blocked: results[3],
+					matched: results[4],
 					connected: req.session.user !== undefined
 				});
+				
+				// just before we need to put the visit in the database
+				connection.query("INSERT INTO visits (user, visited) VALUES (?, ?)", [ req.session.user, results[0].id ], function (err, rows) {});
+				// and release the connection
 				connection.release();
 			}
 		);

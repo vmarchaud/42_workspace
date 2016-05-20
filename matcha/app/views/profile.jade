@@ -21,12 +21,16 @@ main
 	div.row
 		div.container
 			if user.picture
-				img.circle.responsive-img.profile_pic.left(src=user.picture)
+				img.circle.responsive-img.profile_pic.center-block(src=user.picture)
 			else
-				img.circle.responsive-img.profile_pic.left(src="/img/default_avatar.jpg")
-			div#btnprofile.right
-				a.waves-effect.waves-light.btn.profile_btn(style="width: 96%") SWAG
-					i.material-icons.left favorite
+				img.circle.responsive-img.profile_pic.center-block(src="/img/default_avatar.jpg")
+			div#btnprofile.center
+				if matched
+					a#match_user.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Unmatch
+						i.material-icons.left favorite_border
+				else
+					a#match_user.waves-effect.waves-light.btn.profile_btn.green.lighten-1 Match
+						i.material-icons.left favorite
 				br
 				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1(onclick="$('#report_modal').openModal();") Report
 					i.material-icons.left report_problem
@@ -42,6 +46,7 @@ main
 					p(style="color: green") Last seen : ONLINE
 				else
 					p Last seen : #{user.last_visit}
+			br
 			form.col.s12()
 				row
 					div.input-field.col.s6

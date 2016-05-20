@@ -87,4 +87,43 @@ router.post('/block', function( req, res ) {
 	 });
 });
 
+// Register match route
+router.post('/match', function( req, res ) {
+	 var id = req.body.id;
+	 
+	 // verify the data
+	 if (id == undefined || id === req.session.user) {
+		 res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+		
+		// verify if the user has already match the user or not
+		connection.query("SELECT * FROM user_matchs WHERE user = ? AND matched = ?", [ req.session.user, id ], function (err, rows) {
+			// match this user
+			if (rows.length == 0) {
+				connection.query("INSERT INTO user_matchs (user, matched) VALUES (?, ?)",  [req.session.user, id], function( err, rows) {
+					if ( err )
+						res.sendStatus( 500 );
+					else
+						res.sendStatus( 201 );
+				});
+			}
+			// un match him
+			else {
+				// insert in database
+				connection.query("DELETE FROM user_matchs WHERE user = ? AND matched = ?",  [req.session.user, id], function( err, rows) {
+					if ( err )
+						res.sendStatus( 500 );
+					else
+						res.sendStatus( 201 );
+				});
+			}
+			connection.release();
+		});
+	 });
+});
+
 module.exports = router;

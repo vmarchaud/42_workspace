@@ -1,6 +1,6 @@
 body {
 	display: flex;
-	min-height: 100vh;
+	min-height: 80vh;
 	flex-direction: column;
 }
 
@@ -160,7 +160,6 @@ a.collection-item img {
 .profile_pic {
 	width: 150px;
 	margin-top: 20px;
-	margin-left: 10%;
 	margin-bottom: 20px;
 }
 

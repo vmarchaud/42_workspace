@@ -75,14 +75,20 @@ io.use(sharedsession(session_setup));
 
 // register websocket keep alive
 io.on('connection', function (socket) {
-
+	
+	var id = socket.handshake.session.user;
 	// if the user is connected
-	if (socket.handshake.session.user != undefined) {
+	if (id != undefined) {
+		
+		// create a room with only him in
+		socket.join(id);
+		socket.to(id).emit('handshake', { 'id': id });
+		
 		// get sql connection
 		pool.getConnection(function (err, connection) {
 			if ( err ) { return ; }
 			
-			connection.query("UPDATE users SET last_visit=? WHERE id = ?", [ '0000-00-00 00:00:00', socket.handshake.session.user], 
+			connection.query("UPDATE users SET last_visit=? WHERE id = ?", [ '0000-00-00 00:00:00', id], 
 				function(err, rows) {
 					if (err)
 						console.log(err);
@@ -93,12 +99,12 @@ io.on('connection', function (socket) {
 	
 	
   	socket.on('disconnect', function () {
-    	if (socket.handshake.session.user != undefined) {
+    	if (id != undefined) {
 			// get sql connection
 			pool.getConnection(function (err, connection) {
 				if ( err ) { return ; }
 				
-				connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ socket.handshake.session.user], 
+				connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ id], 
 					function(err, rows) {
 						if (err)
 							console.log(err);
