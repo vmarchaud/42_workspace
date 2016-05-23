@@ -73,30 +73,39 @@ app.use('/user', function(req, res, next) {
 
 io.use(sharedsession(session_setup));
 
-// register websocket keep alive
+// socket list
+var users = {};
+
+// register websocket 
 io.on('connection', function (socket) {
 	
 	var id = socket.handshake.session.user;
 	// if the user is connected
 	if (id != undefined) {
 		
-		// create a room with only him in
-		socket.join(id);
-		socket.to(id).emit('handshake', { 'id': id });
+		// store the user socket
+		users[id] = socket;
+		socket.emit('handshake', { 'id': id });
 		
 		// get sql connection
 		pool.getConnection(function (err, connection) {
 			if ( err ) { return ; }
 			
+			// put him online
 			connection.query("UPDATE users SET last_visit=? WHERE id = ?", [ '0000-00-00 00:00:00', id], 
 				function(err, rows) {
 					if (err)
 						console.log(err);
 				});
+			// get user matched with him
+			connection.query("SELECT id,lastname,firstname,picture,last_visit FROM `users` LEFT JOIN user_matchs ON user = ? AND mutual = '1' WHERE users.id = user_matchs.matched",
+								[ id ], function (err, rows) {
+									socket.emit('user_list', rows);
+								});
+			
 			connection.release();
 		});
 	}
-	
 	
   	socket.on('disconnect', function () {
     	if (id != undefined) {
@@ -104,14 +113,17 @@ io.on('connection', function (socket) {
 			pool.getConnection(function (err, connection) {
 				if ( err ) { return ; }
 				
+				// set his last visit
 				connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ id], 
 					function(err, rows) {
 						if (err)
 							console.log(err);
 				});
+				// send to client 
 				
 				connection.release();
 			});
+			
 		}
   	});
 });

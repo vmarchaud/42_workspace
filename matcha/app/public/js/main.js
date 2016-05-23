@@ -6,10 +6,28 @@ var map;
 var image_upload = null;
 // register socket io
 var socket = io();
+var chat_users = {};
 
-socket.on("handshake",function(event,data) {
-    console.log(event);
+socket.on('handshake', function(data) {
     console.log(data);
+});
+
+socket.on('user_list', function (data) {
+	for(var i = 0; i < data.length; i++) {
+		chat_users[data[i].id] = data[i];
+		var state = data[i].last_visit == "0000-00-00 00:00:00" ? "online" : "offline";
+		$('.chat_body').append('<div user="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname + ' ' + data[i].lastname + ' </div>');
+	}
+	$('.chat_click').click(function (event) {
+		var id = $(this).attr('user');
+		if (!$('#' + id).is('div')) {
+			var html = '<div id=' + id + ' class="msg_box">';
+			html+= '<div class="msg_head">' + event.target.innerHTML + '</div>';
+			html += '<div class="msg_wrap"><div class="msg_body"></div>';
+			html += '<div class="msg_footer"><textarea class="msg_input" rows="4"></textarea></div></div>';
+			$('.chat_box').before(html);
+		}
+	})
 });
 
 
@@ -399,6 +417,16 @@ $(document).ready(function(){
 				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
 		});
 	});
+	
+	// handle chat
+	$('.chat_head').click(function(){
+		$('.chat_body').slideToggle('slow');
+	});
+	
+	$('.msg_head').click(function(event){
+		console.log($(this).parent());
+		$(this).parent().remove();
+	});
 });
 
 $( "#map_profile" ).ready(function() {
@@ -510,3 +538,4 @@ function delete_chip(obj) {
 			$('#progress_new_tag').hide();
 		});
 }
+
