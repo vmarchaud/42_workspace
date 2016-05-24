@@ -145,13 +145,11 @@ io.on('connection', function (socket) {
 					connection.query('INSERT INTO chat_msgs (id, user, msg) VALUES (?, ?, ?)', [ data.chat, id, data.msg ], function (err, rows) {});	
 					// send it to the other user if hes online
 					if (id === rows[0].user_1 && users[rows[0].user_2] !== undefined) {
-						console.log("to : " + rows[0].user_2);
 						users[rows[0].user_2].emit('new_message', {
 							'from': data.chat,
 							'msg': data.msg
 						});
 					} else if (id === rows[0].user_2 && users[rows[0].user_1] !== undefined){
-						console.log("to : " + rows[0].user_1);
 						users[rows[0].user_1].emit('new_message', {
 							'from': data.chat,
 							'msg': data.msg
