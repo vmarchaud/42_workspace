@@ -7,11 +7,13 @@ var image_upload = null;
 // register socket io
 var socket = io();
 var chat_users = {};
+var state_user_list = Cookies.get('user_list');
 
-socket.on('handshake', function(data) {
-    console.log(data);
-});
+if (state_user_list == "false") {
+	$('.chat_body').slideToggle(0);
+}
 
+// when we got the user list
 socket.on('user_list', function (data) {
 	for(var i = 0; i < data.length; i++) {
 		chat_users[data[i].id] = data[i];
@@ -421,6 +423,11 @@ $(document).ready(function(){
 	// handle chat
 	$('.chat_head').click(function(){
 		$('.chat_body').slideToggle('slow');
+		if (state_user_list === "true")
+			state_user_list = "false";
+		else
+			state_user_list = "true";
+		Cookies.set('user_list', state_user_list);
 	});
 	
 	$('.msg_head').click(function(event){
