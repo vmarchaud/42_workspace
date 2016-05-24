@@ -13,21 +13,60 @@ if (state_user_list == "false") {
 	$('.chat_body').slideToggle(0);
 }
 
+socket.on('new_message', function(data) {
+	console.log('new msg received ' + data.msg);
+	if (!$('#' + data.from).is('div')) return ;
+	
+	var body = $('#' + data.from + ' > .msg_wrap').children()[0];
+	// add the msg
+	$(body).append('<div class="msg_a">'+ data.msg +'</div>');
+	// scroll to bottom
+	$(body).scrollTop($(body)[0].scrollHeight);
+});
+
 // when we got the user list
 socket.on('user_list', function (data) {
 	for(var i = 0; i < data.length; i++) {
 		chat_users[data[i].id] = data[i];
 		var state = data[i].last_visit == "0000-00-00 00:00:00" ? "online" : "offline";
-		$('.chat_body').append('<div user="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname + ' ' + data[i].lastname + ' </div>');
+		$('.chat_body').append('<div chatID="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname + ' ' + data[i].lastname + ' </div>');
 	}
 	$('.chat_click').click(function (event) {
-		var id = $(this).attr('user');
+		var id = $(this).attr('chatID');
 		if (!$('#' + id).is('div')) {
 			var html = '<div id=' + id + ' class="msg_box">';
-			html+= '<div class="msg_head">' + event.target.innerHTML + '</div>';
+			html+= '<div class="msg_head">' + event.target.innerHTML + '<i style="float: right;" class="material-icons">close</i></div>';
 			html += '<div class="msg_wrap"><div class="msg_body"></div>';
 			html += '<div class="msg_footer"><textarea class="msg_input" rows="4"></textarea></div></div>';
 			$('.chat_box').before(html);
+			
+			// handle keypress on input
+			$('.msg_input').keypress(function(event) {
+				if (event.keyCode != 13) return ;
+				 
+				event.preventDefault();
+				var msg = $(this).val();
+				$(this).val('');
+				if(msg != '') {
+					// emit the message
+					var chatID = $($(this).parent().parent().parent()).attr('id');
+					
+					socket.emit('new_message', {
+						'chat': chatID,
+						'msg': msg
+					});
+					
+					// add the html
+					$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg +'</div>');
+					// scroll to bottom
+					$($(this).parent().parent().children()[0]).scrollTop($($(this).parent().parent().children()[0])[0].scrollHeight);
+				}
+			});
+				
+			// handle close window
+			$('.msg_head').click(function(event){
+				$(this).parent().remove();
+			});
 		}
 	})
 });
@@ -430,10 +469,7 @@ $(document).ready(function(){
 		Cookies.set('user_list', state_user_list);
 	});
 	
-	$('.msg_head').click(function(event){
-		console.log($(this).parent());
-		$(this).parent().remove();
-	});
+	
 });
 
 $( "#map_profile" ).ready(function() {

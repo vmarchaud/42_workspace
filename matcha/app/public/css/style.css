@@ -272,10 +272,11 @@ a.collection-item img {
 
 .msg_box{
 	position:fixed;
+	right: 290px;
 	bottom:-5px;
 	width:250px;
 	background:white;
-	border-radius:5px 5px 0px 0px;
+	box-shadow: 0px 8px 4px;
 }
 
 .msg_head{
