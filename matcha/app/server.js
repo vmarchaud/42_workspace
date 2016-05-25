@@ -7,6 +7,7 @@ var async		 	= require('async');
 var app         	= express();
 var server 			= require('http').Server(app);
 var io 				= require('socket.io')(server);
+var events		 	= require('./config/event');
 
 // Include all routes
 var index 	= require('./controllers/index');
@@ -80,10 +81,13 @@ var users = {};
 io.use(sharedsession(session_setup));
 require('./controllers/socket')(io, users);
 
+// require event
+require('./controllers/events')(users);
+
 // Start the server
 server.listen(3000);
 
 console.log("Listening connection on port 3000");
 
 
-module.exports = { "connected": users };
+module.exports = events;

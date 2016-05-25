@@ -2,7 +2,7 @@ var express = require('express');
 var router 	= express.Router();
 var async 	= require('async');
 var pool 	= require('../config/connection.js');
-
+var events	= require('../config/event');
 
 // Register reporting route
 router.post('/report', function( req, res ) {
@@ -107,8 +107,10 @@ router.post('/match', function( req, res ) {
 				connection.query("INSERT INTO user_matchs (user, matched) VALUES (?, ?)",  [req.session.user, id], function( err, rows) {
 					if ( err )
 						res.sendStatus( 500 );
-					else
+					else {
 						res.sendStatus( 201 );
+						events.emit('user_match', req.session.user, id);
+					}
 				});
 			}
 			// un match him
@@ -117,8 +119,10 @@ router.post('/match', function( req, res ) {
 				connection.query("DELETE FROM user_matchs WHERE user = ? AND matched = ?",  [req.session.user, id], function( err, rows) {
 					if ( err )
 						res.sendStatus( 500 );
-					else
+					else {
 						res.sendStatus( 201 );
+						events.emit('user_unmatch', req.session.user, id);
+					}
 				});
 			}
 			connection.release();
