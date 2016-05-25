@@ -39,6 +39,7 @@ module.exports = function (users) {
 		});
 	});
 	
+	
 	// listen unmatch event
 	events.on('user_unmatch', function (user, unmatched) {
 		// get connection from pool
