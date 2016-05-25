@@ -86,11 +86,16 @@ io.on('connection', function (socket) {
 		
 		// store the user socket
 		users[id] = socket;
-		socket.emit('handshake', { 'id': id });
 		
 		// get sql connection
 		pool.getConnection(function (err, connection) {
 			if ( err ) { return ; }
+			
+			// send him the nbr alert unread
+			connection.query("SELECT COUNT(*) FROM user_alerts WHERE user = ? AND shown = '0'", [id], function(err, rows) {
+				socket.emit('alerts', { 'nbr': rows[0]['COUNT(*)'] });
+			});
+			
 			
 			// put him online
 			connection.query("UPDATE users SET last_visit=? WHERE id = ?", [ '0000-00-00 00:00:00', id], function(err, rows) {
@@ -132,7 +137,6 @@ io.on('connection', function (socket) {
 	}
 	// handle new message in a room
 	socket.on('new_message', function(data) {
-		console.log('new_message received : ' + data.msg);
 		if (id != undefined || data.chat == undefined || data.msg == undefined) {
 			// get sql connection
 			pool.getConnection(function (err, connection) {
@@ -143,28 +147,67 @@ io.on('connection', function (socket) {
 					if (rows.length == 0) return ;
 					// register the message
 					connection.query('INSERT INTO chat_msgs (id, user, msg) VALUES (?, ?, ?)', [ data.chat, id, data.msg ], function (err, rows) {});	
-					// send it to the other user if hes online
-					if (id === rows[0].user_1 && users[rows[0].user_2] !== undefined) {
-						users[rows[0].user_2].emit('new_message', {
-							'from': data.chat,
-							'msg': data.msg
-						});
-					} else if (id === rows[0].user_2 && users[rows[0].user_1] !== undefined){
-						users[rows[0].user_1].emit('new_message', {
+					
+					var other_guy;
+					// get the id of the other guy
+					if (id === rows[0].user_1)
+						other_guy = rows[0].user_2;
+					else if (id === rows[0].user_2)
+						other_guy = rows[0].user_1;
+					
+					// if hes online send him the message
+					if (users[other_guy] !== undefined) {
+						users[other_guy].emit('new_message', {
 							'from': data.chat,
 							'msg': data.msg
 						});
 					}
+					// if not just add the notification
+					else {
+						// generate an id
+						var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+							var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+							return v.toString(16);
+						});
+						// query his name 
+						connection.query('SELECT * FROM users WHERE id = ?', [ id ], function (err, rows) {
+							if (rows.length > 0) {
+								// build the message and insert it
+								var msg = rows[0].firstname + " " + rows[0].lastname + " sent you a message when you were offline.";
+								connection.query('INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)', [ uuid, other_guy, msg ], function (err2, rows2) {});
+							}
+						});	
+					}
 				});
-				 
-				
 				connection.release();
 			});
 		}
 	})
 	
+	socket.on('alert_shown', function (data) {
+		if (data.id != undefined && id != undefined) {
+			// get sql connection
+			pool.getConnection(function (err, connection) {
+				if ( err ) { return ; }
+				
+				// set the alert as shown if he's the author and that the alert exist
+				connection.query("SELECT * FROM user_alerts WHERE id = ?", [ data.id ],  function(err, rows) {
+					if (rows.length > 0 && rows[0].user === id) {
+						connection.query("UPDATE user_alerts SET shown = '1' WHERE id = ?", [ data.id ],  function(err, rows) {});
+					}
+				});
+				// send to client
+				
+				connection.release();
+			});
+		}
+	});
+	
   	socket.on('disconnect', function () {
     	if (id != undefined) {
+			// delete him from connected users
+			delete users[id]; 
+			
 			// get sql connection
 			pool.getConnection(function (err, connection) {
 				if ( err ) { return ; }
@@ -179,7 +222,6 @@ io.on('connection', function (socket) {
 				
 				connection.release();
 			});
-			
 		}
   	});
 });

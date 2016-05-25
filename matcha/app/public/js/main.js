@@ -14,7 +14,6 @@ if (state_user_list == "false") {
 }
 
 socket.on('new_message', function(data) {
-	console.log('new msg received ' + data.msg);
 	if (!$('#' + data.from).is('div')) return ;
 	
 	var body = $('#' + data.from + ' > .msg_wrap').children()[0];
@@ -22,6 +21,10 @@ socket.on('new_message', function(data) {
 	$(body).append('<div class="msg_a">'+ data.msg +'</div>');
 	// scroll to bottom
 	$(body).scrollTop($(body)[0].scrollHeight);
+});
+
+socket.on('alerts', function(data) {
+	$('#alert_nbr').html(data.nbr);
 });
 
 // when we got the user list
@@ -582,3 +585,33 @@ function delete_chip(obj) {
 		});
 }
 
+function load_alerts() {
+	// empty the alert list
+	$('#alerts_list').empty();
+	
+	$.get("/me/alert").done(function(data) {
+			// add the alert to the list
+			for(var i = 0; i < data.length; i++) {
+				var active = data[i].shown === 0 ? "active" : "";
+				$('#alerts_list').append('<a id="' + data[i].id + '" class="collection-item ' + active + '">' +
+						 data[i].msg +'<span class="badge">' + data[i].date + '</span></a>');
+			}
+			
+			$('#progress_alerts').hide();
+			// for each not seen setup hover
+			$('#alerts_list').children(".active").hover(function(event) {
+				// he saw the alert
+				socket.emit('alert_shown', {
+					id: $(event.target).attr('id')
+				});
+				
+				$(event.target).removeClass("active");
+			});
+		}).fail(function( error ) {
+			if (error.status == 401)
+				Materialize.toast("Who are you ?", 2000, 'red lighten-1');
+			else
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_alerts').hide();
+		});
+}

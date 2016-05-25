@@ -38,6 +38,15 @@ body
 							button#login_btn.btn Signin
 						div.section.center
 							a(onclick="$('#forgot').openModal();") Forgot your password ?
+	div#alerts_modal.modal
+		div.modal-content
+			row.section
+				h4.center Alerts
+				form.col
+					row
+						div#progress_alerts.progress
+							div.indeterminate
+						div#alerts_list.collection
 	nav.light-blue
 		div.nav-wrapper.container
 			a#logo-container.brand-logo(href="/") Matcha
@@ -47,6 +56,9 @@ body
 						a(href="/me/") My Account
 					li
 						a(href="/auth/signout") Signout
+					li
+						a(onclick="load_alerts(); $('#alerts_modal').openModal();") Alerts
+							span#alert_nbr.new.badge 0
 				else
 					li
 						a(onclick="$('#login').openModal();") Signin
@@ -58,6 +70,9 @@ body
 						a(href="/me") My Account
 					li
 						a(href="/auth/signout") Signout
+					li
+						a(onclick="load_alerts(); $('#alerts_modal').openModal();") Alerts
+							span#alert_nbr.new.badge 0
 				else
 					li
 						a(onclick="$('.button-collapse').sideNav('hide'); $('#login').openModal();") Signin

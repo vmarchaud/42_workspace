@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var async = require('async');
-var pool 	= require('../config/connection.js');
-var http = require('http');
+var express 	= require('express');
+var router 		= express.Router();
+var async		= require('async');
+var pool 		= require('../config/connection.js');
+var http 		= require('http');
+var moment 		= require('moment');
 
   /**
    * Display Account page
@@ -352,6 +353,27 @@ router.post('/image/favorite', function( req, res ) {
             connection.release();
 		  	res.sendStatus( 200 );
 		});
+	});
+});
+
+// Load alerts
+router.get('/alert', function( req, res ) {
+	 
+	 // get connection from the pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+	    
+	  	// query alert
+		connection.query("SELECT * FROM user_alerts WHERE user = ? ORDER BY date LIMIT 20", [ req.session.user ], function ( err, rows ) {
+			
+			// update the date for a cool render
+			for(var i = 0; i < rows.length; i++) {
+				rows[i].date = moment(rows[i].date).fromNow();
+			}
+			res.send(rows);
+		});
+		
+		connection.release();
 	});
 });
 
