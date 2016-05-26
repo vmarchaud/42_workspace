@@ -84,9 +84,12 @@ module.exports = function(io, users) {
 						
 						// if hes online send him the message
 						if (users[other_guy] !== undefined) {
-							users[other_guy].emit('new_message', {
-								'from': data.chat,
-								'msg': data.msg
+							connection.query('SELECT * FROM users WHERE id = ?', [ id ], function (err, rows) {
+								users[other_guy].emit('new_message', {
+									'user': rows[0].firstname + " " + rows[0].lastname,
+									'chat': data.chat,
+									'msg': data.msg
+								});
 							});
 						}
 						// if not just add the notification
@@ -123,15 +126,32 @@ module.exports = function(io, users) {
 							connection.query("UPDATE user_alerts SET shown = '1' WHERE id = ?", [ data.id ],  function(err, rows) {});
 						}
 					});
-					// send to client
-					
+					// release the connection into the pool
 					connection.release();
 				});
 			}
 		});
 		
-		socket.on('', function (data) {
+		socket.on('get_history', function (data) {
+			if (data.id === undefined || id === undefined) return ;
 			
+			// get sql connection
+			pool.getConnection(function (err, connection) {
+				if ( err ) { return ; }
+					
+				// get the chat to verify that the user is in
+				connection.query("SELECT * FROM chats WHERE id = ?", [ data.id ],  function(err, rows) {
+					if (rows.length > 0 && (rows[0].user_1 === id || rows[0].user_2 == id)) {
+						// if he is in, get the history
+						connection.query("SELECT * FROM chat_msgs WHERE id = ? ORDER BY date DESC LIMIT 20", [ data.id ],  function(err, rows) {
+							// send the history
+							socket.emit('get_history', {msgs: rows , user: id, chat: data.id });
+						});
+					}
+				});
+				// release the connection into the pool
+				connection.release();
+			});
 		});
 		
 		socket.on('disconnect', function () {

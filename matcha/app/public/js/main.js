@@ -14,17 +14,74 @@ if (state_user_list == "false") {
 }
 
 socket.on('new_message', function(data) {
-	if (!$('#' + data.from).is('div')) return ;
-	
-	var body = $('#' + data.from + ' > .msg_wrap').children()[0];
-	// add the msg
-	$(body).append('<div class="msg_a">'+ data.msg +'</div>');
-	// scroll to bottom
-	$(body).scrollTop($(body)[0].scrollHeight);
+	$('#audio-popup').trigger('play');
+	if (!$('#' + data.chat).is('div')) {
+		//query the history of this chat
+		socket.emit('get_history', { 'id': data.chat });
+		
+		// add the box
+		var html = '<div id=' + data.chat + ' class="msg_box">';
+		html+= '<div class="msg_head">' + data.user + '<i style="float: right;" class="material-icons">close</i></div>';
+		html += '<div class="msg_wrap"><div class="msg_body"></div>';
+		html += '<div class="msg_footer"><textarea class="msg_input" rows="4"></textarea></div></div>';
+		$('.chat_box').before(html);
+		
+		// handle keypress on input
+		$('.msg_input').keypress(function(event) {
+			if (event.keyCode != 13) return ;
+				 
+			event.preventDefault();
+			var msg = $(this).val();
+			$(this).val('');
+			if(msg != '') {
+				// emit the message
+				var chatID = $($(this).parent().parent().parent()).attr('id');
+				
+				socket.emit('new_message', {
+					'chat': chatID,
+					'msg': msg
+				});
+				
+				// add the html
+				$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg +'</div>');
+				// scroll to bottom
+				$($(this).parent().parent().children()[0]).scrollTop($($(this).parent().parent().children()[0])[0].scrollHeight);
+			}
+		});
+		
+		// handle close window
+		$('.msg_head').click(function(event){
+			$(this).parent().remove();
+		});
+	} else {
+		var body = $('#' + data.chat + ' > .msg_wrap').children()[0];
+		// add the msg
+		$(body).append('<div class="msg_a">'+ data.msg +'</div>');
+		// scroll to bottom
+		$(body).scrollTop($(body)[0].scrollHeight);
+	}
 });
 
 socket.on('alerts', function(data) {
 	$('#alert_nbr').html(data.nbr);
+});
+
+socket.on('new_alerts', function(data) {
+	var current = parseInt($('#alert_nbr').html());
+	$('#alert_nbr').html(current + 1 + "");
+});
+
+socket.on('get_history', function(data) {
+	if (!$('#' + data.chat).is('div')) return ;
+	
+	var body = $('#' + data.chat + ' > .msg_wrap').children()[0];
+	for (var i = 0; i < data.msgs.length; i++) {
+		if (data.msgs[i].user === data.user)
+			$(body).prepend('<div class="msg_b">'+ data.msgs[i].msg +'</div>');
+		else 
+			$(body).prepend('<div class="msg_a">'+ data.msgs[i].msg +'</div>');
+	}
+	$(body).scrollTop($(body)[0].scrollHeight);
 });
 
 // when we got the user list
@@ -34,9 +91,15 @@ socket.on('user_list', function (data) {
 		var state = data[i].last_visit == "0000-00-00 00:00:00" ? "online" : "offline";
 		$('.chat_body').append('<div chatID="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname + ' ' + data[i].lastname + ' </div>');
 	}
+	
 	$('.chat_click').click(function (event) {
 		var id = $(this).attr('chatID');
+		// if the box doesnt already exist
 		if (!$('#' + id).is('div')) {
+			//query the history of this chat
+			socket.emit('get_history', { 'id': id });
+			
+			// add the box
 			var html = '<div id=' + id + ' class="msg_box">';
 			html+= '<div class="msg_head">' + event.target.innerHTML + '<i style="float: right;" class="material-icons">close</i></div>';
 			html += '<div class="msg_wrap"><div class="msg_body"></div>';
@@ -604,6 +667,12 @@ function load_alerts() {
 				socket.emit('alert_shown', {
 					id: $(event.target).attr('id')
 				});
+				
+				if ($(event.target).hasClass('active')) {
+					// update the nbr of alert
+					var current = parseInt($('#alert_nbr').html());
+					$('#alert_nbr').html((current - 1) + "");
+				}
 				
 				$(event.target).removeClass("active");
 			});
