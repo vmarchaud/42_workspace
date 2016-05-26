@@ -656,7 +656,7 @@ function load_alerts() {
 			// add the alert to the list
 			for(var i = 0; i < data.length; i++) {
 				var active = data[i].shown === 0 ? "active" : "";
-				$('#alerts_list').prepend('<a id="' + data[i].id + '" class="collection-item ' + active + '">' +
+				$('#alerts_list').append('<a id="' + data[i].id + '" class="collection-item ' + active + '">' +
 						 data[i].msg +'<span class="badge">' + data[i].date + '</span></a>');
 			}
 			

@@ -145,7 +145,7 @@ router.post('/visit', function( req, res ) {
 	 pool.getConnection(function( err, connection ) {
 		if ( err ) { res.sendStatus( 500 ); return ; }
 		
-		connection.query("SELECT * FROM visits WHERE visited = ? ORDER BY date DESC LIMIT 15", [ id ], function (err, rows) {
+		var sql = connection.query("SELECT * FROM visits WHERE visited = ? ORDER BY 'date' DESC LIMIT 15", [ id ], function (err, rows) {
 			async.each(rows, function (item, callback) {
 				// get the user name
 				connection.query("SELECT * FROM users WHERE id = ?", [ item.user ],  function( err, rows ) {
@@ -163,6 +163,7 @@ router.post('/visit', function( req, res ) {
 					res.send(rows);
 			});
 		});
+		console.log(sql.sql);
 		connection.release();
 	 });
 });
