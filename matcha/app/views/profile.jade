@@ -1,5 +1,13 @@
 include ./layouts/header.jade
-
+div#visits_modal.modal
+		div.modal-content
+			row.section
+				h4.center Last visits
+				form.col
+					row
+						div#progress_visits.progress
+							div.indeterminate
+						div#visits_list.collection
 main
 	div#report_modal.modal
 		div.modal-content(style="height: 300px")
@@ -28,8 +36,11 @@ main
 				if matched
 					a#match_user.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Unmatch
 						i.material-icons.left favorite_border
-				else
+				else if images.length > 0
 					a#match_user.waves-effect.waves-light.btn.profile_btn.green.lighten-1 Match
+						i.material-icons.left favorite
+				else
+					a.waves-effect.waves-light.btn.profile_btn.green.lighten-1.disabled.tooltipped(data-position="top" data-delay="50" data-tooltip="This user has no image") Match
 						i.material-icons.left favorite
 				br
 				a.waves-effect.waves-light.btn.profile_btn.red.lighten-1(onclick="$('#report_modal').openModal();") Report
@@ -40,6 +51,9 @@ main
 				else
 					a#block_user.waves-effect.waves-light.btn.profile_btn.red.lighten-1 Block
 						i.material-icons.left block
+				br
+				a.waves-effect.waves-light.btn.profile_btn.blue.lighten-1(onclick="load_visits(); $('#visits_modal').openModal();") Visits
+						i.material-icons.left history
 				if (user.last_visit == undefined)
 					p(style="color: red") Last seen : never
 				else if (user.last_visit == "Invalid date")

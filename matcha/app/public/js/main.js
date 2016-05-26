@@ -684,3 +684,28 @@ function load_alerts() {
 			$('#progress_alerts').hide();
 		});
 }
+
+
+function load_visits() {
+	$('#progress_visits').show();
+	// get user id in url
+	var path = window.location.pathname.split('/').clean('');
+	var user = path[path.length - 1];
+		
+	// empty the alert list
+	$('#visits_list').empty();
+	
+	$.post("/user/visit", { id: user }).done(function(data) {
+		
+		// add the alert to the list
+		for(var i = 0; i < data.length; i++) {
+			$('#visits_list').append('<a class="collection-item">' +
+					 data[i].user +'<span class="badge">' + data[i].date + '</span></a>');
+		}
+			
+		$('#progress_visits').hide();
+		}).fail(function( error ) {
+			Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_visits').hide();
+		});
+}

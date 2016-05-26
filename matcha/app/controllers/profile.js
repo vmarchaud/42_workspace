@@ -4,6 +4,7 @@ var async 		= require('async');
 var pool 		= require('../config/connection.js');
 var http 		= require('http');
 var moment 		= require('moment');
+var events		= require('../config/event');
 
   /**
    * Display Account page
@@ -128,6 +129,8 @@ router.get('/:id', function( req, res ) {
 				
 				// just before we need to put the visit in the database
 				connection.query("INSERT INTO visits (user, visited) VALUES (?, ?)", [ req.session.user, results[0].id ], function (err, rows) {});
+				// emit the event for notifications
+				events.emit('user_visit', req.session.user, user );
 				// and release the connection
 				connection.release();
 			}

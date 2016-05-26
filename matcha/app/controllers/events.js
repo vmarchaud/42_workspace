@@ -73,4 +73,28 @@ module.exports = function (users) {
 			connection.release();
 		});
 	});
+	
+	// listen on visit event
+	events.on('user_visit', function (user, visited) {
+		
+		// get connection from pool
+		pool.getConnection(function( err, connection ) {
+			if ( err ) { return ; }
+			
+			// get user name for alert
+			connection.query("SELECT * FROM users WHERE id = ?", [ user ], function (err, rows) {
+				// generate an id
+				var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+					var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+					return v.toString(16);
+				});
+				// create the msg
+				var msg = rows[0].firstname + " " + rows[0].lastname + " has visited your profile";
+				// create the alert
+				connection.query("INSERT INTO user_alerts (id,user,msg) VALUES (?, ?, ?)", [ uuid, visited, msg ], function (err, rows) {});
+			});
+			
+			connection.release();
+		});
+	});
 }

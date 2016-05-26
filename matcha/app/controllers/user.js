@@ -3,6 +3,7 @@ var router 	= express.Router();
 var async 	= require('async');
 var pool 	= require('../config/connection.js');
 var events	= require('../config/event');
+var moment	= require('moment');
 
 // Register reporting route
 router.post('/report', function( req, res ) {
@@ -127,6 +128,42 @@ router.post('/match', function( req, res ) {
 			}
 			connection.release();
 		});
+	 });
+});
+
+
+// Register getting visits route
+router.post('/visit', function( req, res ) {
+	 var id = req.body.id;
+	 
+	 // verify the data
+	 if (id == undefined) {
+		 res.sendStatus( 400 ); return ;
+	 }
+	 
+	 // get connection from pool
+	 pool.getConnection(function( err, connection ) {
+		if ( err ) { res.sendStatus( 500 ); return ; }
+		
+		connection.query("SELECT * FROM visits WHERE visited = ? ORDER BY date DESC LIMIT 15", [ id ], function (err, rows) {
+			async.each(rows, function (item, callback) {
+				// get the user name
+				connection.query("SELECT * FROM users WHERE id = ?", [ item.user ],  function( err, rows ) {
+					if (err) { callback( true ); return ; }
+					
+					// set the user name and the date		
+					item.user = rows[0].firstname + " " + rows[0].lastname;
+					item.date = moment(item.date).fromNow();
+					callback();
+				});
+			}, function ( err ) {
+				if ( err )
+					res.sendStatus( 500 );
+				else 
+					res.send(rows);
+			});
+		});
+		connection.release();
 	 });
 });
 
