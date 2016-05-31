@@ -5,16 +5,29 @@ main
 		div.container
 			div#search_user_form.col.s12
 				row
-					div#debug_search.input-field.col.s12()
+					h3.center Search for someone
+					div#debug_search.input-field.col.s12
 						input#search_user(type="search", autocomplete="off")
-						label(for="search_user")
+						label
 							i.material-icons(style="margin-left: 5px;") search
+					div.input-field.col.s12.range-field(style="margin-top: -15px;")
+						p(style="margin-bottom: -5px;") Distance interval :
+						div#distance_interval
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Age interval :
+						div#age_interval
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Popularity Score interval :
+						div#score_interval
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Interests :
+						select#select_tags(multiple)
+							option(selected disabled) Choose interests
+							each val,index in tags
+								option(value=index) #{val.name}
 					div#progress_search_user.progress(style="display: none")
 						div.indeterminate
 					div#collection_search.collection(style="display: none;")
-			div.row
-				div.col-md-6.col-md-offset-3.text-center
-					p Here is where you can start putting content for your application.
 					
 include ./layouts/chat.jade  
 include ./layouts/footer.jade

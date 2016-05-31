@@ -535,7 +535,48 @@ $(document).ready(function(){
 		Cookies.set('user_list', state_user_list);
 	});
 	
-	
+	// handle age interval
+	var slider = document.getElementById('age_interval');
+      noUiSlider.create(slider, {
+       start: [18, 80],
+       connect: true,
+       step: 1,
+       range: {
+         'min': 18,
+         'max': 80
+       },
+       format: wNumb({
+         decimals: 0
+       })
+      });
+	var slider = document.getElementById('score_interval');
+      noUiSlider.create(slider, {
+       start: [0, 100],
+       connect: true,
+       step: 1,
+       range: {
+         'min': 0,
+         'max': 100
+       },
+       format: wNumb({
+         decimals: 0
+       })
+      });
+	var slider = document.getElementById('distance_interval');
+      noUiSlider.create(slider, {
+       start: [20, 80],
+       connect: true,
+       step: 1,
+       range: {
+         'min': 0,
+         'max': 100
+       },
+       format: wNumb({
+         decimals: 0
+       })
+      });
+	  
+	  $('#select_tags').material_select();
 });
 
 $( "#map_profile" ).ready(function() {
