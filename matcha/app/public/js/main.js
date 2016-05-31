@@ -536,8 +536,8 @@ $(document).ready(function(){
 	});
 	
 	// handle age interval
-	var slider = document.getElementById('age_interval');
-      noUiSlider.create(slider, {
+	var age_slider = document.getElementById('age_interval');
+      noUiSlider.create(age_slider, {
        start: [18, 80],
        connect: true,
        step: 1,
@@ -549,8 +549,8 @@ $(document).ready(function(){
          decimals: 0
        })
       });
-	var slider = document.getElementById('score_interval');
-      noUiSlider.create(slider, {
+	var score_slider = document.getElementById('score_interval');
+      noUiSlider.create(score_slider, {
        start: [0, 100],
        connect: true,
        step: 1,
@@ -562,8 +562,8 @@ $(document).ready(function(){
          decimals: 0
        })
       });
-	var slider = document.getElementById('distance_interval');
-      noUiSlider.create(slider, {
+	var distance_slider = document.getElementById('distance_interval');
+      noUiSlider.create(distance_slider, {
        start: [20, 80],
        connect: true,
        step: 1,
@@ -577,6 +577,64 @@ $(document).ready(function(){
       });
 	  
 	  $('#select_tags').material_select();
+	  
+	  // search user
+	$("#search_user").change(function(event) {
+		event.preventDefault();
+		search_user();
+	});
+	$("#select_tags").change(function(event) {
+		event.preventDefault();
+		search_user();
+	});
+	
+	distance_slider.noUiSlider.on('change', function () {
+		search_user();
+	});
+	age_slider.noUiSlider.on('change', function () {
+		search_user();
+	});
+	score_slider.noUiSlider.on('change', function () {
+		search_user();
+	});
+	
+	
+	function search_user() {
+		var name = $("#search_user").val() || "";
+		var age_min = age_slider.noUiSlider.get()[0], age_max = age_slider.noUiSlider.get()[1];
+		var distance_min = distance_slider.noUiSlider.get()[0], distance_max = distance_slider.noUiSlider.get()[1];
+		var score_min = score_slider.noUiSlider.get()[0], score_max = score_slider.noUiSlider.get()[1];
+		var interests = $("#select_tags").val();
+			
+		// reset already present
+		$('#collection_search').hide();
+		$("#collection_search").empty();
+			
+		$('#progress_search_user').show();
+			
+		$.post("/search", { 'name': name, 'age_min': age_min, 'age_max': age_max,
+				'distance_min': distance_min, 'distance_max': distance_max, 'interests': interests} ).done(function(data) {
+			$('#collection_search').show();
+			for(var i = 0; i < data.length; i++) {
+				if (data[i].picture == undefined || data[i].picture.length == 0) {
+					data[i].picture = "/img/default_avatar.jpg";
+				}
+					
+				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
+				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_search");
+			}
+			$('#progress_search_user').hide();
+		}).fail(function( error ) {
+			if (error.status == 404) 
+				Materialize.toast("No user has been found with this name", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_search_user').hide();
+			$('#collection_search').hide();
+		});
+			
+		event.preventDefault();
+	}
 });
 
 $( "#map_profile" ).ready(function() {
@@ -750,3 +808,4 @@ function load_visits() {
 			$('#progress_visits').hide();
 		});
 }
+

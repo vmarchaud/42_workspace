@@ -24,7 +24,7 @@ main
 						select#select_tags(multiple)
 							option(selected disabled) Choose interests
 							each val,index in tags
-								option(value=index) #{val.name}
+								option(value=val.name, id=val.id) #{val.name}
 					div#progress_search_user.progress(style="display: none")
 						div.indeterminate
 					div#collection_search.collection(style="display: none;")
