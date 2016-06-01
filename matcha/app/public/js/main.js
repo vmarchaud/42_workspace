@@ -416,6 +416,7 @@ $(document).ready(function(){
         
         event.preventDefault();
 	});
+
 	
 	// handle reporting
     $('#report_cause').material_select();
@@ -493,7 +494,7 @@ $(document).ready(function(){
 			state_user_list = "false";
 		else
 			state_user_list = "true";
-		Cookies.set('user_list', state_user_list);
+		Cookies.set('user_list', state_user_list), { expires: 7 };
 	});
 	
 	// handle age interval
