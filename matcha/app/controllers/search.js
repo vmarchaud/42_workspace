@@ -70,17 +70,28 @@ function distance(loc, loc1) {
 	return 12742 * Math.asin(Math.sqrt(a));
 }
 
+// used to clear array
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
+
 // Register search user by name route
 router.post('/', function( req, res ) {
-	var name = '%' + req.body.name + '%';
+	var name = '%' + req.body.name + '%' || '%';
 	var age_min = req.body.age_min, age_max = req.body.age_max;
 	var distance_min = req.body.distance_min, distance_max = req.body.distance_min;
 	var score_min = req.body.score_min, score_max = req.body.score_max;
-	var interests = req.body.interests;
+	var interests = req.body.interests || [];
 	 
 	// is request correctly formed
-	if (age_min == undefined || age_max == undefined || distance_min == undefined || distance_max == undefined
-	 	|| score_min == undefined || score_max == undefined || interests == undefined) {
+	if (name == undefined || age_min == undefined || age_max === undefined || distance_min == undefined || distance_max == undefined
+	 	|| score_min === undefined || score_max === undefined || interests === undefined) {
 		res.sendStatus( 400 ); return ;
 	}
 	 
@@ -93,28 +104,33 @@ router.post('/', function( req, res ) {
 				// get users that match name
 				connection.query('SELECT * FROM users WHERE firstname LIKE ? OR lastname LIKE ?', [name, name], function ( err, users ) {
 					async.each(users, function(user, callback) {
+						// if its the requester ignore
+						if (user.id === requester.id) {
+							delete users[users.indexOf(user)];
+							callback();
+						}
 						// empty user that doesnt match distance
-						if ( user.location.length == 0 || distance(requester.location, user.location) > distance_max ||
-							distance(requester.location, user.location) < distance_min) {
-							delete users[idx];
+						else if ( user.location.length == 0 || distance(requester.location, user.location) < distance_min ||
+							distance(requester.location, user.location) > distance_max) {
+							delete users[users.indexOf(user)];
 							callback();
 						} 
 						// empty user that doesnt match score
-						if ( user.score < score_min || user.score > score_max) {
-							delete users[idx];
+						else if ( user.score < score_min || user.score > score_max) {
+							delete users[users.indexOf(user)];
 							callback();
 						}
 						// empty user that doesnt match age
-						if ( user.age < age_min || user.age > age_max) {
-							delete users[idx];
+						else if ( user.age < age_min || user.age > age_max) {
+							delete users[users.indexOf(user)];
 							callback();
 						}
 						// if the user choose interest, match them
-						if ( interests.length > 0) {
-							connection.query('SELECT COUNT(*) FROM `user_tags` WHERE `user` = ? AND `tag` IN (?)', [ user.id, interests.join(',') ], 
+						else if ( interests.length > 0) {
+							connection.query('SELECT * FROM `user_tags` WHERE `user` = ? AND `tag` IN (?)', [ user.id, interests.join(',') ], 
 								function ( err, rows) {
-								if (rows.length == 0 || rows[0].length == 0)
-									delete users[idx];
+								if (rows.length == 0)
+									delete users[users.indexOf(user)];
 								callback();
 							})
 						} else {
@@ -122,6 +138,15 @@ router.post('/', function( req, res ) {
 						}
 					}, function ( err ) {
 						var returned_users = [];
+						users.clean();
+						
+						// if there is no one already just send him a empty array
+						if (users.length == 0) {
+							connection.release();
+							res.send( returned_users );
+							return ;
+						}
+						
 						// get the picture and name from all users that are still here
 						async.each(users, function (item, callback) {
 							// if the user has no picture, send it like this
