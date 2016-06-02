@@ -18,20 +18,48 @@ module.exports = function (users) {
 					connection.query("UPDATE user_matchs SET mutual = '1' WHERE matched = ? AND user = ?", [ user, matched ], function (err, rows) {});
 					connection.query("UPDATE user_matchs SET mutual = '1' WHERE matched = ? AND user = ?", [ matched, user ], function (err, rows) {});
 					
-					// and notifiate the matched
-					if (users[matched] != undefined) 
-						users[matched].emit('new_alerts');
-					
-					// generate a alert id	
-					var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-						var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-						return v.toString(16);
+					// send alert only if the matched hasnt blocked the user
+					connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ matched, user ], function (err, rows) {
+						if (rows.length == 0) {
+							// and notifiate the matched
+							if (users[matched] != undefined) 
+								users[matched].emit('new_alerts');
+							
+							// generate a alert id	
+							var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+								var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+								return v.toString(16);
+							});
+							// get his name
+							connection.query("SELECT firstname,lastname FROM users WHERE id = ?", [ user ], function (err, rows) {
+								var msg = rows[0].firstname + " " + rows[0].lastname + " has matched you back";
+								// and register the alert
+								connection.query("INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)", [id, matched, msg], function(err, rows) {});
+							});
+						}
 					});
-					// get his name
-					connection.query("SELECT firstname,lastname FROM users WHERE id = ?", [ user ], function (err, rows) {
-						var msg = rows[0].firstname + " " + rows[0].lastname + " has matched you back";
-						// and register the alert
-						connection.query("INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)", [id, matched, msg], function(err, rows) {});
+				}
+				// his just match first a user
+				else {
+					// send alert only if the matched hasnt blocked the user
+					connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ matched, user ], function (err, rows) {
+						if (rows.length == 0) {
+							// and notifiate the matched
+							if (users[matched] != undefined) 
+								users[matched].emit('new_alerts');
+							
+							// generate a alert id	
+							var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+								var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+								return v.toString(16);
+							});
+							// get his name
+							connection.query("SELECT firstname,lastname FROM users WHERE id = ?", [ user ], function (err, rows) {
+								var msg = rows[0].firstname + " " + rows[0].lastname + " matched you !";
+								// and register the alert
+								connection.query("INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)", [id, matched, msg], function(err, rows) {});
+							});
+						}
 					});
 				}
 			});
@@ -52,21 +80,26 @@ module.exports = function (users) {
 					// update to say its not mutual
 					connection.query("UPDATE user_matchs SET mutual = '0' WHERE matched = ? AND user = ?", [ user, unmatched ], function (err, rows) {});
 					
-					// and notifiate the matched
-					if (users[unmatched] != undefined) 
-						users[unmatched].emit('new_alerts');
-					
-					// generate a alert id	
-					var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-						var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-						return v.toString(16);
-					});
-					
-					// get his name
-					connection.query("SELECT firstname,lastname FROM users WHERE id = ?", [ user ], function (err, rows) {
-						var msg = rows[0].firstname + " " + rows[0].lastname + " no longer match you";
-						// and register the alert
-						connection.query("INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)", [id, unmatched, msg], function(err, rows) {});
+					// check if the unmatched has blocked the user
+					connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ unmatched, user ], function (err, rows) {
+						if (rows.length == 0) {
+							// and notifiate the matched
+							if (users[unmatched] != undefined) 
+								users[unmatched].emit('new_alerts');
+							
+							// generate a alert id	
+							var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+								var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+								return v.toString(16);
+							});
+							
+							// get his name
+							connection.query("SELECT firstname,lastname FROM users WHERE id = ?", [ user ], function (err, rows) {
+								var msg = rows[0].firstname + " " + rows[0].lastname + " no longer match you";
+								// and register the alert
+								connection.query("INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)", [id, unmatched, msg], function(err, rows) {});
+							});
+						}
 					});
 				}
 			});
@@ -81,19 +114,23 @@ module.exports = function (users) {
 		pool.getConnection(function( err, connection ) {
 			if ( err ) { return ; }
 			
-			// get user name for alert
-			connection.query("SELECT * FROM users WHERE id = ?", [ user ], function (err, rows) {
-				// generate an id
-				var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-					var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-					return v.toString(16);
-				});
-				// create the msg
-				var msg = rows[0].firstname + " " + rows[0].lastname + " has visited your profile";
-				// create the alert
-				connection.query("INSERT INTO user_alerts (id,user,msg) VALUES (?, ?, ?)", [ uuid, visited, msg ], function (err, rows) {});
+			// verify that the visited hasnt blocked the user
+			connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ visited, user ], function (err, rows) {
+				if (rows.length == 0) {
+					// get user name for alert
+					connection.query("SELECT * FROM users WHERE id = ?", [ user ], function (err, rows) {
+						// generate an id
+						var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+							var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+							return v.toString(16);
+						});
+						// create the msg
+						var msg = rows[0].firstname + " " + rows[0].lastname + " has visited your profile";
+						// create the alert
+						connection.query("INSERT INTO user_alerts (id,user,msg) VALUES (?, ?, ?)", [ uuid, visited, msg ], function (err, rows) {});
+					});
+				}
 			});
-			
 			connection.release();
 		});
 	});

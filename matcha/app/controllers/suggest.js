@@ -81,8 +81,11 @@ router.post('/', function( req, res ) {
 				
 				// get users that match preset with gender and orientation
 				connection.query('SELECT * FROM users WHERE ' + sql + ' ORDER BY score DESC', [], function ( err, users ) {
-					console.log('SELECT * FROM users WHERE ' + sql + ' ORDER BY score DESC');
+					
 					async.each(users, function(user, callback) {
+						
+						
+						
 						// if its the requester ignore
 						if (user.id === requester.id) {
 							delete users[users.indexOf(user)];
@@ -95,12 +98,12 @@ router.post('/', function( req, res ) {
 							callback();
 						} 
 						// empty user that doesnt match score
-						else if ( user.score < score_min || user.score > score_max) {
+						else if ( user.score < score_min || user.score > score_max ) {
 							delete users[users.indexOf(user)];
 							callback();
 						}
 						// empty user that doesnt match age
-						else if ( user.age < age_min || user.age > age_max) {
+						else if ( user.age < age_min || user.age > age_max ) {
 							delete users[users.indexOf(user)];
 							callback();
 						}
@@ -113,7 +116,13 @@ router.post('/', function( req, res ) {
 								callback();
 							})
 						} else {
-							callback();
+							// if the user is blocked from the requester remove him too
+							connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ requester.id, user.id ], function (err, rows) {
+								if (rows.length > 0) {
+									delete users[users.indexOf(user)];
+								} 
+								callback();
+							});
 						}
 					}, function ( err ) {
 						var returned_users = [];

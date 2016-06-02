@@ -29,6 +29,7 @@ module.exports = function(io, users) {
 					if (err)
 						console.log(err);
 				});
+				
 				// get user matched with him
 				connection.query("SELECT id,lastname,firstname,picture,last_visit FROM `users` LEFT JOIN user_matchs ON user = ? AND mutual = '1' WHERE users.id = user_matchs.matched",
 									[ id ], function (err, rows) {
@@ -94,19 +95,24 @@ module.exports = function(io, users) {
 						}
 						// if not just add the notification
 						else {
-							// generate an id
-							var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-								var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-								return v.toString(16);
-							});
-							// query his name 
-							connection.query('SELECT * FROM users WHERE id = ?', [ id ], function (err, rows) {
-								if (rows.length > 0) {
-									// build the message and insert it
-									var msg = rows[0].firstname + " " + rows[0].lastname + " sent you a message when you were offline.";
-									connection.query('INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)', [ uuid, other_guy, msg ], function (err2, rows2) {});
+							// check if the msg recipients has blocked the user
+							connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ other_guy, id ], function (err, rows) {
+								if (rows.length == 0) {
+									// generate an id
+									var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+										var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+										return v.toString(16);
+									});
+									// query his name 
+									connection.query('SELECT * FROM users WHERE id = ?', [ id ], function (err, rows) {
+										if (rows.length > 0) {
+											// build the message and insert it
+											var msg = rows[0].firstname + " " + rows[0].lastname + " sent you a message when you were offline.";
+											connection.query('INSERT INTO user_alerts (id, user, msg) VALUES (?, ?, ?)', [ uuid, other_guy, msg ], function (err2, rows2) {});
+										}
+									});	
 								}
-							});	
+							});
 						}
 					});
 					connection.release();
