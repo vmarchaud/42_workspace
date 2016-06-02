@@ -1,0 +1,29 @@
+include ./layouts/header.jade
+
+main
+	div.row
+		div.container
+			div.col.s12
+				row
+					h3.center Suggestion of user
+					div.input-field.col.s12.range-field(style="margin-top: -15px;")
+						p(style="margin-bottom: -5px;") Distance interval :
+						div#distance_interval_suggest
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Age interval :
+						div#age_interval_suggest
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Popularity Score interval :
+						div#score_interval_suggest
+					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Interests :
+						select#select_tags_suggest(multiple)
+							option(selected disabled) Choose interests
+							each val,index in tags
+								option(value=val.name, id=val.id) #{val.name}
+					div#progress_suggest.progress(style="display: none")
+						div.indeterminate
+					div#collection_suggest.collection(style="display: none;")
+					
+include ./layouts/chat.jade  
+include ./layouts/footer.jade

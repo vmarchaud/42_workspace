@@ -56,10 +56,12 @@ body
 					li
 						a(href="/me/") My Account
 					li
-						a(href="/auth/signout") Signout
+						a(href="/suggest/") Suggests
 					li
 						a(onclick="load_alerts(); $('#alerts_modal').openModal();") Alerts
 							span#alert_nbr.new.badge 0
+					li
+						a(href="/auth/signout") Signout
 				else
 					li
 						a(onclick="$('#login').openModal();") Signin
@@ -70,10 +72,12 @@ body
 					li
 						a(href="/me") My Account
 					li
-						a(href="/auth/signout") Signout
+						a(href="/suggest/") Suggests
 					li
 						a(onclick="load_alerts(); $('#alerts_modal').openModal();") Alerts
 							span#alert_nbr.new.badge 0
+					li
+						a(href="/auth/signout") Signout
 				else
 					li
 						a(onclick="$('.button-collapse').sideNav('hide'); $('#login').openModal();") Signin

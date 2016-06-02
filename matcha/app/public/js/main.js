@@ -502,7 +502,7 @@ $(document).ready(function(){
 	
 	
 	  
-	  $('#select_tags').material_select();
+	$('#select_tags').material_select();
 	  
 	  // search user
 	$("#search_user").change(function(event) {
@@ -520,7 +520,7 @@ $(document).ready(function(){
 	
 	if ($('#distance_interval').is('div')) {
 		noUiSlider.create(distance_slider, {
-			start: [20, 80],
+			start: [0, 80],
 			connect: true,
 			step: 1,
 			range: {
@@ -610,6 +610,114 @@ $(document).ready(function(){
 				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
 			$('#progress_search_user').hide();
 			$('#collection_search').hide();
+		});
+			
+		event.preventDefault();
+	}
+	
+	$('#select_tags_suggest').material_select();
+	  
+	  // suggest user
+	$("#select_tags_suggest").change(function(event) {
+		event.preventDefault();
+		suggest_user();
+	});
+	
+	var age_slider_sugest = document.getElementById('age_interval_suggest');
+	var distance_slider_sugest = document.getElementById('distance_interval_suggest');
+	var score_slider_sugest = document.getElementById('score_interval_suggest');
+	
+	if ($('#distance_interval_suggest').is('div')) {
+		noUiSlider.create(distance_slider_sugest, {
+			start: [0, 100],
+			connect: true,
+			step: 1,
+			range: {
+				'min': 0,
+				'max': 100
+			},
+			format: wNumb({
+				decimals: 0
+			})
+      });
+		distance_slider_sugest.noUiSlider.on('change', function () {
+			suggest_user();
+		});
+	}
+	if ($('#score_interval_suggest').is('div')) {
+		noUiSlider.create(score_slider_sugest, {
+			start: [0, 100],
+			connect: true,
+			step: 1,
+			range: {
+				'min': 0,
+				'max': 100
+			},
+			format: wNumb({
+				decimals: 0
+			})
+      	});
+		score_slider_sugest.noUiSlider.on('change', function () {
+			suggest_user();
+		});
+	}
+	if ($('#age_interval_suggest').is('div')) {
+		noUiSlider.create(age_slider_sugest, {
+			start: [18, 80],
+			connect: true,
+			step: 1,
+			range: {
+				'min': 18,
+				'max': 80
+			},
+			format: wNumb({
+				decimals: 0
+			})
+		});
+		age_slider_sugest.noUiSlider.on('change', function () {
+			suggest_user();
+		});
+	}
+	
+	
+	function suggest_user() {
+		var age_min = age_slider_sugest.noUiSlider.get()[0], age_max = age_slider_sugest.noUiSlider.get()[1];
+		var distance_min = distance_slider_sugest.noUiSlider.get()[0], distance_max = distance_slider_sugest.noUiSlider.get()[1];
+		var score_min = score_slider_sugest.noUiSlider.get()[0], score_max = score_slider_sugest.noUiSlider.get()[1];
+		
+		// get the id for option
+		var tmp = $("#select_tags_suggest").val();
+		var interests = [];
+		for(var i = 0; i < tmp.length; i++) {
+			interests.push($( "option[value='" + tmp[i] + "']" ).attr('id'));
+		}
+			
+		// reset already present
+		$('#collection_suggest').hide();
+		$("#collection_suggest").empty();
+			
+		$('#progress_suggest').show();
+			
+		$.post("/suggest", {'age_min': age_min, 'age_max': age_max,
+				'distance_min': distance_min, 'distance_max': distance_max, 'interests': interests, 
+				'score_min': score_min, 'score_max': score_max} ).done(function(data) {
+			$('#collection_suggest').show();
+			for(var i = 0; i < data.length; i++) {
+				if (data[i].picture == undefined || data[i].picture.length == 0) {
+					data[i].picture = "/img/default_avatar.jpg";
+				}
+					
+				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
+				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_suggest");
+			}
+			$('#progress_suggest').hide();
+		}).fail(function( error ) {
+			if (error.status == 404) 
+				Materialize.toast("No user has been found with this name", 2000, 'red lighten-1');
+			else 
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			$('#progress_suggest').hide();
+			$('#collection_suggest').hide();
 		});
 			
 		event.preventDefault();

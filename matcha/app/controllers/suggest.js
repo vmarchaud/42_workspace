@@ -4,61 +4,22 @@ var async 	= require('async');
 var pool 	= require('../config/connection.js');
 
 
-// Register search user by name route
-router.post('/byName', function( req, res ) {
-	 var input = req.body.input;
-	 
-	 // is request correctly formed
-	 if (input == undefined || input.length == 0) {
-	 	res.sendStatus( 400 ); return ;
-	 }
-	 
-	 input = "%" + input + "%";
-	 
-	 // get connection from the pool
-	 pool.getConnection(function( err, connection ) {
-		if ( err ) { res.sendStatus( 500 ); return ; }
-	    
-	  	// delete image
-		connection.query("SELECT id,firstname,lastname,picture FROM users WHERE firstname LIKE ? OR lastname LIKE ?"
-			, [ input, input ], function ( err, rows ) {
-			if (err || rows.length == 0) {
-				console.log(err);
-				connection.release();
-		  		res.sendStatus( 404 );
-			} else {
-				var users = [];
-				async.each(rows, function (item, callback) {
-					// if the user has no picture, send it like this
-					if (item.picture == undefined || item.picture.length == 0) {
-						users.push( rows[0] );
-						callback();
-					}
-					// else query the image and send it with it
-					else {
-						connection.query("SELECT * FROM images WHERE id = ?", [ item.picture ],  function( err, rows ) {
-							if (err) { connection.release(); callback( true ); return ; }
-									
-							// image found
-							if ( rows.length > 0 ) {
-								// replace it the user obj and push into the array
-								item.picture = rows[0].img;
-								users.push( item );
-							}
-							// in all case call the callback
-							callback();
-						});
-					}
-				}, function (err) {
-					connection.release();
-					if (err) {
-						res.sendStatus( 404 );
-					}
-					res.send( users );
+// display suggest page
+router.get('/', function(req, res) {
+	pool.getConnection(function(err, connection) {
+			if (err) { res.sendStatus( 500 ); return ; }
+			
+			connection.query('SELECT * FROM tags', function (err, rows) {
+				res.render('suggest', {
+					title: 'Suggest | Matcha',
+					connected: req.session.user !== undefined,
+					userName: (req.user) ? req.user.username : undefined,
+					tags: rows
 				});
-			}
+				connection.release();
+			});
 		});
-	});
+	
 });
 
 // function used to calculate the distance betwwen two location
@@ -81,16 +42,16 @@ Array.prototype.clean = function(deleteValue) {
   return this;
 };
 
+
 // Register search user by name route
 router.post('/', function( req, res ) {
-	var name = '%' + req.body.name + '%' || '%';
 	var age_min = req.body.age_min, age_max = req.body.age_max;
 	var distance_min = req.body.distance_min, distance_max = req.body.distance_min;
 	var score_min = req.body.score_min, score_max = req.body.score_max;
 	var interests = req.body.interests || [];
 	 
 	// is request correctly formed
-	if (name == undefined || age_min == undefined || age_max === undefined || distance_min == undefined || distance_max == undefined
+	if (age_min == undefined || age_max === undefined || distance_min == undefined || distance_max == undefined
 	 	|| score_min === undefined || score_max === undefined || interests === undefined) {
 		res.sendStatus( 400 ); return ;
 	}
@@ -99,10 +60,28 @@ router.post('/', function( req, res ) {
 	pool.getConnection(function( err, connection ) {
 		if ( err ) { res.sendStatus( 500 ); return ; }
 			// get user data to compare
-			connection.query('SELECT id,firstname,lastname,picture,age,location,score FROM users WHERE id = ?', [ req.session.user ], function (err, rows) {
+			connection.query('SELECT * FROM users WHERE id = ?', [ req.session.user ], function (err, rows) {
 				var requester = rows[0];
-				// get users that match name
-				connection.query('SELECT * FROM users WHERE firstname LIKE ? OR lastname LIKE ?', [name, name], function ( err, users ) {
+				var sql = "1";
+				// if the user is hetero men find a hetero/bi women
+				if (requester.orientation === "HETEROSEXUAL" && requester.gender === "MEN")
+					sql = "gender = 'WOMEN' AND orientation != 'HOMOSEXUAL'";
+				// if the user is hetero and women find an hetero/bi men
+				else if (requester.orientation === "HETEROSEXUAL" && requester.gender === "WOMEN")
+					sql = "gender = 'MEN' AND orientation != 'HOMOSEXUAL'";
+				// if the user is homo, get same gender bi or homo
+				else if (requester.orientation === "HOMOSEXUAL")
+					sql = "gender = '" + requester.gender + "' AND orientation != 'HETEROSEXUAL'";
+				// if his bi, just get everyone except oposed sex homo
+				else if (requester.orientation === "BISEXUAL" && requester.gender == "MEN")
+					sql = "id NOT IN (SELECT id FROM `users` WHERE `gender` = 'WOMEN' AND orientation = 'HOMOSEXUAL')";
+				// if his bi, just get everyone except oposed sex homo
+				else if (requester.orientation === "BISEXUAL" && requester.gender == "WOMEN")
+					sql = "id NOT IN (SELECT id FROM `users` WHERE `gender` = 'MEN' AND orientation = 'HOMOSEXUAL')";
+				
+				// get users that match preset with gender and orientation
+				connection.query('SELECT * FROM users WHERE ' + sql + ' ORDER BY score DESC', [], function ( err, users ) {
+					console.log('SELECT * FROM users WHERE ' + sql + ' ORDER BY score DESC');
 					async.each(users, function(user, callback) {
 						// if its the requester ignore
 						if (user.id === requester.id) {
@@ -170,11 +149,25 @@ router.post('/', function( req, res ) {
 								});
 							}
 						}, function (err) {
-							connection.release();
+							// sort user to put interesting one on top of list
+							async.sortBy(returned_users, function(user, callback) {
+								// compute nbr of common interests of user and requester
+								connection.query('SELECT DISTINCT * FROM `user_tags` WHERE user = ? AND tag IN ( SELECT tag FROM `user_tags` WHERE user = ?)',
+									[ user.id, requester.id], function ( err, rows) {
+									// ponderate with -(distance / 2) + (nbr interets * 20) + (score / 12)
+									 callback(null, (-(distance(user.location, requester.location) / 2) + (rows.length * 20) + (user.score / 12)) * - 1);
+								});
+							}, function(err, result){
+								// we have our sorted user sorted by interest in common
+								returned_users = result;
+							});
+							
+							
 							if (err) {
 								res.sendStatus( 404 );
 							}
 							res.send( returned_users );
+							connection.release();
 						});
 					});
 				});

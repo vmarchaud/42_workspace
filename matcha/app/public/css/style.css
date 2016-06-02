@@ -149,6 +149,17 @@ a.collection-item img {
 	border-radius: 2px;
 }
 
+#collection_suggest .collection-item {
+	padding: 0;
+	display: flex;
+	margin: 0px;
+}
+
+#collection_suggest .collection-item p {
+	margin-left: 20px;
+	margin-bottom: 0;
+}
+
 #btnprofile {
 	margin-top: 30px;	
 }

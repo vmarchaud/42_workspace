@@ -16,6 +16,7 @@ var account = require('./controllers/account');
 var search 	= require('./controllers/search');
 var profile = require('./controllers/profile');
 var user 	= require('./controllers/user');
+var suggest	= require('./controllers/suggest');
 var pool 	= require('./config/connection.js');
 
 // Setup view engine
@@ -65,6 +66,13 @@ app.use('/search', function(req, res, next) {
 	else
 		next();
 }, search);
+
+app.use('/suggest', function(req, res, next) {
+	if (req.session.user == undefined) 
+		res.redirect("/#login");
+	else
+		next();
+}, suggest);
 
 app.use('/user', function(req, res, next) {
 	if (req.session.user == undefined) 
