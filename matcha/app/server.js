@@ -92,6 +92,9 @@ require('./controllers/socket')(io, users);
 // require event
 require('./controllers/events')(users);
 
+// require background workers
+require('./controllers/workers');
+
 // Start the server
 server.listen(3000);
 
