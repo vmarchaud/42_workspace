@@ -1,8 +1,10 @@
-var pool 	= require('../config/connection.js');
-var bcrypt 	= require('bcryptjs');
-var salt 	= bcrypt.genSaltSync(10);;
-var express = require('express');
-var router 	= express.Router();
+var pool 		= require('../config/connection.js');
+var bcrypt 		= require('bcryptjs');
+var salt 		= bcrypt.genSaltSync(10);;
+var express 	= require('express');
+var router 		= express.Router();
+var events		= require('../config/event');
+var mailsender	= require('./mail.js');
 
   /**
    * Receive Signin Form Data
@@ -30,7 +32,7 @@ var router 	= express.Router();
 				}
 				
 				// verify that the hash match
-				var state = pwd = bcrypt.compareSync( pwd, rows[0].password );
+				var state = bcrypt.compareSync( pwd, rows[0].password );
 				
 				// if match, send a success and save it in session
 				if (state) {
@@ -88,19 +90,19 @@ var router 	= express.Router();
 	 // get connection from the pool
 	 pool.getConnection(function(err, connection) {
 	   if (err) {
-		  res.sendStatus(500); return ;
+		   res.sendStatus(500); return ;
 	   }
 	   // Make the request to verify that the mail already exist or not
-	   connection.query("SELECT * FROM users WHERE mail = ?",  [mail],  function(err, rows) {
-		  // If found return a conflict
-		  if (err || rows.length > 0) {
-				res.sendStatus(409);
-				connection.release();
-				return ;
-		  }
-		  
-		  // Else create the account
-		  else {
+		connection.query("SELECT * FROM users WHERE mail = ?",  [mail],  function(err, rows) {
+		// If found return a conflict
+		if (err || rows.length > 0) {
+			res.sendStatus(409);
+			connection.release();
+			return ;
+		}
+		 
+		// Else create the account
+		else {
 			// Generate an uuid
 			var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 				var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -123,7 +125,77 @@ var router 	= express.Router();
 			});
 		  }
 		})
-	  });
-  });
+	});
+});
+
+router.post('/reset', function (req, res) {
+	var mail = req.body.mail;
+	 
+	 // is request correctly formed
+	 if (mail == undefined) {
+	 	res.sendStatus(400); return ;
+	 }
+	 // get connection from the pool
+	 pool.getConnection(function(err, connection) {
+	  	 if (err) {
+			   res.sendStatus(500); return ;
+	 	  }
+	  	 // Make the request to verify that the mail already exist or not
+		connection.query("SELECT * FROM users WHERE mail = ?",  [ mail ],  function(err, rows) {
+			// If found return a that the mail doesnt exist
+			if (rows.length == 0) {
+				res.sendStatus(404);
+			}
+			// else send the mail
+			else {
+				// generate a random string that will be used to be the new password
+				var pwd = Math.random().toString(36).slice(2);
+				
+				var mailOptions = {
+					from: '"Mr.Robot" <noreply@matcha.42>',
+					to: rows[0].mail,
+					subject: '✔ Reset your password ✔',
+					text: "Hello ! Here's your new password : " + pwd
+				};
+				
+				mailsender.sendMail(mailOptions, function( error, info) {
+					console.log('Reset password sent to ' + rows[0].id + ' successfuly');
+				});
+				
+				res.sendStatus( 201 );
+				
+				// update the password
+				connection.query("UPDATE users SET password = ? WHERE id = ?", [ bcrypt.hashSync(pwd, salt), rows[0].id ], function (err, rows) {});
+			}
+			connection.release();
+		})
+	});
+});
+
+router.post('/change', function (req, res) {
+	var old = req.body.old, pwd = req.body.pwd, user = req.session.user;
+	 
+	 // is request correctly formed
+	 if (old == undefined || pwd == undefined || user == undefined) {
+	 	res.sendStatus(400); return ;
+	 }
+	 
+	 // get connection from the pool
+	 pool.getConnection(function(err, connection) {
+	  	 if (err) { res.sendStatus(500); return ; }
+	  	 // Make the request to verify that the mail already exist or not
+		connection.query("SELECT * FROM users WHERE id = ?",  [ user ],  function(err, rows) {
+			// If the password old is the same
+			var state = bcrypt.compareSync( old, rows[0].password );
+			if (state) {
+				// update the password
+				connection.query("UPDATE users SET password = ? WHERE id = ?", [ bcrypt.hashSync(pwd, salt), user ], function (err, rows) {})
+				res.sendStatus( 200 );
+			} else
+				res.sendStatus( 400 );
+		});
+		connection.release();
+	});
+});
 
 module.exports = router;

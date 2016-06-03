@@ -189,6 +189,30 @@ $(document).ready(function(){
 			event.preventDefault();
 	});
 	
+	// forgot form
+	$("#forgot_btn").click(function (event) {
+			var mail = $('#email_forgot').val();
+			
+			if (mail.length == 0) 
+				Materialize.toast("You must fill all field.", 3000, 'red lighten-1');
+			else if (!mail.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/))
+				Materialize.toast("This mail is not valid !", 3000, 'red lighten-1');
+			else {
+				
+				$.post("/auth/reset", { mail: mail })
+				.done(function(data) {
+					Materialize.toast("A mail has been sent to reset your password", 2500, 'green lighten-1');
+				})
+				.fail(function( error ) {
+					if (error.status == 404)
+						Materialize.toast("Our system didnt recognize this mail.", 3000, 'red lighten-1');
+					else
+						Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 3000, 'red lighten-1');
+				});
+			}
+			event.preventDefault();
+	});
+	
 	// Login form
 	$("#submit_signup").click(function (event) {
 			var mail = $('#email_signup').val();
@@ -677,6 +701,7 @@ $(document).ready(function(){
 		age_slider_sugest.noUiSlider.on('change', function () {
 			suggest_user();
 		});
+		suggest_user();
 	}
 	
 	

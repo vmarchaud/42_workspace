@@ -2,9 +2,9 @@ include ./layouts/header.jade
 main
   div.row
     div.col-md-10.col-md-offset-1
-      h1.Title.text-center!= message
       div.row
-        div.col-md-6.col-md-offset-3.text-center
-          p Here is where you can start putting content for your application.
+        div.col-md-6.col-md-offset-3.center(style="margin-top: 300px;")
+          a.waves-effect.waves-light.btn.blue(onclick="$('#login').openModal();") Signin
+          a.waves-effect.waves-light.btn.blue(href="/auth/signup", style="margin-left: 10px") Signup
               
 include ./layouts/footer.jade
