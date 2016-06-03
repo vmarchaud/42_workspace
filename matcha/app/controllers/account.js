@@ -364,7 +364,7 @@ router.get('/alert', function( req, res ) {
 		if ( err ) { res.sendStatus( 500 ); return ; }
 	    
 	  	// query alert
-		connection.query("SELECT * FROM user_alerts WHERE user = ? ORDER BY date DESC LIMIT 20", [ req.session.user ], function ( err, rows ) {
+		connection.query("SELECT * FROM user_alerts WHERE user = ? ORDER BY shown,date DESC LIMIT 20", [ req.session.user ], function ( err, rows ) {
 			
 			// update the date for a cool render
 			for(var i = 0; i < rows.length; i++) {

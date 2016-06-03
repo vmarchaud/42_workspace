@@ -56,11 +56,13 @@ var router 	= express.Router();
 		if ( !err ) {
 			connection.query("UPDATE users SET last_visit = NOW() WHERE id = ?", [ req.session.user ], function(err, rows) {});
 		 }
-		req.session.destroy(function(err) {});
+		req.session.destroy(function(err) {
+			// redirect him
+			res.redirect('/');
+		});
 		connection.release();
 	});
-	// redirect him
-	res.redirect('/');
+	
 });
 
   /**

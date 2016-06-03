@@ -114,6 +114,11 @@ module.exports = function (users) {
 		pool.getConnection(function( err, connection ) {
 			if ( err ) { return ; }
 			
+			if (user === visited) {
+				connection.release();
+				return ;
+			}
+			
 			// verify that the visited hasnt blocked the user
 			connection.query("SELECT * FROM user_blockeds WHERE user = ? AND blocked = ?", [ visited, user ], function (err, rows) {
 				if (rows.length == 0) {
