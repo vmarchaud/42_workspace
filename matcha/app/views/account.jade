@@ -41,10 +41,14 @@ main
 				img.circle.responsive-img.profile_pic.center-block(src="/img/default_avatar.jpg")
 			form.col.s12(id="profile_form")
 				row
-					div.input-field.col.s12
+					div.input-field.col.s6
 						i.material-icons.prefix email
 						input#email_profile.validate(type="email", value=user.mail)
-						label(for="email_profile") Email
+						label(for="age_profile") Email
+					div.input-field.col.s6
+						i.material-icons.prefix timeline
+						input#age_profile.validate(type="number", value=user.age)
+						label(for="age_profile") Age
 					div.input-field.col.s6
 						i.material-icons.prefix assignment_ind
 						input#firstname_profile.validate(type="text", value=user.firstname)
@@ -53,6 +57,14 @@ main
 						i.material-icons.prefix assignment_ind
 						input#lastname_profile.validate(type="text", value=user.lastname)
 						label Lastname
+					div.input-field.col.s6
+						i.material-icons.prefix lock
+						input#oldpassword_profile.validate(type="password")
+						label(for="password_profile") Old Password
+					div.input-field.col.s6
+						i.material-icons.prefix lock
+						input#password_profile.validate(type="password")
+						label New Password
 					div.input-field.col.s6
 						i.material-icons.prefix face
 						select#gender_profile.multiple

@@ -72,14 +72,18 @@ main
 						i.material-icons.prefix assignment_ind
 						input(type="text", value=user.lastname, disabled="true")
 						label Lastname
-					div.input-field.col.s6
+					div.input-field.col.s4
 						i.material-icons.prefix face
 						input(type="text", value=user.gender, disabled="true")
 						label Gender
-					div.input-field.col.s6
+					div.input-field.col.s4
 						i.material-icons.prefix accessibility
 						input(type="text", value=user.orientation, disabled="true")
 						label Orientation
+					div.input-field.col.s4
+						i.material-icons.prefix timeline
+						input(type="text", value=user.age, disabled="true")
+						label Age
 					div.input-field.col.s12
 						textarea.materialize-textarea(length="242", disabled="true") #{user.bio}
 						label Bio

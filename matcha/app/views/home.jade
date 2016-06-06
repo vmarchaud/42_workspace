@@ -19,12 +19,19 @@ main
 					div.input-field.col.s12.range-field(style="margin-top: 0px;")
 						p(style="margin-bottom: -5px;") Popularity Score interval :
 						div#score_interval
-					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+					div.input-field.col.s6.range-field(style="margin-top: 0px;")
 						p(style="margin-bottom: -5px;") Interests :
 						select#select_tags(multiple)
 							option(selected disabled) Choose interests
 							each val,index in tags
 								option(value=val.name, id=val.id) #{val.name}
+					div.input-field.col.s6.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Order by :
+						select#order_by
+							option(selected, value="none") None
+							option(value="distance") Distance
+							option(value="tags") Tags
+							option(value="popularity") Popularity
 					div#progress_search_user.progress(style="display: none")
 						div.indeterminate
 					div#collection_search.collection(style="display: none;")

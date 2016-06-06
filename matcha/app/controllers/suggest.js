@@ -46,9 +46,10 @@ Array.prototype.clean = function(deleteValue) {
 // Register search user by name route
 router.post('/', function( req, res ) {
 	var age_min = req.body.age_min, age_max = req.body.age_max;
-	var distance_min = req.body.distance_min, distance_max = req.body.distance_min;
+	var distance_min = req.body.distance_min, distance_max = req.body.distance_max;
 	var score_min = req.body.score_min, score_max = req.body.score_max;
 	var interests = req.body.interests || [];
+	var order_by = req.body.order_by;
 	 
 	// is request correctly formed
 	if (age_min == undefined || age_max === undefined || distance_min == undefined || distance_max == undefined
@@ -83,9 +84,6 @@ router.post('/', function( req, res ) {
 				connection.query('SELECT * FROM users WHERE ' + sql + ' ORDER BY score DESC', [], function ( err, users ) {
 					
 					async.each(users, function(user, callback) {
-						
-						
-						
 						// if its the requester ignore
 						if (user.id === requester.id) {
 							delete users[users.indexOf(user)];
@@ -161,22 +159,39 @@ router.post('/', function( req, res ) {
 							// sort user to put interesting one on top of list
 							async.sortBy(returned_users, function(user, callback) {
 								// compute nbr of common interests of user and requester
-								connection.query('SELECT DISTINCT * FROM `user_tags` WHERE user = ? AND tag IN ( SELECT tag FROM `user_tags` WHERE user = ?)',
-									[ user.id, requester.id], function ( err, rows) {
-									// ponderate with -(distance / 2) + (nbr interets * 20) + (score / 12)
-									 callback(null, (-(distance(user.location, requester.location) / 2) + (rows.length * 20) + (user.score / 12)) * - 1);
-								});
+								if (order_by === "ponderation") {
+									connection.query('SELECT DISTINCT * FROM `user_tags` WHERE user = ? AND tag IN ( SELECT tag FROM `user_tags` WHERE user = ?)',
+										[ user.id, requester.id], function ( err, rows) {
+										// ponderate with -(distance / 2) + (nbr interets * 20) + (score / 12)
+										callback(null, (-(distance(user.location, requester.location) / 2) + (rows.length * 20) + (user.score / 12)) * - 1);
+									});
+								} else if (order_by === "tags") {
+									// compute nbr of common interests of user and requester
+									connection.query('SELECT DISTINCT * FROM `user_tags` WHERE user = ? AND tag IN ( SELECT tag FROM `user_tags` WHERE user = ?)',
+										[ user.id, requester.id], function ( err, rows) {
+										callback(null, (-rows.length));
+									});
+								} // order by distance
+								else if (order_by === "distance") {
+									callback(null, distance(user.location, requester.location));
+								} // order by popularity 
+								else if (order_by === "popularity") {
+									callback(null, -user.score);
+								} // no order
+								else {
+									callback(null, 0);
+								}
 							}, function(err, result){
 								// we have our sorted user sorted by interest in common
-								returned_users = result;
+								if (err) {
+									res.sendStatus( 404 );
+								}
+								res.send( result );
+								connection.release();
 							});
 							
 							
-							if (err) {
-								res.sendStatus( 404 );
-							}
-							res.send( returned_users );
-							connection.release();
+							
 						});
 					});
 				});

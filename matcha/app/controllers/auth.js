@@ -42,7 +42,7 @@ var mailsender	= require('./mail.js');
 				} 
 				// Else just send a 401 error 
 				else {
-					res.sendStatus(401);
+					res.sendStatus(404);
 					connection.release();
 				}
 			});
@@ -172,13 +172,15 @@ router.post('/reset', function (req, res) {
 	});
 });
 
-router.post('/change', function (req, res) {
+router.post('/changepwd', function (req, res) {
 	var old = req.body.old, pwd = req.body.pwd, user = req.session.user;
 	 
 	 // is request correctly formed
 	 if (old == undefined || pwd == undefined || user == undefined) {
 	 	res.sendStatus(400); return ;
 	 }
+	 
+	 console.log(old + " " + pwd);
 	 
 	 // get connection from the pool
 	 pool.getConnection(function(err, connection) {
@@ -187,12 +189,12 @@ router.post('/change', function (req, res) {
 		connection.query("SELECT * FROM users WHERE id = ?",  [ user ],  function(err, rows) {
 			// If the password old is the same
 			var state = bcrypt.compareSync( old, rows[0].password );
-			if (state) {
+			if (state === true) {
 				// update the password
 				connection.query("UPDATE users SET password = ? WHERE id = ?", [ bcrypt.hashSync(pwd, salt), user ], function (err, rows) {})
 				res.sendStatus( 200 );
 			} else
-				res.sendStatus( 400 );
+				res.sendStatus( 404 );
 		});
 		connection.release();
 	});

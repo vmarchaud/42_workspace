@@ -19,7 +19,6 @@
     "mysql": "^2.10.2",
     "node-schedule": "^1.1.0",
     "nodemailer": "^2.4.2",
-    "smtp-server": "^1.9.1",
     "socketio": "^1.0.0"
   }
 }

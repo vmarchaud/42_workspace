@@ -85,9 +85,10 @@ Array.prototype.clean = function(deleteValue) {
 router.post('/', function( req, res ) {
 	var name = '%' + req.body.name + '%' || '%';
 	var age_min = req.body.age_min, age_max = req.body.age_max;
-	var distance_min = req.body.distance_min, distance_max = req.body.distance_min;
+	var distance_min = req.body.distance_min, distance_max = req.body.distance_max;
 	var score_min = req.body.score_min, score_max = req.body.score_max;
 	var interests = req.body.interests || [];
+	var order_by = req.body.order_by;
 	 
 	// is request correctly formed
 	if (name == undefined || age_min == undefined || age_max === undefined || distance_min == undefined || distance_max == undefined
@@ -104,13 +105,7 @@ router.post('/', function( req, res ) {
 				// get users that match name
 				connection.query('SELECT * FROM users WHERE firstname LIKE ? OR lastname LIKE ?', [name, name], function ( err, users ) {
 					async.each(users, function(user, callback) {
-						// if its the requester ignore
-						if (user.id === requester.id) {
-							delete users[users.indexOf(user)];
-							callback();
-						}
-						// empty user that doesnt match distance
-						else if ( user.location.length == 0 || distance(requester.location, user.location) < distance_min ||
+						if ( user.location.length == 0 || distance(requester.location, user.location) < distance_min ||
 							distance(requester.location, user.location) > distance_max) {
 							delete users[users.indexOf(user)];
 							callback();
@@ -129,8 +124,9 @@ router.post('/', function( req, res ) {
 						else if ( interests.length > 0) {
 							connection.query('SELECT * FROM `user_tags` WHERE `user` = ? AND `tag` IN (?)', [ user.id, interests.join(',') ], 
 								function ( err, rows) {
-								if (rows.length == 0)
+								if (rows.length == 0) {
 									delete users[users.indexOf(user)];
+								}
 								callback();
 							})
 						} else {
@@ -170,11 +166,33 @@ router.post('/', function( req, res ) {
 								});
 							}
 						}, function (err) {
-							connection.release();
-							if (err) {
-								res.sendStatus( 404 );
-							}
-							res.send( returned_users );
+							
+							// if the user asked to sort them
+							async.sortBy(returned_users, function(user, callback) {
+								// order by nbr tags in common
+								if (order_by === "tags") {
+									// compute nbr of common interests of user and requester
+									connection.query('SELECT DISTINCT * FROM `user_tags` WHERE user = ? AND tag IN ( SELECT tag FROM `user_tags` WHERE user = ?)',
+										[ user.id, requester.id], function ( err, rows) {
+										callback(null, (-rows.length));
+									});
+								} // order by distance
+								else if (order_by === "distance") {
+									callback(null, distance(user.location, requester.location));
+								} // order by popularity 
+								else if (order_by === "popularity") {
+									callback(null, -user.score);
+								} // no order
+								else {
+									callback(null, 0);
+								}
+							}, function(err, result){
+								connection.release();
+								if (err) {
+									res.sendStatus( 404 );
+								}
+								res.send( result );
+							});
 						});
 					});
 				});

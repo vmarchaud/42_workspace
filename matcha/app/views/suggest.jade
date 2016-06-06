@@ -15,12 +15,19 @@ main
 					div.input-field.col.s12.range-field(style="margin-top: 0px;")
 						p(style="margin-bottom: -5px;") Popularity Score interval :
 						div#score_interval_suggest
-					div.input-field.col.s12.range-field(style="margin-top: 0px;")
+					div.input-field.col.s6.range-field(style="margin-top: 0px;")
 						p(style="margin-bottom: -5px;") Interests :
 						select#select_tags_suggest(multiple)
 							option(selected disabled) Choose interests
 							each val,index in tags
 								option(value=val.name, id=val.id) #{val.name}
+					div.input-field.col.s6.range-field(style="margin-top: 0px;")
+						p(style="margin-bottom: -5px;") Order by :
+						select#order_by_suggest
+							option(selected, value="ponderation") Ponderation
+							option(value="distance") Distance
+							option(value="tags") Tags
+							option(value="popularity") Popularity
 					div#progress_suggest.progress(style="display: none")
 						div.indeterminate
 					div#collection_suggest.collection(style="display: none;")

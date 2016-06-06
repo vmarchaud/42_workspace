@@ -21,7 +21,7 @@ socket.on('new_message', function(data) {
 		
 		// add the box
 		var html = '<div id=' + data.chat + ' class="msg_box">';
-		html+= '<div class="msg_head">' + data.user + '<i style="float: right;" class="material-icons">close</i></div>';
+		html+= '<div class="msg_head">' + data.user.escape() + '<i style="float: right;" class="material-icons">close</i></div>';
 		html += '<div class="msg_wrap"><div class="msg_body"></div>';
 		html += '<div class="msg_footer"><textarea class="msg_input" rows="4"></textarea></div></div>';
 		$('.chat_box').before(html);
@@ -43,7 +43,7 @@ socket.on('new_message', function(data) {
 				});
 				
 				// add the html
-				$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg +'</div>');
+				$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg.escape() +'</div>');
 				// scroll to bottom
 				$($(this).parent().parent().children()[0]).scrollTop($($(this).parent().parent().children()[0])[0].scrollHeight);
 			}
@@ -56,7 +56,7 @@ socket.on('new_message', function(data) {
 	} else {
 		var body = $('#' + data.chat + ' > .msg_wrap').children()[0];
 		// add the msg
-		$(body).append('<div class="msg_a">'+ data.msg +'</div>');
+		$(body).append('<div class="msg_a">'+ data.msg.escape() +'</div>');
 		// scroll to bottom
 		$(body).scrollTop($(body)[0].scrollHeight);
 	}
@@ -77,19 +77,31 @@ socket.on('get_history', function(data) {
 	var body = $('#' + data.chat + ' > .msg_wrap').children()[0];
 	for (var i = 0; i < data.msgs.length; i++) {
 		if (data.msgs[i].user === data.user)
-			$(body).prepend('<div class="msg_b">'+ data.msgs[i].msg +'</div>');
+			$(body).prepend('<div class="msg_b">'+ data.msgs[i].msg.escape() +'</div>');
 		else 
-			$(body).prepend('<div class="msg_a">'+ data.msgs[i].msg +'</div>');
+			$(body).prepend('<div class="msg_a">'+ data.msgs[i].msg.escape() +'</div>');
 	}
 	$(body).scrollTop($(body)[0].scrollHeight);
 });
+
+String.prototype.escape = function() {
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return this.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};
+
 
 // when we got the user list
 socket.on('user_list', function (data) {
 	for(var i = 0; i < data.length; i++) {
 		chat_users[data[i].id] = data[i];
 		var state = data[i].last_visit == "0000-00-00 00:00:00" ? "online" : "offline";
-		$('.chat_body').append('<div chatID="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname + ' ' + data[i].lastname + ' </div>');
+		$('.chat_body').append('<div chatID="' + data[i].id + '"class="user_' + state +' chat_click">' + data[i].firstname.escape() + ' ' + data[i].lastname.escape() + ' </div>');
 	}
 	
 	$('.chat_click').click(function (event) {
@@ -123,7 +135,7 @@ socket.on('user_list', function (data) {
 					});
 					
 					// add the html
-					$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg +'</div>');
+					$($(this).parent().parent().children()[0]).append('<div class="msg_b">'+ msg.escape() +'</div>');
 					// scroll to bottom
 					$($(this).parent().parent().children()[0]).scrollTop($($(this).parent().parent().children()[0])[0].scrollHeight);
 				}
@@ -391,6 +403,45 @@ $(document).ready(function(){
 		}
 	});
 	
+	
+	$( "#age_profile" ).change(function() {
+		// Get the value
+		var selected = $( "#age_profile" ).val();
+		// If he put an invalid data
+		if (selected < 18 || selected > 100) {
+			Materialize.toast("You must are at least 18 years old", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/me/update", { 'type': "age", 'data': selected }).done(function(data) {
+				Materialize.toast("Your profile have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
+	$( "#password_profile" ).change(function() {
+		// Get the value
+		var oldpwd = $( "#oldpassword_profile" ).val();
+		var newpwd = $( "#password_profile" ).val();
+		// If he put an invalid data
+		if (oldpwd.length == 0 || newpwd == 0) {
+			Materialize.toast("If you want to change your password, just put the old one and the new one in their respective inputs", 3000, 'red lighten-1');
+		}
+		// Else update the data
+		else {
+			$.post("/auth/changepwd", { 'old': oldpwd, 'pwd': newpwd }).done(function(data) {
+				Materialize.toast("Your password have been updated !", 2000, 'green lighten-1');
+			}).fail(function( error ) {
+				if (error.status == 404) 
+					Materialize.toast("Your old password doesnt match with the one we have.", 2000, 'red lighten-1');
+				 else
+					Materialize.toast("Wild error code appear " + error.status + " " + error.responseText, 2000, 'red lighten-1');
+			});
+		}
+	});
+	
     // Update the location of the user
 	$( "#update_loc" ).click(function() {
 		GMaps.geolocate({
@@ -592,6 +643,12 @@ $(document).ready(function(){
 		age_slider.noUiSlider.on('change', function () {
 			search_user();
 		});
+		
+		$("#order_by").material_select();
+		
+		$("#order_by").change(function () {
+			search_user();
+		});
 	}
 	
 	
@@ -600,6 +657,7 @@ $(document).ready(function(){
 		var age_min = age_slider.noUiSlider.get()[0], age_max = age_slider.noUiSlider.get()[1];
 		var distance_min = distance_slider.noUiSlider.get()[0], distance_max = distance_slider.noUiSlider.get()[1];
 		var score_min = score_slider.noUiSlider.get()[0], score_max = score_slider.noUiSlider.get()[1];
+		var order_by = $("#order_by").val();
 		
 		// get the id for option
 		var tmp = $("#select_tags").val();
@@ -613,18 +671,18 @@ $(document).ready(function(){
 		$("#collection_search").empty();
 			
 		$('#progress_search_user').show();
-			
+		
 		$.post("/search", { 'name': name, 'age_min': age_min, 'age_max': age_max,
 				'distance_min': distance_min, 'distance_max': distance_max, 'interests': interests, 
-				'score_min': score_min, 'score_max': score_max} ).done(function(data) {
+				'score_min': score_min, 'score_max': score_max, 'order_by': order_by} ).done(function(data) {
 			$('#collection_search').show();
 			for(var i = 0; i < data.length; i++) {
 				if (data[i].picture == undefined || data[i].picture.length == 0) {
 					data[i].picture = "/img/default_avatar.jpg";
 				}
 					
-				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
-				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_search");
+				$('<a href="/profile/' + data[i].id.escape() + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
+				+ '<p>' + data[i].firstname.escape() + ' ' + data[i].lastname.escape() + '</p></a>').appendTo("#collection_search");
 			}
 			$('#progress_search_user').hide();
 		}).fail(function( error ) {
@@ -698,10 +756,16 @@ $(document).ready(function(){
 				decimals: 0
 			})
 		});
+		
 		age_slider_sugest.noUiSlider.on('change', function () {
 			suggest_user();
 		});
 		suggest_user();
+		
+		$('#order_by_suggest').material_select();
+		$('#order_by_suggest').change(function () {
+			suggest_user();
+		})
 	}
 	
 	
@@ -709,6 +773,7 @@ $(document).ready(function(){
 		var age_min = age_slider_sugest.noUiSlider.get()[0], age_max = age_slider_sugest.noUiSlider.get()[1];
 		var distance_min = distance_slider_sugest.noUiSlider.get()[0], distance_max = distance_slider_sugest.noUiSlider.get()[1];
 		var score_min = score_slider_sugest.noUiSlider.get()[0], score_max = score_slider_sugest.noUiSlider.get()[1];
+		var order_by = $("#order_by_suggest").val();
 		
 		// get the id for option
 		var tmp = $("#select_tags_suggest").val();
@@ -725,15 +790,15 @@ $(document).ready(function(){
 			
 		$.post("/suggest", {'age_min': age_min, 'age_max': age_max,
 				'distance_min': distance_min, 'distance_max': distance_max, 'interests': interests, 
-				'score_min': score_min, 'score_max': score_max} ).done(function(data) {
+				'score_min': score_min, 'score_max': score_max, 'order_by': order_by} ).done(function(data) {
 			$('#collection_suggest').show();
 			for(var i = 0; i < data.length; i++) {
 				if (data[i].picture == undefined || data[i].picture.length == 0) {
 					data[i].picture = "/img/default_avatar.jpg";
 				}
 					
-				$('<a href="/profile/' + data[i].id + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
-				+ '<p>' + data[i].firstname + ' ' + data[i].lastname + '</p></a>').appendTo("#collection_suggest");
+				$('<a href="/profile/' + data[i].id.escape() + '" class=" collection-item search_user"> <img src="' + data[i].picture +'">' 
+				+ '<p>' + data[i].firstname.escape() + ' ' + data[i].lastname.escape() + '</p></a>').appendTo("#collection_suggest");
 			}
 			$('#progress_suggest').hide();
 		}).fail(function( error ) {
@@ -868,7 +933,7 @@ function load_alerts() {
 			for(var i = 0; i < data.length; i++) {
 				var active = data[i].shown === 0 ? "active" : "";
 				$('#alerts_list').append('<a id="' + data[i].id + '" class="collection-item ' + active + '">' +
-						 data[i].msg +'<span class="badge">' + data[i].date + '</span></a>');
+						 data[i].msg.escape() +'<span class="badge">' + data[i].date.escape() + '</span></a>');
 			}
 			
 			$('#progress_alerts').hide();
@@ -911,7 +976,7 @@ function load_visits() {
 		// add the alert to the list
 		for(var i = 0; i < data.length; i++) {
 			$('#visits_list').append('<a class="collection-item">' +
-					 data[i].user +'<span class="badge">' + data[i].date + '</span></a>');
+					 data[i].user.escape() +'<span class="badge">' + data[i].date.escape() + '</span></a>');
 		}
 			
 		$('#progress_visits').hide();
