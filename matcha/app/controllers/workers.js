@@ -19,6 +19,7 @@ schedule.scheduleJob('*/10 * * * *', function() {
 		});
 		// get nbr of matchs
 		connection.query("SELECT (COUNT(*) /2) AS count FROM user_matchs WHERE `mutual` = 1 UNION SELECT COUNT(*) FROM user_matchs WHERE `mutual` = 0 ", [], function (err, rows) {
+			console.log(rows);
 			total_matchs = rows[0].count + rows[1].count;
 		});		
 		
