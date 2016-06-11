@@ -33,9 +33,9 @@ class Post {
 	// This function is used to query an post from his id and return an post instance
 	public static function query( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM posts WHERE id = '$id'");
+		$stmt = $db->prepare("SELECT * FROM posts WHERE id = ?");
 		$stmt->setFetchMode(PDO::FETCH_INTO, new Post(null));
-		if ($stmt->execute())
+		if ($stmt->execute(array($id)))
 			return $stmt->fetch();
 		else
 			return null;
@@ -44,8 +44,8 @@ class Post {
 	// This function is used to query an post from his author and return an array
 	public static function fromAuthor( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM posts WHERE author = '$id' ORDER BY date DESC");
-		if ($stmt->execute())
+		$stmt = $db->prepare("SELECT * FROM posts WHERE author = ? ORDER BY date DESC");
+		if ($stmt->execute(array($id)))
 			return $stmt->fetchAll(PDO::FETCH_OBJ);
 		else
 			return array();
@@ -55,8 +55,8 @@ class Post {
 	public static function queryPage ( $page ) {
 		$db = Database::getInstance();
 		$offset = $page * 10;
-		$stmt = $db->prepare("SELECT * FROM posts ORDER BY date DESC LIMIT 10 OFFSET $offset");
-		if ($stmt->execute())
+		$stmt = $db->prepare("SELECT * FROM posts ORDER BY date DESC LIMIT 10 OFFSET ?");
+		if ($stmt->execute(array($offset)))
 			return $stmt->fetchAll(PDO::FETCH_OBJ);
 		else
 			return array();
@@ -65,8 +65,8 @@ class Post {
 	// This function is used to "delete" an post
 	public function delete() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("DELETE FROM posts WHERE id = '$this->id'");
-		$stmt->execute();
+		$stmt = $db->prepare("DELETE FROM posts WHERE id = ?");
+		$stmt->execute(array($this->id));
 	}
 }
 ?>

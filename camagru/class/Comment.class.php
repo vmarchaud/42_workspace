@@ -37,9 +37,9 @@ class Comment {
 	// This function is used to query an post from his id and return an comment instance
 	public static function query( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM comments WHERE id = '$id'");
+		$stmt = $db->prepare("SELECT * FROM comments WHERE id = ?");
 		$stmt->setFetchMode(PDO::FETCH_INTO, new Comment(null));
-		if ($stmt->execute())
+		if ($stmt->execute(array($id)))
 			return $stmt->fetch();
 		else
 			return null;
@@ -48,8 +48,8 @@ class Comment {
 	// This function is used to query an post from the original post and return an array of post
 	public static function fromPost( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM comments WHERE post = '$id' ORDER BY date ASC");
-		if ($stmt->execute())
+		$stmt = $db->prepare("SELECT * FROM comments WHERE post = ? ORDER BY date ASC");
+		if ($stmt->execute(array($id)))
 			return $stmt->fetchAll(PDO::FETCH_OBJ);
 		else
 			return array();
@@ -58,8 +58,8 @@ class Comment {
 	// This function is used to "delete" an comment
 	public function delete() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("DELETE FROM comments WHERE id = '$this->id'");
-		$stmt->execute();
+		$stmt = $db->prepare("DELETE FROM comments WHERE id = ?");
+		$stmt->execute(array($this->id));
 	}
 }
 ?>
