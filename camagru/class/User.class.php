@@ -48,9 +48,9 @@ class User {
 	// This function is used to query an user from his id and return an user instance
 	public static function query( $id ) {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("SELECT * FROM users WHERE id = '$id'");
+		$stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
 		$stmt->setFetchMode(PDO::FETCH_INTO, new User(null));
-		if ($stmt->execute())
+		if ($stmt->execute(array($id)))
 			return $stmt->fetch();
 		else
 			return null;
@@ -59,15 +59,15 @@ class User {
 	// This function is used to "delete" an account, the data will still exist but user will not be able to connect
 	public function delete() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("UPDATE users SET state='DELETED' WHERE id = '$this->id'");
-		$stmt->execute();
+		$stmt = $db->prepare("UPDATE users SET state='DELETED' WHERE id = ?");
+		$stmt->execute(array($this->id));
 	}
 
 	// This function is used to update data of an user
 	public function update() {
 		$db = Database::getInstance();
-		$stmt = $db->prepare("UPDATE users SET mail=?, name=?, password=?, state=? WHERE id = '$this->id'");
-		$stmt->execute(array($this->mail, $this->name, $this->password, $this->state));
+		$stmt = $db->prepare("UPDATE users SET mail=?, name=?, password=?, state=? WHERE id = ?");
+		$stmt->execute(array($this->mail, $this->name, $this->password, $this->state, $this->id));
 	}
 }
 ?>
