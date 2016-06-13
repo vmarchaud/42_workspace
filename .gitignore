@@ -46,3 +46,7 @@ bin/
 .settings/
 target/
 .recommenders/
+
+#npm
+
+node_modules/
