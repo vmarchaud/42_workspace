@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title>Hypertube</title>
+  <link href="/styles/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="/styles/style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/lodash/4.13.1/lodash.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Quicksand" />
+  <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/cyborg/bootstrap.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="page">
+  <div class="bloc-principal">
+    <div class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="/"><img src="/images/logo.png" alt="Icone du menu" id="logo"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="nav navbar-nav">
+            <% if(req.session.user == null){ %>
+              <li>
+                <a href="/auth/login">Connexion</a>
+              </li>
+            <% } else { %>
+              <li>
+              </li>
+              <li>
+                <a href="/movie/search"><%= __('Search')%></a>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="glyphicon glyphicon-user"></i>
+
+                  <%= req.session.user['email'] %>
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/my_profil">- Mon profil</a></li>
+                  <li><a href="/auth/logout">- Me déconnecter</a></li>
+                </ul>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <%if (req.session.msg){%>
+      <%= req.session.msg %>
+      <% req.session.msg = null }%>
+    <%- body %>
+
+    </div>
+    </div>
+    <footer class="main-footer">
+      <div class="container">
+        <p class="pull-right">nmohamed, vmarchau, vklepper - 2016</p>
+      </div>
+    </footer>
+    </div>
+    <script src="/js/moment.min.js"></script>
+  </body>
+</html>

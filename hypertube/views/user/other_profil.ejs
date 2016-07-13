@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2><%= __('Profile of')%></h2>
+        <h4><%= user.firstname + ' '+ user.lastname %> </h4>
+        <h4>Lang : <%= user.default_language %> </h4>
+    </div>
+    <div class="col-md-3 col-sm-3 col-xs-8">
+        <div class="img-block">
+            <img src="<%= user.image != null ? user.image : '/images/defaultprofil.gif'%>" class="img-thumbnail">
+        </div>
+    </div>
+</div>

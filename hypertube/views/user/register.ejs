@@ -1,0 +1,48 @@
+<div class="modal-content">
+
+    <div class="modal-header">
+        <h1 class="text-center"><%= __('Register')%></h1>
+    </div>
+    <div class="modal-body">
+        <form method="post" action="/user">
+            <div class="row inscr">
+                <div class="col-md-6">
+                    <label><%= __('Lastname')%>* :</label>
+                    <input name="lastname" type="text"  class="form-control input-lg" placeholder="Dupond">
+                </div>
+
+                <div class="col-md-6">
+                    <label><%= __('Firstname')%>* :</label>
+                    <input name="firstname" type="text"  class="form-control input-lg" placeholder="Jacky">
+                </div>
+
+                <div class="col-md-6">
+                    <label>image :</label>
+                    <input name="image" type="text"  class="form-control input-lg" placeholder="ex: http://exemple.com/image.jpeg">
+                </div>
+
+                <div class="col-md-6">
+                    <label><%= __('Email')%>* :</label>
+                    <input name="email" type="email"  class="form-control input-lg" placeholder="jdupond@mail.com">
+                </div>
+
+                <div class="col-md-6">
+                    <label><%= __('Password')%>* :</label>
+                    <input name="pwd" type="password" class="form-control input-lg" placeholder="<%= __('Password')%>">
+                </div>
+                <div class="col-md-6">
+                    <p>*<%= __('Fields required')%></p>
+                </div>
+
+                <div class="col-md-12 valider">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><%= __('Send')%></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <p class="text-center text-info">
+            <%= __('text loi')%>
+        </p>
+    </div>
+</div>

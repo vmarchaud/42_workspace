@@ -1,0 +1,32 @@
+
+<div class="col-sm-12 col-md-6">
+		<div class="col-sm-4">
+			<div class="thumbnail movie-tile">
+			  <img src="<%= movie.poster_url %>" alt="<%= movie.title %>">
+
+			</div>
+							<p>
+								<a href="/movie/play/<%= movie.id %>" class="btn btn-primary" role="button"><%= __('Play')%></a>
+							</p>
+							<% if (seen) { %>
+								<span class="label label-info"><%= __('Seen')%></span>
+							<% } %>
+		</div>
+		<div class="col-sm-6 caption-wrapper">
+		  <div class="caption">
+		    <h3><%= movie.title %></h3>
+				<h4><%= movie.release_date %></h4>
+				<h4><%= __('Average rating')%> : <%= movie.vote_average %></h4>
+		    <p clas='synopsis'><%= movie.synopsis %></p>
+	  </div>
+		<br>
+	</div>
+<style>
+.movie-tile img {
+	 height: 200px;
+	 width: 113px;
+}
+.caption-wrapper {
+	height: 400px;
+}
+</style>

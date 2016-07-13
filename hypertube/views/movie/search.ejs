@@ -1,0 +1,51 @@
+<div class="col-sm-12">
+
+	<form class="searchform col-sm-12" action="" method="get">
+
+		<div class="form-group input-group col-sm-12">
+			<div class="input-group-btn">
+			<!-- Button and dropdown menu -->
+			<input type="submit" class="btn btn-default" name="submit" value="<%= __('Search')%>">
+			</div>
+			<input autofocus class='movieName form-control' type="text" name="name" value="" placeholder="Warcraft" class="form-control" aria-label="movie-name">
+		</div>
+
+		<br>
+
+		<div class="form-group col-sm-6">
+			<label for="sortBy"><%= __('Sort by') %> : </label>
+			<select class="form-control" name="sortBy" id="sortBy">
+				<option value="popularity"><%= __('Popularity')%></option>
+				<option value="title"><%= __('Name')%></option>
+				<option value="release_date"><%= __('Release date')%></option>
+				<option value="vote_average"><%= __('Average rating')%></option>
+			</select>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="order"><%= __('Order by')%> : </label>
+			<select class="form-control" name="order" id="order">
+				<option value="desc"><%= __('Descending')%></option>
+				<option value="asc"><%= __('Ascending')%></option>
+			</select>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="yearFrom"><%= __('From')%></label>
+			<input class="form-control" type="number" name="yearFrom" id="yearFrom" value="1900">
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="yearTo"><%= __('To')%></label>
+			<input class="form-control" type="number" name="yearTo" id="yearTo" value="2016">
+		</div>
+
+	</form>
+
+	<div class="row video-list">
+	</div>
+
+	<script type="text/javascript" src='/js/movie.js'></script>
+
+	<a class='btn btn-default' href="javascript:nextPage()"><%= __('Next page')%></a>
+
+</div>
