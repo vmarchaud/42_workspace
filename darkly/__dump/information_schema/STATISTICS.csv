@@ -1,0 +1,7 @@
+PACKED,COMMENT,SUB_PART,NULLABLE,INDEX_NAME,INDEX_TYPE,NON_UNIQUE,TABLE_NAME,COLLATION,CARDINALITY,COLUMN_NAME,INDEX_SCHEMA,TABLE_SCHEMA,SEQ_IN_INDEX,INDEX_COMMENT,TABLE_CATALOG
+NULL,<blank>,NULL,<blank>,PRIMARY,BTREE,0,db_default,A,2,id,Member_Brute_Force,Member_Brute_Force,1,<blank>,def
+NULL,<blank>,NULL,<blank>,PRIMARY,BTREE,0,users,A,4,user_id,Member_Sql_Injection,Member_Sql_Injection,1,<blank>,def
+NULL,<blank>,NULL,<blank>,PRIMARY,BTREE,0,guestbook,A,1,id_comment,Member_guestbook,Member_guestbook,1,<blank>,def
+NULL,<blank>,NULL,<blank>,PRIMARY,BTREE,0,list_images,A,6,id,Member_images,Member_images,1,<blank>,def
+NULL,<blank>,NULL,<blank>,PRIMARY,BTREE,0,vote_dbs,A,5,id_vote,Member_survey,Member_survey,1,<blank>,def
+

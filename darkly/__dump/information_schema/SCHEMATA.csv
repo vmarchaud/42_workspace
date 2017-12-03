@@ -1,0 +1,8 @@
+SQL_PATH,SCHEMA_NAME,CATALOG_NAME,DEFAULT_COLLATION_NAME,DEFAULT_CHARACTER_SET_NAME
+NULL,information_schema,def,utf8_general_ci,utf8
+NULL,Member_Brute_Force,def,utf8_general_ci,utf8
+NULL,Member_Sql_Injection,def,utf8_general_ci,utf8
+NULL,Member_guestbook,def,utf8_general_ci,utf8
+NULL,Member_images,def,utf8_general_ci,utf8
+NULL,Member_survey,def,utf8_general_ci,utf8
+

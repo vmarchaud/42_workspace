@@ -1,0 +1,7 @@
+TABLE_NAME,TABLE_SCHEMA,CONSTRAINT_TYPE,CONSTRAINT_NAME,CONSTRAINT_SCHEMA,CONSTRAINT_CATALOG
+db_default,Member_Brute_Force,PRIMARY KEY,PRIMARY,Member_Brute_Force,def
+users,Member_Sql_Injection,PRIMARY KEY,PRIMARY,Member_Sql_Injection,def
+guestbook,Member_guestbook,PRIMARY KEY,PRIMARY,Member_guestbook,def
+list_images,Member_images,PRIMARY KEY,PRIMARY,Member_images,def
+vote_dbs,Member_survey,PRIMARY KEY,PRIMARY,Member_survey,def
+

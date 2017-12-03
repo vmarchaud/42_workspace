@@ -1,0 +1,9 @@
+GRANTEE,IS_GRANTABLE,TABLE_SCHEMA,TABLE_CATALOG,PRIVILEGE_TYPE
+'borntosec'@'localhost',NO,Member\\_Brute\\_Force,def,SELECT
+'borntosec'@'localhost',NO,Member\\_Sql\\_Injection,def,SELECT
+'borntosec'@'localhost',NO,Member\\_images,def,SELECT
+'borntosec'@'localhost',NO,Member\\_guestbook,def,SELECT
+'borntosec'@'localhost',NO,Member\\_guestbook,def,INSERT
+'borntosec'@'localhost',NO,Member\\_survey,def,SELECT
+'borntosec'@'localhost',NO,Member\\_survey,def,UPDATE
+

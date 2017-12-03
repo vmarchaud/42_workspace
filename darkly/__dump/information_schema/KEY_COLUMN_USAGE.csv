@@ -1,0 +1,7 @@
+TABLE_NAME,COLUMN_NAME,TABLE_SCHEMA,TABLE_CATALOG,CONSTRAINT_NAME,ORDINAL_POSITION,CONSTRAINT_SCHEMA,CONSTRAINT_CATALOG,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME,REFERENCED_TABLE_SCHEMA,POSITION_IN_UNIQUE_CONSTRAINT
+db_default,id,Member_Brute_Force,def,PRIMARY,1,Member_Brute_Force,def,NULL,NULL,NULL,NULL
+users,user_id,Member_Sql_Injection,def,PRIMARY,1,Member_Sql_Injection,def,NULL,NULL,NULL,NULL
+guestbook,id_comment,Member_guestbook,def,PRIMARY,1,Member_guestbook,def,NULL,NULL,NULL,NULL
+list_images,id,Member_images,def,PRIMARY,1,Member_images,def,NULL,NULL,NULL,NULL
+vote_dbs,id_vote,Member_survey,def,PRIMARY,1,Member_survey,def,NULL,NULL,NULL,NULL
+
