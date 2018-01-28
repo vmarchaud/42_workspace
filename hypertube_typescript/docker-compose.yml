@@ -1,0 +1,12 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.4
+    environment:
+      AUTH: "no"
+    volumes:
+      - "mongodata:/data/db"
+    ports:
+      - "27017:27017"
+volumes:
+  mongodata:
